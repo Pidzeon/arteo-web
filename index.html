@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arteo – Creative Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<svg class="svg-filters" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glass-lens-pill" x="-30%" y="-30%" width="160%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018 0.025" numOctaves="2" seed="5" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" result="displaced"/>
+      <feGaussianBlur in="displaced" stdDeviation="0.8" result="blurred"/>
+      <feComposite in="blurred" in2="SourceGraphic" operator="in"/>
+    </filter>
+    <filter id="glass-lens" x="-30%" y="-30%" width="160%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" seed="3" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" result="displaced"/>
+      <feGaussianBlur in="displaced" stdDeviation="1.2" result="blurred"/>
+      <feComposite in="blurred" in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- Arteo logo as inline SVG reusable -->
+<svg style="display:none">
+  <symbol id="arteo-logo" viewBox="0 0 80 80">
+    <circle cx="40" cy="28" r="20" fill="#00e5c8" opacity=".7"/>
+    <circle cx="28" cy="50" r="20" fill="#00e5c8" opacity=".7"/>
+    <circle cx="52" cy="50" r="20" fill="#00e5c8" opacity=".7"/>
+    <circle cx="40" cy="42" r="10" fill="#00ffde" opacity=".9"/>
+  </symbol>
+</svg>
+
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <svg class="logo-svg" width="22" height="22" viewBox="0 0 80 80"><use href="#arteo-logo"/></svg>
+    <span class="nav-logo-text">Art<em>eo</em></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Služby</a></li>
+    <li><a href="#portfolio">Práce</a></li>
+    <li><a href="#about">Štúdio</a></li>
+    <li><a href="#contact">Kontakt</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Začnime</a>
+</nav>
+
+<section id="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-orbs"></div>
+  <div class="hero-eyebrow"><span class="pulse-dot"></span>Creative Studio</div>
+  <h1>Dizajn, ktorý<br><span class="word-dim">hovorí za</span><br><span class="word-accent">vás.</span></h1>
+  <div class="hero-bottom">
+    <p class="hero-sub">Grafický dizajn a weby pre <em>malých a stredných podnikateľov</em>. Jednoduchšie, rýchlejšie, lepšie.</p>
+    <div class="hero-cta-group">
+      <a href="#portfolio" class="btn-main">Pozrieť práce <span class="arr">→</span></a>
+      <a href="#contact" class="btn-ghost">Nezáväzne sa porozprávajme</a>
+    </div>
+  </div>
+</section>
+
+<div class="ticker-wrap">
+  <div class="ticker">
+    <div class="ticker-item">Tvorba webu <em>✦</em> Vizuálna identita <em>✦</em> Propagačné materiály <em>✦</em> Starostlivosť o web <em>✦</em></div>
+    <div class="ticker-item">Tvorba webu <em>✦</em> Vizuálna identita <em>✦</em> Propagačné materiály <em>✦</em> Starostlivosť o web <em>✦</em></div>
+  </div>
+</div>
+
+<section id="services">
+  <div class="services-header">
+    <div><div class="lbl r">Čo robíme</div><h2 class="r r1">Čo pre vás<br>vieme urobiť</h2></div>
+    <p class="r r2">Každý projekt je iný. Či potrebujete web, logo alebo letáky — prispôsobíme sa presne tomu, čo vaša firma potrebuje.</p>
+  </div>
+  <div class="services-list">
+    <div class="svc r"><div class="svc-fill"></div><span class="svc-num">01</span><span class="svc-name">Tvorba webu</span><div class="svc-tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">Webflow</span></div></div>
+    <div class="svc r r1"><div class="svc-fill"></div><span class="svc-num">02</span><span class="svc-name">Vizuálna identita</span><div class="svc-tags"><span class="tag">Logo</span><span class="tag">Branding</span><span class="tag">Systém</span></div></div>
+    <div class="svc r r2"><div class="svc-fill"></div><span class="svc-num">03</span><span class="svc-name">Propagačné materiály</span><div class="svc-tags"><span class="tag">Plagáty</span><span class="tag">Vizitky</span><span class="tag">Letáky</span></div></div>
+    <div class="svc r r3"><div class="svc-fill"></div><span class="svc-num">04</span><span class="svc-name">Starostlivosť o web</span><div class="svc-tags"><span class="tag">Údržba</span><span class="tag">Optimalizácia</span></div></div>
+  </div>
+</section>
+
+<section id="portfolio">
+  <div class="works-header r"><div><div class="lbl">Naše práce</div><h2>Projekty, na ktoré<br>sme hrdí</h2></div></div>
+  <div class="works-grid r r1">
+    <div class="work"><div class="work-glow"></div><div class="work-num">001</div><div class="work-visual wv1"><svg width="140" height="100" viewBox="0 0 140 100" fill="none"><circle cx="70" cy="50" r="40" stroke="#4a8fff" stroke-width=".7"/><circle cx="70" cy="50" r="22" stroke="#4a8fff" stroke-width=".7"/><line x1="30" y1="50" x2="110" y2="50" stroke="#4a8fff" stroke-width=".7"/><line x1="70" y1="10" x2="70" y2="90" stroke="#4a8fff" stroke-width=".7"/></svg></div><div class="work-cat">Web · Dashboard</div><div class="work-title">AnalyticsFlow</div><div class="work-arrow">↗</div></div>
+    <div class="work"><div class="work-glow"></div><div class="work-num">002</div><div class="work-visual wv2"><svg width="140" height="100" viewBox="0 0 140 100" fill="none"><rect x="22" y="16" width="96" height="68" rx="4" stroke="#9b6fff" stroke-width=".7"/><rect x="36" y="28" width="68" height="44" rx="2" stroke="#9b6fff" stroke-width=".7"/><line x1="46" y1="48" x2="94" y2="48" stroke="#9b6fff" stroke-width=".7"/><line x1="46" y1="58" x2="74" y2="58" stroke="#9b6fff" stroke-width=".7"/></svg></div><div class="work-cat">Identita · Fashion</div><div class="work-title">Lumière Boutique</div><div class="work-arrow">↗</div></div>
+    <div class="work"><div class="work-glow"></div><div class="work-num">003</div><div class="work-visual wv3"><svg width="140" height="100" viewBox="0 0 140 100" fill="none"><polygon points="70,10 118,38 118,62 70,90 22,62 22,38" stroke="#00e5c8" stroke-width=".7" fill="none"/><polygon points="70,28 100,44 100,56 70,72 40,56 40,44" stroke="#00e5c8" stroke-width=".7" fill="none"/><circle cx="70" cy="50" r="7" stroke="#00e5c8" stroke-width=".7" fill="none"/></svg></div><div class="work-cat">Web · Fintech</div><div class="work-title">GreenPay Wallet</div><div class="work-arrow">↗</div></div>
+    <div class="work"><div class="work-glow"></div><div class="work-num">004</div><div class="work-visual wv4"><svg width="140" height="100" viewBox="0 0 140 100" fill="none"><rect x="12" y="26" width="50" height="34" rx="2" stroke="#f5a623" stroke-width=".7"/><rect x="76" y="16" width="52" height="44" rx="2" stroke="#f5a623" stroke-width=".7"/><rect x="12" y="70" width="116" height="16" rx="2" stroke="#f5a623" stroke-width=".7"/></svg></div><div class="work-cat">Web · Real Estate</div><div class="work-title">Aurum Properties</div><div class="work-arrow">↗</div></div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="about-left">
+    <div class="lbl r">O štúdiu</div>
+    <h2 class="r r1">Robíme menej.<br>Ale poctivo.</h2>
+    <p class="r r2">Neberieme desiatky projektov naraz. Každému klientovi venujeme čas — či ide o web, vizuálnu identitu alebo propagačné materiály.</p>
+    <p class="r r3">Hľadáte kreatívneho partnera, ktorý váš projekt pochopí a odovzdá načas? <em>Sme to my.</em></p>
+    <div class="stack-row r r4"><span class="stack-tag">HTML</span><span class="stack-tag">CSS</span><span class="stack-tag">Figma</span><span class="stack-tag">Illustrator</span><span class="stack-tag">Photoshop</span><span class="stack-tag">InDesign</span></div>
+  </div>
+  <div class="r r2" style="display:flex;flex-direction:column;gap:1.5rem">
+    <p style="font-family:var(--fm);font-size:.92rem;color:var(--muted2);line-height:2;font-weight:300">Sme kreatívne štúdio pre malých a stredných podnikateľov. <em style="color:var(--text);font-style:normal">Grafický dizajn, weby a propagačné materiály</em> — všetko na jednom mieste.</p>
+    <p style="font-family:var(--fm);font-size:.92rem;color:var(--muted2);line-height:2;font-weight:300">Veríme, že aj malá firma si zaslúži profesionálny vizuál. Preto pracujeme rýchlo, transparentne a bez zbytočných komplikácií.</p>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-left">
+      <div class="lbl r">Kontakt</div>
+      <h2 class="r r1">Máte projekt?<br>Ozvite sa.</h2>
+      <p class="r r2">Napíšte nám zhruba čo potrebujete. Odpovieme do 24 hodín a prvá konzultácia je zadarmo.</p>
+      <div class="contact-detail r r3">
+        <span>E-mail</span><a href="mailto:hello@arteo.sk">hello@arteo.sk</a>
+        <span style="margin-top:.5rem">Sídlo</span><a href="#">Nitra, Slovensko</a>
+      </div>
+    </div>
+    <div class="contact-glass r r2">
+      <div class="contact-glass-sheen"></div>
+      <form class="cf-form" action="https://formspree.io/f/mpqoeljo" method="POST" id="contactForm">
+        <div class="cf-row">
+          <div class="cf-field"><label>Meno</label><input type="text" name="name" placeholder="Ján Novák" required></div>
+          <div class="cf-field"><label>E-mail</label><input type="email" name="email" placeholder="jan@firma.sk" required></div>
+        </div>
+        <div class="cf-field">
+          <label>Typ projektu</label>
+          <div class="cf-select-wrap">
+            <select class="cf-select-native" name="typ_projektu">
+              <option>Firemná webstránka</option>
+              <option>Vizuálna identita</option>
+              <option>Propagačné materiály</option>
+              <option>Iné</option>
+            </select>
+            <span class="cf-select-arrow">▾</span>
+          </div>
+        </div>
+        <div class="cf-field"><label>Správa</label><textarea name="message" placeholder="Popíšte váš projekt..." required></textarea></div>
+        <button type="submit" class="submit-btn" id="submitBtn">Odoslať správu →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="#" class="footer-logo">
+    <svg width="18" height="18" viewBox="0 0 80 80"><use href="#arteo-logo"/></svg>
+    <span class="footer-logo-text">Art<em>eo</em></span>
+  </a>
+  <p>© 2026 Arteo Studio</p>
+  <div class="footer-links"><a href="#services">Služby</a><a href="#portfolio">Práce</a><a href="#contact">Kontakt</a></div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
