@@ -19,11 +19,13 @@ document.querySelectorAll('.r').forEach(el=>obs.observe(el))
   let W,H,mouse={x:.5,y:.5},tmouse={x:.5,y:.5},t=0
 
   function resize(){
-    W=canvas.width=window.innerWidth
-    H=canvas.height=window.innerHeight
+    W=canvas.width=canvas.offsetWidth
+    H=canvas.height=canvas.offsetHeight
     gl.viewport(0,0,W,H)
   }
-  resize(); window.addEventListener('resize',resize)
+  resize()
+  window.addEventListener('resize',resize)
+  window.addEventListener('orientationchange',()=>setTimeout(resize,200))
 
   document.addEventListener('mousemove',e=>{
     tmouse.x=e.clientX/window.innerWidth
@@ -81,8 +83,8 @@ document.querySelectorAll('.r').forEach(el=>obs.observe(el))
       float cglow=exp(-dot(d,d)*6.)*0.12;
       col+=vec3(0.,cglow*1.4,cglow*1.3);
 
-      // vignette
-      float vig=1.-dot(uv-.5,uv-.5)*1.4;
+      // vignette — len bočné hrany, nie vrch/spodok
+      float vig=1.-pow(abs(uv.x-.5)*2.,2.)*.5;
       col*=clamp(vig,0.,1.);
 
       gl_FragColor=vec4(col,1.);

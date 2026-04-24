@@ -49,7 +49,7 @@ nav{
 
 /* HERO */
 #hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:calc(5rem + env(safe-area-inset-top)) 3rem 3rem;position:relative;z-index:1;background:transparent}
-canvas#heroCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:1;z-index:0}
+canvas#heroCanvas{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;opacity:1;z-index:0}
 .hero-orbs{display:none}
 .hero-eyebrow{font-family:var(--fm);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted2);margin-bottom:2rem;display:flex;align-items:center;gap:.8rem;position:relative;z-index:2;opacity:0;animation:fadeup .9s .3s cubic-bezier(.22,1,.36,1) forwards}
 .hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--accent);flex-shrink:0}
