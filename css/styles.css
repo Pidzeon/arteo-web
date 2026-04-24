@@ -16,6 +16,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff);overflow-x:hid
 /* CURSOR */
 #cur{position:fixed;width:8px;height:8px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);mix-blend-mode:difference}
 #cur-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(0,229,200,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .35s cubic-bezier(.22,1,.36,1),height .35s cubic-bezier(.22,1,.36,1);mix-blend-mode:difference}
+@media(hover:none) and (pointer:coarse){#cur,#cur-ring{display:none}}
 
 /* LOGO SVG */
 .logo-svg{display:inline-block;vertical-align:middle}
