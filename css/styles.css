@@ -23,7 +23,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff);overflow-x:hid
 /* NAV */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
-  height:56px;padding:0 3rem;
+  height:calc(56px + env(safe-area-inset-top));
+  padding:env(safe-area-inset-top) 3rem 0;
   display:flex;align-items:center;justify-content:space-between;gap:2rem;
 }
 .nav-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none}
@@ -46,8 +47,8 @@ nav{
 .nav-cta:hover{background:linear-gradient(135deg,rgba(0,229,200,0.28),rgba(0,229,200,0.12));box-shadow:inset 0 1px 0 rgba(0,229,200,0.28),0 4px 24px rgba(0,229,200,0.12)}
 
 /* HERO */
-#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:7rem 3rem 3rem;position:relative;overflow:hidden}
-canvas#heroCanvas{position:absolute;inset:0;pointer-events:none;opacity:1}
+#hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:calc(7rem + env(safe-area-inset-top)) 3rem 3rem;position:relative;overflow:hidden}
+canvas#heroCanvas{position:absolute;top:calc(-1 * env(safe-area-inset-top));left:0;right:0;bottom:0;pointer-events:none;opacity:1}
 .hero-orbs{display:none}
 .hero-eyebrow{font-family:var(--fm);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted2);margin-bottom:2rem;display:flex;align-items:center;gap:.8rem;position:relative;z-index:2;opacity:0;animation:fadeup .9s .3s cubic-bezier(.22,1,.36,1) forwards}
 .hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--accent);flex-shrink:0}
