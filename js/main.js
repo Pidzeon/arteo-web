@@ -14,20 +14,18 @@ document.querySelectorAll('.r').forEach(el=>obs.observe(el))
   const gl=canvas.getContext('webgl')
   if(!gl) return
 
-  const hero=document.getElementById('hero')
   let W,H,mouse={x:.5,y:.5},tmouse={x:.5,y:.5},t=0
 
   function resize(){
-    W=canvas.width=hero.offsetWidth
-    H=canvas.height=hero.offsetHeight
+    W=canvas.width=window.innerWidth
+    H=canvas.height=window.innerHeight
     gl.viewport(0,0,W,H)
   }
   resize(); window.addEventListener('resize',resize)
 
-  hero.addEventListener('mousemove',e=>{
-    const r=hero.getBoundingClientRect()
-    tmouse.x=(e.clientX-r.left)/r.width
-    tmouse.y=1-(e.clientY-r.top)/r.height
+  document.addEventListener('mousemove',e=>{
+    tmouse.x=e.clientX/window.innerWidth
+    tmouse.y=1-(e.clientY/window.innerHeight)
   })
 
   const vert=`
