@@ -1,8 +1,10 @@
-// Cursor
-const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring')
-let cx=innerWidth/2,cy=innerHeight/2,rx=cx,ry=cy
-document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY})
-;(function animCur(){rx+=(cx-rx)*.16;ry+=(cy-ry)*.16;cur.style.left=cx+'px';cur.style.top=cy+'px';ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animCur)})()
+// Cursor — len na zariadeniach s myšou
+if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+  const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring')
+  let cx=innerWidth/2,cy=innerHeight/2,rx=cx,ry=cy
+  document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY})
+  ;(function animCur(){rx+=(cx-rx)*.16;ry+=(cy-ry)*.16;cur.style.left=cx+'px';cur.style.top=cy+'px';ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animCur)})()
+}
 
 // Scroll reveal
 const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('on');obs.unobserve(x.target)}})},{threshold:.1})
