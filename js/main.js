@@ -1,10 +1,8 @@
-// Cursor — len na zariadeniach s myšou
-if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
-  const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring')
-  let cx=innerWidth/2,cy=innerHeight/2,rx=cx,ry=cy
-  document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY})
-  ;(function animCur(){rx+=(cx-rx)*.16;ry+=(cy-ry)*.16;cur.style.left=cx+'px';cur.style.top=cy+'px';ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animCur)})()
-}
+// Cursor
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring')
+let cx=innerWidth/2,cy=innerHeight/2,rx=cx,ry=cy
+document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY})
+;(function animCur(){rx+=(cx-rx)*.16;ry+=(cy-ry)*.16;cur.style.left=cx+'px';cur.style.top=cy+'px';ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animCur)})()
 
 // Scroll reveal
 const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('on');obs.unobserve(x.target)}})},{threshold:.1})
@@ -16,20 +14,20 @@ document.querySelectorAll('.r').forEach(el=>obs.observe(el))
   const gl=canvas.getContext('webgl')
   if(!gl) return
 
+  const hero=document.getElementById('hero')
   let W,H,mouse={x:.5,y:.5},tmouse={x:.5,y:.5},t=0
 
   function resize(){
-    W=canvas.width=canvas.offsetWidth
-    H=canvas.height=canvas.offsetHeight
+    W=canvas.width=hero.offsetWidth
+    H=canvas.height=hero.offsetHeight
     gl.viewport(0,0,W,H)
   }
-  resize()
-  window.addEventListener('resize',resize)
-  window.addEventListener('orientationchange',()=>setTimeout(resize,200))
+  resize(); window.addEventListener('resize',resize)
 
-  document.addEventListener('mousemove',e=>{
-    tmouse.x=e.clientX/window.innerWidth
-    tmouse.y=1-(e.clientY/window.innerHeight)
+  hero.addEventListener('mousemove',e=>{
+    const r=hero.getBoundingClientRect()
+    tmouse.x=(e.clientX-r.left)/r.width
+    tmouse.y=1-(e.clientY-r.top)/r.height
   })
 
   const vert=`
@@ -83,8 +81,8 @@ document.querySelectorAll('.r').forEach(el=>obs.observe(el))
       float cglow=exp(-dot(d,d)*6.)*0.12;
       col+=vec3(0.,cglow*1.4,cglow*1.3);
 
-      // vignette — len bočné hrany, nie vrch/spodok
-      float vig=1.-pow(abs(uv.x-.5)*2.,2.)*.5;
+      // vignette
+      float vig=1.-dot(uv-.5,uv-.5)*1.4;
       col*=clamp(vig,0.,1.);
 
       gl_FragColor=vec4(col,1.);
