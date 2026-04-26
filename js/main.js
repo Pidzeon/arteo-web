@@ -175,8 +175,8 @@ document.querySelectorAll('.nav-links a').forEach(el=>{
       const r=pill.getBoundingClientRect()
       const x=(e.clientX-r.left)/r.width
       const y=(e.clientY-r.top)/r.height
-      const rx=(y-.5)*4
-      const ry=(x-.5)*-4
+      const rx=(y-.5)*8
+      const ry=(x-.5)*-8
       pill.style.transform=`perspective(400px) rotateX(${rx}deg) rotateY(${ry}deg)`
     })
   })
