@@ -176,8 +176,8 @@ document.querySelectorAll('.nav-links a').forEach(el=>{
       const r=card.getBoundingClientRect()
       const x=(e.clientX-r.left)/r.width
       const y=(e.clientY-r.top)/r.height
-      const rx=(y-.5)*16
-      const ry=(x-.5)*-16
+      const rx=(y-.5)*8
+      const ry=(x-.5)*-8
       card.style.transform=`perspective(600px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.02)`
       card.style.boxShadow=`inset 0 1px 0 rgba(255,255,255,0.18),0 24px 60px rgba(0,0,0,0.45),0 0 0 1px rgba(0,229,200,0.06)`
       sheen.style.setProperty('--sx',(x*100).toFixed(1)+'%')
