@@ -167,26 +167,36 @@ document.querySelectorAll('.nav-links a').forEach(el=>{
 ;(()=>{
   const card=document.querySelector('.contact-glass')
   const sheen=card.querySelector('.contact-glass-sheen')
+  // Žiadna transition na transform — okamžitá reakcia
+  card.style.transition='box-shadow .25s'
+  let raf=null
   card.addEventListener('mousemove',e=>{
-    const r=card.getBoundingClientRect()
-    const x=(e.clientX-r.left)/r.width
-    const y=(e.clientY-r.top)/r.height
-    const rx=(y-.5)*10
-    const ry=(x-.5)*-10
-    card.style.transform=`perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.015)`
-    card.style.boxShadow=`inset 0 1px 0 rgba(255,255,255,0.18),0 24px 60px rgba(0,0,0,0.45),0 0 0 1px rgba(0,229,200,0.06)`
-    sheen.style.setProperty('--sx',(x*100).toFixed(1)+'%')
-    sheen.style.setProperty('--sy',(y*100).toFixed(1)+'%')
-    sheen.style.opacity='1'
-    // specular highlight
-    const gx=x*100, gy=y*100
-    card.style.background=`linear-gradient(145deg,rgba(255,255,255,0.065),rgba(255,255,255,0.012)),radial-gradient(circle at ${gx}% ${gy}%,rgba(255,255,255,0.06) 0%,transparent 55%)`
+    if(raf) cancelAnimationFrame(raf)
+    raf=requestAnimationFrame(()=>{
+      const r=card.getBoundingClientRect()
+      const x=(e.clientX-r.left)/r.width
+      const y=(e.clientY-r.top)/r.height
+      const rx=(y-.5)*16
+      const ry=(x-.5)*-16
+      card.style.transform=`perspective(600px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.02)`
+      card.style.boxShadow=`inset 0 1px 0 rgba(255,255,255,0.18),0 24px 60px rgba(0,0,0,0.45),0 0 0 1px rgba(0,229,200,0.06)`
+      sheen.style.setProperty('--sx',(x*100).toFixed(1)+'%')
+      sheen.style.setProperty('--sy',(y*100).toFixed(1)+'%')
+      sheen.style.opacity='1'
+      const gx=x*100,gy=y*100
+      card.style.background=`linear-gradient(145deg,rgba(255,255,255,0.065),rgba(255,255,255,0.012)),radial-gradient(circle at ${gx}% ${gy}%,rgba(255,255,255,0.06) 0%,transparent 55%)`
+    })
   })
   card.addEventListener('mouseleave',()=>{
-    card.style.transform='perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)'
+    if(raf) cancelAnimationFrame(raf)
+    card.style.transition='box-shadow .25s, transform .4s cubic-bezier(.22,1,.36,1)'
+    card.style.transform='perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)'
     card.style.boxShadow='inset 0 1px 0 rgba(255,255,255,0.14),0 8px 40px rgba(0,0,0,0.3)'
     card.style.background=''
     sheen.style.opacity='0'
+    card.addEventListener('transitionend',()=>{
+      card.style.transition='box-shadow .25s'
+    },{once:true})
   })
 })()
 document.getElementById('submitBtn').addEventListener('click',()=>{const b=document.getElementById('submitBtn');b.textContent='Odoslane \u2713';b.style.opacity='.75';setTimeout(()=>{b.textContent='Odosla\u0165 spr\u00e1vu \u2192';b.style.opacity='1'},3000)})
