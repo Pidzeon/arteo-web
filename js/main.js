@@ -163,6 +163,33 @@ document.querySelectorAll('.nav-links a').forEach(el=>{
   bindLens(el,lens,true)
 })()
 
+// Nav links pill tilt
+;(()=>{
+  const pill=document.querySelector('.nav-links')
+  if(!pill) return
+  pill.style.transition='box-shadow .25s'
+  let raf=null
+  pill.addEventListener('mousemove',e=>{
+    if(raf) cancelAnimationFrame(raf)
+    raf=requestAnimationFrame(()=>{
+      const r=pill.getBoundingClientRect()
+      const x=(e.clientX-r.left)/r.width
+      const y=(e.clientY-r.top)/r.height
+      const rx=(y-.5)*4
+      const ry=(x-.5)*-4
+      pill.style.transform=`perspective(400px) rotateX(${rx}deg) rotateY(${ry}deg)`
+    })
+  })
+  pill.addEventListener('mouseleave',()=>{
+    if(raf) cancelAnimationFrame(raf)
+    pill.style.transition='box-shadow .25s, transform .4s cubic-bezier(.22,1,.36,1)'
+    pill.style.transform='perspective(400px) rotateX(0deg) rotateY(0deg)'
+    pill.addEventListener('transitionend',()=>{
+      pill.style.transition='box-shadow .25s'
+    },{once:true})
+  })
+})()
+
 // Contact glass tilt + sheen
 ;(()=>{
   const card=document.querySelector('.contact-glass')
