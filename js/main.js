@@ -196,7 +196,7 @@ document.querySelectorAll('.nav-links a').forEach(el=>{
   const sheen=card.querySelector('.contact-glass-sheen')
   card.style.transition='box-shadow .25s'
   let tx=0,ty=0,cx=0,cy=0,mx=0.5,my=0.5,raf=null,inside=false
-  const ease=0.08 // 0=žiadne sledovanie, 1=okamžité
+  const ease=0.04 // 0=žiadne sledovanie, 1=okamžité
 
   function loop(){
     cx+=(tx-cx)*ease
