@@ -194,29 +194,41 @@ document.querySelectorAll('.nav-links a').forEach(el=>{
 ;(()=>{
   const card=document.querySelector('.contact-glass')
   const sheen=card.querySelector('.contact-glass-sheen')
-  // Žiadna transition na transform — okamžitá reakcia
   card.style.transition='box-shadow .25s'
-  let raf=null
+  let tx=0,ty=0,cx=0,cy=0,mx=0.5,my=0.5,raf=null,inside=false
+  const ease=0.08 // 0=žiadne sledovanie, 1=okamžité
+
+  function loop(){
+    cx+=(tx-cx)*ease
+    cy+=(ty-cy)*ease
+    const rx=cy*8
+    const ry=cx*-8
+    card.style.transform=`perspective(600px) rotateX(${rx.toFixed(3)}deg) rotateY(${ry.toFixed(3)}deg) scale(1.02)`
+    sheen.style.setProperty('--sx',((mx*100)).toFixed(1)+'%')
+    sheen.style.setProperty('--sy',((my*100)).toFixed(1)+'%')
+    const gx=mx*100,gy=my*100
+    card.style.background=`linear-gradient(145deg,rgba(255,255,255,0.065),rgba(255,255,255,0.012)),radial-gradient(circle at ${gx}% ${gy}%,rgba(255,255,255,0.06) 0%,transparent 55%)`
+    if(inside) raf=requestAnimationFrame(loop)
+  }
+
+  card.addEventListener('mouseenter',()=>{
+    inside=true
+    card.style.boxShadow='inset 0 1px 0 rgba(255,255,255,0.18),0 24px 60px rgba(0,0,0,0.45),0 0 0 1px rgba(0,229,200,0.06)'
+    sheen.style.opacity='1'
+    raf=requestAnimationFrame(loop)
+  })
   card.addEventListener('mousemove',e=>{
-    if(raf) cancelAnimationFrame(raf)
-    raf=requestAnimationFrame(()=>{
-      const r=card.getBoundingClientRect()
-      const x=(e.clientX-r.left)/r.width
-      const y=(e.clientY-r.top)/r.height
-      const rx=(y-.5)*8
-      const ry=(x-.5)*-8
-      card.style.transform=`perspective(600px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.02)`
-      card.style.boxShadow=`inset 0 1px 0 rgba(255,255,255,0.18),0 24px 60px rgba(0,0,0,0.45),0 0 0 1px rgba(0,229,200,0.06)`
-      sheen.style.setProperty('--sx',(x*100).toFixed(1)+'%')
-      sheen.style.setProperty('--sy',(y*100).toFixed(1)+'%')
-      sheen.style.opacity='1'
-      const gx=x*100,gy=y*100
-      card.style.background=`linear-gradient(145deg,rgba(255,255,255,0.065),rgba(255,255,255,0.012)),radial-gradient(circle at ${gx}% ${gy}%,rgba(255,255,255,0.06) 0%,transparent 55%)`
-    })
+    const r=card.getBoundingClientRect()
+    mx=(e.clientX-r.left)/r.width
+    my=(e.clientY-r.top)/r.height
+    tx=mx-.5
+    ty=my-.5
   })
   card.addEventListener('mouseleave',()=>{
-    if(raf) cancelAnimationFrame(raf)
-    card.style.transition='box-shadow .25s, transform .4s cubic-bezier(.22,1,.36,1)'
+    inside=false
+    cancelAnimationFrame(raf)
+    tx=0;ty=0;cx=0;cy=0
+    card.style.transition='box-shadow .25s, transform .5s cubic-bezier(.22,1,.36,1)'
     card.style.transform='perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)'
     card.style.boxShadow='inset 0 1px 0 rgba(255,255,255,0.14),0 8px 40px rgba(0,0,0,0.3)'
     card.style.background=''
