@@ -244,15 +244,20 @@ document.querySelectorAll('.nav-links a').forEach(el=>{
     tomax:['images/mockup1.jpg','images/mockup2.jpg']
   }
   const lb=document.getElementById('lightbox')
-  const img=document.getElementById('lb-img')
-  const counter=document.getElementById('lb-counter')
-  let current=0,photos=[]
+  const wrap=document.getElementById('lb-img-wrap')
 
-  function open(gallery,index){
-    photos=galleries[gallery]||[]
+  function open(gallery){
+    const photos=galleries[gallery]||[]
     if(!photos.length) return
-    current=index||0
-    show()
+    wrap.innerHTML=''
+    photos.forEach(src=>{
+      const img=document.createElement('img')
+      img.alt=''
+      img.onload=()=>img.classList.add('lb-loaded')
+      img.src=src
+      wrap.appendChild(img)
+    })
+    lb.scrollTop=0
     lb.classList.add('open')
     lb.setAttribute('aria-hidden','false')
     document.body.style.overflow='hidden'
@@ -261,33 +266,17 @@ document.querySelectorAll('.nav-links a').forEach(el=>{
     lb.classList.remove('open')
     lb.setAttribute('aria-hidden','true')
     document.body.style.overflow=''
+    setTimeout(()=>{wrap.innerHTML=''},300)
   }
-  function show(){
-    img.style.opacity='0'
-    img.style.transform='scale(.95)'
-    setTimeout(()=>{
-      img.src=photos[current]
-      img.onload=()=>{img.style.opacity='1';img.style.transform='scale(1)'}
-      counter.textContent=(current+1)+' / '+photos.length
-      document.getElementById('lb-prev').style.display=photos.length<2?'none':'flex'
-      document.getElementById('lb-next').style.display=photos.length<2?'none':'flex'
-    },80)
-  }
-  function prev(){current=(current-1+photos.length)%photos.length;show()}
-  function next(){current=(current+1)%photos.length;show()}
 
   document.querySelectorAll('.work-has-gallery').forEach(el=>{
-    el.addEventListener('click',()=>open(el.dataset.gallery,0))
+    el.addEventListener('click',()=>open(el.dataset.gallery))
   })
   document.getElementById('lb-close').addEventListener('click',close)
-  document.getElementById('lb-prev').addEventListener('click',e=>{e.stopPropagation();prev()})
-  document.getElementById('lb-next').addEventListener('click',e=>{e.stopPropagation();next()})
-  lb.addEventListener('click',e=>{if(e.target===lb||e.target===document.getElementById('lb-img-wrap'))close()})
+  lb.addEventListener('click',e=>{if(e.target===lb)close()})
   document.addEventListener('keydown',e=>{
     if(!lb.classList.contains('open')) return
     if(e.key==='Escape') close()
-    if(e.key==='ArrowLeft') prev()
-    if(e.key==='ArrowRight') next()
   })
 })()
 
