@@ -238,4 +238,57 @@ document.querySelectorAll('.nav-links a').forEach(el=>{
     },{once:true})
   })
 })()
+// Lightbox galería
+;(()=>{
+  const galleries={
+    tomax:['images/tomax-mobile.jpg','images/tomax-desktop.jpg']
+  }
+  const lb=document.getElementById('lightbox')
+  const img=document.getElementById('lb-img')
+  const counter=document.getElementById('lb-counter')
+  let current=0,photos=[]
+
+  function open(gallery,index){
+    photos=galleries[gallery]||[]
+    if(!photos.length) return
+    current=index||0
+    show()
+    lb.classList.add('open')
+    lb.setAttribute('aria-hidden','false')
+    document.body.style.overflow='hidden'
+  }
+  function close(){
+    lb.classList.remove('open')
+    lb.setAttribute('aria-hidden','true')
+    document.body.style.overflow=''
+  }
+  function show(){
+    img.style.opacity='0'
+    img.style.transform='scale(.95)'
+    setTimeout(()=>{
+      img.src=photos[current]
+      img.onload=()=>{img.style.opacity='1';img.style.transform='scale(1)'}
+      counter.textContent=(current+1)+' / '+photos.length
+      document.getElementById('lb-prev').style.display=photos.length<2?'none':'flex'
+      document.getElementById('lb-next').style.display=photos.length<2?'none':'flex'
+    },80)
+  }
+  function prev(){current=(current-1+photos.length)%photos.length;show()}
+  function next(){current=(current+1)%photos.length;show()}
+
+  document.querySelectorAll('.work-has-gallery').forEach(el=>{
+    el.addEventListener('click',()=>open(el.dataset.gallery,0))
+  })
+  document.getElementById('lb-close').addEventListener('click',close)
+  document.getElementById('lb-prev').addEventListener('click',e=>{e.stopPropagation();prev()})
+  document.getElementById('lb-next').addEventListener('click',e=>{e.stopPropagation();next()})
+  lb.addEventListener('click',e=>{if(e.target===lb||e.target===document.getElementById('lb-img-wrap'))close()})
+  document.addEventListener('keydown',e=>{
+    if(!lb.classList.contains('open')) return
+    if(e.key==='Escape') close()
+    if(e.key==='ArrowLeft') prev()
+    if(e.key==='ArrowRight') next()
+  })
+})()
+
 document.getElementById('submitBtn').addEventListener('click',()=>{const b=document.getElementById('submitBtn');b.textContent='Odoslane \u2713';b.style.opacity='.75';setTimeout(()=>{b.textContent='Odosla\u0165 spr\u00e1vu \u2192';b.style.opacity='1'},3000)})
