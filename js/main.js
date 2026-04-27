@@ -241,7 +241,7 @@ document.querySelectorAll('.nav-links a').forEach(el=>{
 // Lightbox galería
 ;(()=>{
   const galleries={
-    tomax:['images/tomax-mobile.jpg','images/tomax-desktop.jpg']
+    tomax:['images/mockup1.jpg','images/mockup2.jpg']
   }
   const lb=document.getElementById('lightbox')
   const img=document.getElementById('lb-img')
