@@ -242,7 +242,8 @@ document.querySelectorAll('.nav-links a').forEach(el=>{
 ;(()=>{
   const galleries={
     tomax:['images/mockup1.jpg','images/mockup2.jpg'],
-    propmat:['images/businesscard_1.jpg','images/businesscard_2.jpg','images/kebab1.jpg','images/plagát2.png','images/zlavomat.jpg']
+    propmat:['images/businesscard_1.jpg','images/businesscard_2.jpg','images/kebab1.jpg','images/plagát2.png','images/zlavomat.jpg'],
+    logo:['images/solidoart_logo.jpg','images/solidoart_logo2.jpg','images/cofflower_logo.jpg','images/cofflower_mockup2.jpg','images/87_logo.png','images/87_logo2.jpg']
   }
   const lb=document.getElementById('lightbox')
   const wrap=document.getElementById('lb-img-wrap')
