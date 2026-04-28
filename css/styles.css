@@ -99,22 +99,23 @@ section{padding:7rem 3rem}
 #portfolio{background:var(--bg2)}
 .works-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem}
 .works-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
-.work{background:var(--bg2);padding:2.5rem;cursor:pointer;transition:background .3s;position:relative;overflow:hidden}
-.work-glow{position:absolute;width:260px;height:260px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity .4s;background:radial-gradient(circle,rgba(0,229,200,0.06),transparent 70%);transform:translate(-50%,-50%)}
+.work{aspect-ratio:2/1;background:var(--bg2);padding:1.5rem;cursor:pointer;transition:background .3s;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+.work::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.72) 0%,rgba(0,0,0,.15) 50%,transparent 80%);z-index:1;pointer-events:none}
+.work-glow{position:absolute;width:260px;height:260px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity .4s;background:radial-gradient(circle,rgba(0,229,200,0.08),transparent 70%);transform:translate(-50%,-50%);z-index:2}
 .work:hover .work-glow{opacity:1}
 .work:hover{background:#1f1f2a}
-.work-num{font-family:var(--fm);font-size:.6rem;color:var(--muted);letter-spacing:.1em;margin-bottom:2rem}
-.work-visual{aspect-ratio:2/1;border-radius:3px;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.work-num{font-family:var(--fm);font-size:.6rem;color:rgba(255,255,255,.5);letter-spacing:.1em;position:absolute;top:1.5rem;left:1.5rem;z-index:2}
+.work-visual{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;z-index:0;border-radius:0}
 .wv1{background:linear-gradient(135deg,#08101e,#0d1f3c)}
 .wv2{background:linear-gradient(135deg,#0f0a1a,#1a0d30)}
 .wv3{background:linear-gradient(135deg,#08140e,#0b2015)}
 .wv4{background:linear-gradient(135deg,#140f06,#221608)}
-.work-visual svg{transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .3s;opacity:.4;transform:scale(.88)}
-.work:hover .work-visual svg{opacity:.7;transform:scale(1)}
-.work-cat{font-family:var(--fm);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
-.work-title{font-size:1.3rem;font-weight:700;letter-spacing:-.02em;transition:color .25s}
+.work-visual svg{transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .3s;opacity:.5;transform:scale(.88)}
+.work:hover .work-visual svg{opacity:.8;transform:scale(1)}
+.work-cat{font-family:var(--fm);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;position:relative;z-index:2}
+.work-title{font-size:1.15rem;font-weight:700;letter-spacing:-.02em;transition:color .25s;position:relative;z-index:2;color:#fff}
 .work:hover .work-title{color:var(--accent)}
-.work-arrow{position:absolute;top:2.5rem;right:2.5rem;width:28px;height:28px;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--muted);opacity:0;transform:translate(4px,-4px);transition:all .3s}
+.work-arrow{position:absolute;top:1.5rem;right:1.5rem;width:28px;height:28px;border:1px solid rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:rgba(255,255,255,.6);opacity:0;transform:translate(4px,-4px);transition:all .3s;z-index:2}
 .work:hover .work-arrow{opacity:1;transform:translate(0,0);border-color:var(--accent);color:var(--accent)}
 
 /* ABOUT */
@@ -186,9 +187,9 @@ footer p{font-family:var(--fm);font-size:.6rem;color:var(--muted);letter-spacing
 .footer-links a:hover{color:var(--accent)}
 
 /* WORK PHOTO */
-.work-visual-photo{background:#111;padding:0}
-.work-visual-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .3s;opacity:.85}
-.work:hover .work-visual-photo img{opacity:1;transform:scale(1.04)}
+.work-visual-photo{background:#111}
+.work-visual-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;transition:transform .6s cubic-bezier(.22,1,.36,1);opacity:1}
+.work:hover .work-visual-photo img{transform:scale(1.05)}
 .work-has-gallery{cursor:pointer}
 
 /* LIGHTBOX */
