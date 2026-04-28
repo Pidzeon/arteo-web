@@ -243,7 +243,8 @@ document.querySelectorAll('.nav-links a').forEach(el=>{
   const galleries={
     tomax:['images/mockup1.jpg','images/mockup2.jpg'],
     propmat:['images/businesscard_1.jpg','images/businesscard_2.jpg','images/kebab1.jpg','images/plagát2.png','images/zlavomat.jpg'],
-    logo:['images/solidoart_logo.jpg','images/solidoart_logo2.jpg','images/cofflower_logo.jpg','images/cofflower_mockup2.jpg','images/87_logo.png','images/87_logo2.jpg']
+    logo:['images/solidoart_logo.jpg','images/solidoart_logo2.jpg','images/cofflower_logo.jpg','images/cofflower_mockup2.jpg','images/87_logo.png','images/87_logo2.jpg'],
+    vizident:['images/87_logo3.png','images/87_mikina.png','images/87_obal.png',['images/87_produkt1.png','images/87_produkt2.png','images/87_produkt3.png','images/87_produkt4.png']]
   }
   const lb=document.getElementById('lightbox')
   const wrap=document.getElementById('lb-img-wrap')
@@ -253,11 +254,24 @@ document.querySelectorAll('.nav-links a').forEach(el=>{
     if(!photos.length) return
     wrap.innerHTML=''
     photos.forEach(src=>{
-      const img=document.createElement('img')
-      img.alt=''
-      img.onload=()=>img.classList.add('lb-loaded')
-      img.src=src
-      wrap.appendChild(img)
+      if(Array.isArray(src)){
+        const row=document.createElement('div')
+        row.className='lb-row'
+        src.forEach(s=>{
+          const img=document.createElement('img')
+          img.alt=''
+          img.onload=()=>img.classList.add('lb-loaded')
+          img.src=s
+          row.appendChild(img)
+        })
+        wrap.appendChild(row)
+      } else {
+        const img=document.createElement('img')
+        img.alt=''
+        img.onload=()=>img.classList.add('lb-loaded')
+        img.src=src
+        wrap.appendChild(img)
+      }
     })
     lb.scrollTop=0
     lb.classList.add('open')
