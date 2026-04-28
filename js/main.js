@@ -241,7 +241,8 @@ document.querySelectorAll('.nav-links a').forEach(el=>{
 // Lightbox galería
 ;(()=>{
   const galleries={
-    tomax:['images/mockup1.jpg','images/mockup2.jpg']
+    tomax:['images/mockup1.jpg','images/mockup2.jpg'],
+    propmat:['images/businesscard_1.jpg','images/businesscard_2.jpg','images/kebab1.jpg','images/plagát2.png','images/zlavomat.jpg']
   }
   const lb=document.getElementById('lightbox')
   const wrap=document.getElementById('lb-img-wrap')
