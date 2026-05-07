@@ -2114,22 +2114,23 @@ textarea.field-input {
 
 <!-- ============ CONTACT OVERLAY ============ -->
 <!-- ============ GALLERY ============ -->
-<div class="gallery-backdrop" id="galleryBackdrop" aria-hidden="true"></div>
-<aside class="gallery-panel" id="galleryPanel" aria-hidden="true" aria-label="Galéria projektu">
-  <div class="gallery-header">
-    <div class="gallery-meta">
-      <span class="gallery-num" id="galleryNum"></span>
-      <div>
-        <h2 class="gallery-title" id="galleryTitle"></h2>
-        <p class="gallery-tags" id="galleryTags"></p>
+<div class="gallery-backdrop" id="galleryBackdrop" aria-hidden="true">
+  <aside class="gallery-panel" id="galleryPanel" aria-label="Galéria projektu">
+    <div class="gallery-header">
+      <div class="gallery-meta">
+        <span class="gallery-num" id="galleryNum"></span>
+        <div>
+          <h2 class="gallery-title" id="galleryTitle"></h2>
+          <p class="gallery-tags" id="galleryTags"></p>
+        </div>
       </div>
+      <button class="gallery-close" id="galleryClose" aria-label="Zatvoriť galériu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </div>
-    <button class="gallery-close" id="galleryClose" aria-label="Zatvoriť galériu">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-  </div>
-  <div class="gallery-photos" id="galleryPhotos"></div>
-</aside>
+    <div class="gallery-photos" id="galleryPhotos"></div>
+  </aside>
+</div>
 
 <div class="contact-overlay" id="contactOverlay" aria-label="Kontaktný formulár">
   <div class="overlay-inner" id="overlayInner" role="dialog" aria-modal="true">
