@@ -178,6 +178,124 @@ section { position: relative; }
 }
 .logo svg { width: 28px; height: 28px; }
 
+/* ----- Desktop nav links ----- */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.nav-link {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: 999px;
+  color: var(--text-muted-dark);
+  transition: color 0.2s ease, background 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.nav-link:hover {
+  color: var(--text-light);
+  background: rgba(255,255,255,0.05);
+}
+.nav-link--cta {
+  border: 1px solid var(--border-dark);
+  color: var(--text-light);
+  background: rgba(255,255,255,0.02);
+  margin-left: 8px;
+}
+.nav-link--cta:hover {
+  border-color: var(--accent-bright);
+  box-shadow: 0 0 24px rgba(0,200,120,0.35);
+  background: rgba(0,200,120,0.08);
+  color: var(--text-light);
+}
+.nav.is-light .nav-link { color: var(--text-muted-light); }
+.nav.is-light .nav-link:hover { color: var(--text-dark); background: rgba(11,10,20,0.05); }
+.nav.is-light .nav-link--cta { border-color: var(--border-light); color: var(--text-dark); }
+.nav.is-light .nav-link--cta:hover { border-color: var(--accent); box-shadow: 0 0 24px rgba(0,200,120,0.2); }
+
+/* ----- Mobile hamburger ----- */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  border-radius: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.nav-hamburger:hover { background: rgba(255,255,255,0.06); }
+.nav-hamburger span {
+  display: block;
+  height: 1.5px;
+  background: var(--text-light);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
+  transform-origin: center;
+}
+.nav-hamburger span:nth-child(2) { width: 70%; margin-left: auto; }
+.nav-hamburger.is-open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-hamburger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-hamburger.is-open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+.nav.is-light .nav-hamburger span { background: var(--text-dark); }
+
+/* ----- Mobile menu overlay ----- */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 99;
+  background: var(--bg-darker);
+  border-bottom: 1px solid var(--border-dark);
+  padding: 80px 20px 32px;
+  transform: translateY(-110%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mobile-menu.is-open {
+  transform: translateY(0);
+}
+.mobile-menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.mobile-link {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted-dark);
+  padding: 14px 16px;
+  border-radius: 10px;
+  transition: color 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+}
+.mobile-link:hover, .mobile-link:active { color: var(--text-light); background: rgba(255,255,255,0.05); }
+.mobile-link--cta {
+  color: var(--accent-bright);
+  margin-top: 8px;
+  border: 1px solid rgba(0,200,120,0.25);
+  justify-content: center;
+}
+.mobile-link--cta:hover { background: rgba(0,200,120,0.1); border-color: var(--accent-bright); color: var(--accent-bright); }
+
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .mobile-menu { display: block; }
+}
+
 /* ===========================================
    HERO
 =========================================== */
@@ -1365,9 +1483,6 @@ textarea.field-input {
 
 <!-- ============ NAV ============ -->
 <header class="nav" id="nav">
-  <a href="#menu" class="pill" data-magnetic>
-    <span>Menu</span>
-  </a>
   <a href="#top" class="logo" aria-label="Arteo">
     <svg viewBox="0 0 60 58" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -1384,11 +1499,32 @@ textarea.field-input {
     </svg>
     <span>Arteo</span>
   </a>
-  <a href="#kontakt" class="pill" data-magnetic>
-    <span class="pulse"></span>
-    <span>Kontakt</span>
-  </a>
+
+  <!-- Desktop nav links -->
+  <nav class="nav-links" aria-label="Hlavná navigácia">
+    <a href="#onas" class="nav-link">O nás</a>
+    <a href="#sluzby" class="nav-link">Služby</a>
+    <a href="#projekty" class="nav-link">Projekty</a>
+    <a href="#kontakt" class="nav-link nav-link--cta" onclick="event.preventDefault(); openContactOverlay()">
+      <span class="pulse"></span>Kontakt
+    </a>
+  </nav>
+
+  <!-- Mobile menu button -->
+  <button class="nav-hamburger" id="navHamburger" aria-label="Otvoriť menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<!-- Mobile menu overlay -->
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <nav class="mobile-menu-links">
+    <a href="#onas" class="mobile-link" data-close-menu>O nás</a>
+    <a href="#sluzby" class="mobile-link" data-close-menu>Služby</a>
+    <a href="#projekty" class="mobile-link" data-close-menu>Projekty</a>
+    <a href="#kontakt" class="mobile-link mobile-link--cta" data-close-menu onclick="openContactOverlay()">Kontakt</a>
+  </nav>
+</div>
 
 <!-- ============ HERO ============ -->
 <main id="top">
@@ -1428,7 +1564,7 @@ textarea.field-input {
 </section>
 
 <!-- ============ ABOUT ============ -->
-<section class="about section-dark" aria-label="O nás">
+<section class="about section-dark" id="onas" aria-label="O nás">
   <div class="shell">
     <div class="about-grid">
       <div class="about-photo reveal" aria-hidden="true"><img src="founder.jpg" alt="Zakladateľ Arteo" /></div>
@@ -1506,7 +1642,7 @@ textarea.field-input {
 </section>
 
 <!-- ============ CASES ============ -->
-<section class="cases section-dark" aria-label="Projekty">
+<section class="cases section-dark" id="projekty" aria-label="Projekty">
   <div class="shell">
     <div class="cases-head reveal">
       <span class="eyebrow"><span class="dot">●</span> Vybrané projekty <span class="slash">/</span> 2023 — 2026</span>
@@ -1603,9 +1739,9 @@ textarea.field-input {
       </div>
       <nav class="f-nav">
         <a href="#top">Domov</a>
+        <a href="#onas">O nás</a>
         <a href="#sluzby">Služby</a>
-        <a href="#">Projekty</a>
-        <a href="#">O nás</a>
+        <a href="#projekty">Projekty</a>
         <a href="#kontakt">Kontakt</a>
       </nav>
     </div>
@@ -1896,6 +2032,38 @@ textarea.field-input {
 </div>
 
 <script>
+/* ----- Mobile menu ----- */
+(function () {
+  const btn = document.getElementById('navHamburger');
+  const menu = document.getElementById('mobileMenu');
+
+  function openMenu() {
+    btn.classList.add('is-open');
+    btn.setAttribute('aria-expanded', 'true');
+    menu.classList.add('is-open');
+    menu.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    btn.classList.remove('is-open');
+    btn.setAttribute('aria-expanded', 'false');
+    menu.classList.remove('is-open');
+    menu.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  btn.addEventListener('click', function () {
+    if (menu.classList.contains('is-open')) closeMenu(); else openMenu();
+  });
+
+  menu.querySelectorAll('[data-close-menu]').forEach(function (link) {
+    link.addEventListener('click', function () {
+      closeMenu();
+    });
+  });
+})();
+
 function openContactOverlay() {
   const overlay = document.getElementById('contactOverlay');
   overlay.classList.add('is-open');
