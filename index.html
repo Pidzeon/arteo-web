@@ -1304,6 +1304,44 @@ textarea.field-input {
   .overlay-right { padding: 52px 28px 40px; }
   .overlay-success { padding: 48px 28px; }
 }
+
+/* ===========================================
+   MOBILE FIXES
+=========================================== */
+
+/* Tablet + mobile: about photo fluid, services desc no top padding */
+@media (max-width: 900px) {
+  .about-photo {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
+  }
+  .services-desc { padding-top: 0; }
+  .awards-head { margin-bottom: 60px; }
+}
+
+/* Mobile ≤ 700px */
+@media (max-width: 700px) {
+  .about    { padding: 72px 0 90px; }
+  .services { padding: 72px 0 72px; }
+  .cases    { padding: 72px 0 72px; }
+  .awards   { padding: 72px 0 0; }
+
+  .svc-row  { gap: 12px 16px; }
+  .svc-name { font-size: 20px; }
+
+  .cta-pill {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* Small phones ≤ 580px: single-column contact form rows */
+@media (max-width: 580px) {
+  .field-row { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
