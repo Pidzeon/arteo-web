@@ -769,6 +769,154 @@ section { position: relative; }
 }
 
 /* ===========================================
+   GALLERY
+=========================================== */
+
+/* Backdrop – blurs & darkens page content */
+.gallery-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(4, 8, 6, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.gallery-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Panel – slides in from right */
+.gallery-panel {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  z-index: 301;
+  width: min(580px, 94vw);
+  background: var(--bg-darker);
+  border-left: 1px solid var(--border-dark);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  transform: translateX(100%);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-dark) transparent;
+}
+.gallery-panel.is-open {
+  transform: translateX(0);
+}
+
+.gallery-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 28px 36px 24px;
+  background: var(--bg-darker);
+  border-bottom: 1px solid var(--border-dark);
+}
+.gallery-meta {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.gallery-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-top: 4px;
+  white-space: nowrap;
+}
+.gallery-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  margin: 0 0 4px;
+  line-height: 1.2;
+}
+.gallery-tags {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--text-muted-dark);
+  margin: 0;
+}
+.gallery-close {
+  flex-shrink: 0;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--border-dark);
+  color: var(--text-muted-dark);
+  background: none;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.gallery-close svg { width: 16px; height: 16px; }
+.gallery-close:hover {
+  border-color: rgba(255,255,255,0.3);
+  color: var(--text-light);
+  background: rgba(255,255,255,0.05);
+}
+
+/* Photos stacked vertically */
+.gallery-photos {
+  padding: 28px 36px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.gallery-photo {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-dark);
+  aspect-ratio: 4/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gallery-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Placeholder when no real image */
+.gallery-photo-placeholder {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted-dark);
+  opacity: 0.4;
+}
+
+/* Case rows become clickable */
+.case-row[data-gallery] {
+  cursor: pointer;
+}
+.case-row[data-gallery]:focus-visible {
+  outline: 2px solid var(--accent-bright);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+@media (max-width: 700px) {
+  .gallery-header { padding: 20px 20px 18px; }
+  .gallery-photos { padding: 20px 20px 48px; gap: 12px; }
+}
+
+/* ===========================================
    TESTIMONIAL
 =========================================== */
 .testimonial {
@@ -1663,28 +1811,28 @@ textarea.field-input {
     </div>
 
     <div class="case-list">
-      <article class="case-row reveal">
+      <article class="case-row reveal" data-gallery="tomax" role="button" tabindex="0" aria-label="Otvoriť galériu: TOMAX Pneuservis">
         <span class="case-num">/ 01</span>
         <h3 class="case-name">TOMAX Pneuservis</h3>
         <p class="case-desc">Pneuservis s motorsport DNA — od refresh loga po online rezervačný systém.</p>
         <span class="case-tags">Web design / Vývoj / Identita</span>
         <span class="case-loc">Žitavany, SK</span>
       </article>
-      <article class="case-row reveal">
+      <article class="case-row reveal" data-gallery="zlavomat" role="button" tabindex="0" aria-label="Otvoriť galériu: Propagačné materiály">
         <span class="case-num">/ 02</span>
         <h3 class="case-name">Propagačné materiály</h3>
         <p class="case-desc">Print kampaň pre Zľavomat — letáky, banery a propagačné materiály s konzistentnou vizuálnou linkou.</p>
         <span class="case-tags">Tlač / Propagácia</span>
         <span class="case-loc">Slovensko</span>
       </article>
-      <article class="case-row reveal">
+      <article class="case-row reveal" data-gallery="logo" role="button" tabindex="0" aria-label="Otvoriť galériu: Logo dizajn">
         <span class="case-num">/ 03</span>
         <h3 class="case-name">Logo dizajn</h3>
         <p class="case-desc">Komplexný brand identity projekt — logo, vizitky a brand manuál pre rastúci biznis.</p>
         <span class="case-tags">Identita / Logo</span>
         <span class="case-loc">Nitra, SK</span>
       </article>
-      <article class="case-row reveal">
+      <article class="case-row reveal" data-gallery="branding" role="button" tabindex="0" aria-label="Otvoriť galériu: Vizuálna identita">
         <span class="case-num">/ 04</span>
         <h3 class="case-name">Vizuálna identita</h3>
         <p class="case-desc">Full brand systém od A po Z — farebná paleta, typografia, gridy a aplikácie značky.</p>
@@ -1971,6 +2119,24 @@ textarea.field-input {
 </script>
 
 <!-- ============ CONTACT OVERLAY ============ -->
+<!-- ============ GALLERY ============ -->
+<div class="gallery-backdrop" id="galleryBackdrop" aria-hidden="true"></div>
+<aside class="gallery-panel" id="galleryPanel" aria-hidden="true" aria-label="Galéria projektu">
+  <div class="gallery-header">
+    <div class="gallery-meta">
+      <span class="gallery-num" id="galleryNum"></span>
+      <div>
+        <h2 class="gallery-title" id="galleryTitle"></h2>
+        <p class="gallery-tags" id="galleryTags"></p>
+      </div>
+    </div>
+    <button class="gallery-close" id="galleryClose" aria-label="Zatvoriť galériu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="gallery-photos" id="galleryPhotos"></div>
+</aside>
+
 <div class="contact-overlay" id="contactOverlay" aria-label="Kontaktný formulár">
   <div class="overlay-inner" id="overlayInner" role="dialog" aria-modal="true">
     <button class="overlay-close" onclick="closeContactOverlay()" aria-label="Zavrieť">
@@ -2043,6 +2209,115 @@ textarea.field-input {
 </div>
 
 <script>
+/* ----- Gallery ----- */
+(function () {
+  const PROJECTS = {
+    tomax: {
+      num: '/ 01',
+      name: 'TOMAX Pneuservis',
+      tags: 'Web design / Vývoj / Identita',
+      images: [
+        { src: 'gallery/tomax-1.jpg', alt: 'TOMAX – web dizajn' },
+        { src: 'gallery/tomax-2.jpg', alt: 'TOMAX – logo a identita' },
+        { src: 'gallery/tomax-3.jpg', alt: 'TOMAX – rezervačný systém' },
+        { src: 'gallery/tomax-4.jpg', alt: 'TOMAX – mobilná verzia' },
+      ]
+    },
+    zlavomat: {
+      num: '/ 02',
+      name: 'Propagačné materiály',
+      tags: 'Tlač / Propagácia',
+      images: [
+        { src: 'gallery/zlavomat-1.jpg', alt: 'Zľavomat – letáky' },
+        { src: 'gallery/zlavomat-2.jpg', alt: 'Zľavomat – banery' },
+        { src: 'gallery/zlavomat-3.jpg', alt: 'Zľavomat – propagačné materiály' },
+      ]
+    },
+    logo: {
+      num: '/ 03',
+      name: 'Logo dizajn',
+      tags: 'Identita / Logo',
+      images: [
+        { src: 'gallery/logo-1.jpg', alt: 'Logo – návrh' },
+        { src: 'gallery/logo-2.jpg', alt: 'Logo – vizitky' },
+        { src: 'gallery/logo-3.jpg', alt: 'Logo – brand manuál' },
+      ]
+    },
+    branding: {
+      num: '/ 04',
+      name: 'Vizuálna identita',
+      tags: 'Identita / Branding',
+      images: [
+        { src: 'gallery/branding-1.jpg', alt: 'Branding – farebná paleta' },
+        { src: 'gallery/branding-2.jpg', alt: 'Branding – typografia' },
+        { src: 'gallery/branding-3.jpg', alt: 'Branding – aplikácie značky' },
+        { src: 'gallery/branding-4.jpg', alt: 'Branding – gridy' },
+      ]
+    }
+  };
+
+  const backdrop = document.getElementById('galleryBackdrop');
+  const panel    = document.getElementById('galleryPanel');
+  const closeBtn = document.getElementById('galleryClose');
+  const titleEl  = document.getElementById('galleryTitle');
+  const tagsEl   = document.getElementById('galleryTags');
+  const numEl    = document.getElementById('galleryNum');
+  const photosEl = document.getElementById('galleryPhotos');
+
+  function openGallery(key) {
+    const project = PROJECTS[key];
+    if (!project) return;
+
+    numEl.textContent  = project.num;
+    titleEl.textContent = project.name;
+    tagsEl.textContent  = project.tags;
+
+    photosEl.innerHTML = '';
+    project.images.forEach(function (img) {
+      const wrap = document.createElement('div');
+      wrap.className = 'gallery-photo';
+      const image = new Image();
+      image.alt = img.alt;
+      image.onload = function () { wrap.innerHTML = ''; wrap.appendChild(image); };
+      image.onerror = function () {
+        wrap.innerHTML = '<span class="gallery-photo-placeholder">Fotografia bude doplnená</span>';
+      };
+      image.src = img.src;
+      wrap.innerHTML = '<span class="gallery-photo-placeholder">Načítavam…</span>';
+      photosEl.appendChild(wrap);
+    });
+
+    panel.scrollTop = 0;
+    backdrop.classList.add('is-open');
+    panel.classList.add('is-open');
+    backdrop.setAttribute('aria-hidden', 'false');
+    panel.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+
+  function closeGallery() {
+    backdrop.classList.remove('is-open');
+    panel.classList.remove('is-open');
+    backdrop.setAttribute('aria-hidden', 'true');
+    panel.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.case-row[data-gallery]').forEach(function (row) {
+    row.addEventListener('click', function () { openGallery(row.dataset.gallery); });
+    row.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openGallery(row.dataset.gallery); }
+    });
+  });
+
+  closeBtn.addEventListener('click', closeGallery);
+  backdrop.addEventListener('click', closeGallery);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && panel.classList.contains('is-open')) closeGallery();
+  });
+})();
+
 /* ----- Mobile menu ----- */
 (function () {
   const btn = document.getElementById('navHamburger');
