@@ -955,7 +955,7 @@ section { position: relative; }
   will-change: filter, transform, opacity;
 }
 .reveal.in .char {
-  animation: charReveal 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: charReveal 0.225s cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: var(--d, 0ms);
 }
 @keyframes charReveal {
@@ -1347,7 +1347,7 @@ textarea.field-input {
 @media (max-width: 700px) {
   .reveal.in .char {
     animation-name: charRevealMobile;
-    animation-duration: 0.28s;
+    animation-duration: 0.14s;
   }
   @keyframes charRevealMobile {
     0%   { opacity: 0; filter: blur(5px); transform: translateY(-4px); }
@@ -1677,7 +1677,7 @@ textarea.field-input {
   });
 
   /* Reveal on scroll — letter-by-letter */
-  const charDelay = window.matchMedia('(max-width: 700px)').matches ? 9 : 18;
+  const charDelay = window.matchMedia('(max-width: 700px)').matches ? 5 : 9;
 
   function splitChars(el) {
     const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
