@@ -1342,6 +1342,18 @@ textarea.field-input {
 @media (max-width: 580px) {
   .field-row { grid-template-columns: 1fr; }
 }
+
+/* Mobile: faster, lighter char reveal (blur is expensive on phone GPUs) */
+@media (max-width: 700px) {
+  .reveal.in .char {
+    animation-name: charRevealMobile;
+    animation-duration: 0.28s;
+  }
+  @keyframes charRevealMobile {
+    0%   { opacity: 0; filter: blur(5px); transform: translateY(-4px); }
+    100% { opacity: 1; filter: blur(0); transform: none; }
+  }
+}
 </style>
 </head>
 <body>
@@ -1665,6 +1677,8 @@ textarea.field-input {
   });
 
   /* Reveal on scroll — letter-by-letter */
+  const charDelay = window.matchMedia('(max-width: 700px)').matches ? 9 : 18;
+
   function splitChars(el) {
     const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
       acceptNode(n) {
@@ -1686,7 +1700,7 @@ textarea.field-input {
         for (const ch of [...word]) {
           const s = document.createElement('span');
           s.className = 'char';
-          s.style.setProperty('--d', (idx * 18) + 'ms');
+          s.style.setProperty('--d', (idx * charDelay) + 'ms');
           s.textContent = ch;
           wordSpan.appendChild(s);
           idx++;
