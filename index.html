@@ -1937,7 +1937,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
   const data = new FormData(form);
 
   try {
-    const res = await fetch('send.php', { method: 'POST', body: data });
+    const res = await fetch('https://formspree.io/f/mpqoeljo', { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
     const json = await res.json();
     if (json.ok) {
       document.querySelector('.overlay-left').style.display = 'none';
