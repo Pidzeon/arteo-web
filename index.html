@@ -368,61 +368,15 @@ section { position: relative; }
   mix-blend-mode: overlay;
 }
 
-/* Floating spheres */
-.sphere-field {
+/* ARTEO particle canvas */
+.arteo-canvas {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: 4;
   pointer-events: none;
-  overflow: hidden;
-}
-
-.gs {
-  position: absolute;
-  top: 0; left: 0;
-  border-radius: 50%;
-  mix-blend-mode: screen;
-  will-change: transform;
-}
-@keyframes gsPulse {
-  0%   { opacity: 0.82; }
-  100% { opacity: 1; }
-}
-
-.gs-1 {
-  width: 160px; height: 160px;
-  background: radial-gradient(circle at 32% 26%,
-    rgba(220, 255, 242, 0.98) 0%,
-    rgba(65, 248, 172, 0.88) 10%,
-    rgba(0, 200, 116, 0.68) 34%,
-    rgba(0, 148, 84, 0.44) 62%,
-    rgba(0, 72, 40, 0.18) 84%,
-    transparent 100%);
-  box-shadow: 0 0 44px rgba(0, 214, 130, 0.68), 0 0 88px rgba(0, 180, 104, 0.34), inset 5px 5px 22px rgba(0,0,0,0.24);
-  animation: gsPulse 3.8s 0s    ease-in-out infinite alternate;
-}
-.gs-2 {
-  width: 115px; height: 115px;
-  background: radial-gradient(circle at 30% 24%,
-    rgba(210, 255, 236, 0.96) 0%,
-    rgba(55, 240, 162, 0.84) 12%,
-    rgba(0, 188, 110, 0.64) 36%,
-    rgba(0, 136, 78, 0.40) 64%,
-    rgba(0, 62, 36, 0.15) 85%,
-    transparent 100%);
-  box-shadow: 0 0 32px rgba(0, 202, 124, 0.64), 0 0 64px rgba(0, 166, 98, 0.30), inset 4px 4px 16px rgba(0,0,0,0.22);
-  animation: gsPulse 4.5s 1.2s  ease-in-out infinite alternate;
-}
-.gs-3 {
-  width: 82px; height: 82px;
-  background: radial-gradient(circle at 34% 28%,
-    rgba(200, 255, 232, 0.94) 0%,
-    rgba(48, 232, 154, 0.80) 14%,
-    rgba(0, 178, 104, 0.60) 38%,
-    rgba(0, 122, 70, 0.36) 66%,
-    transparent 88%);
-  box-shadow: 0 0 24px rgba(0, 192, 118, 0.60), 0 0 48px rgba(0, 154, 90, 0.26), inset 3px 3px 12px rgba(0,0,0,0.20);
-  animation: gsPulse 5.2s 2.6s  ease-in-out infinite alternate;
+  opacity: 0.72;
 }
 
 /* Hero content */
@@ -1760,11 +1714,7 @@ textarea.field-input {
     <rect width="100%" height="100%" filter="url(#noise)"/>
   </svg>
 
-  <div class="sphere-field" aria-hidden="true">
-    <div class="gs gs-1"></div>
-    <div class="gs gs-2"></div>
-    <div class="gs gs-3"></div>
-  </div>
+  <canvas id="arteo-particles" class="arteo-canvas" aria-hidden="true"></canvas>
 
   <div class="hero-content shell">
     <span class="eyebrow hero-eyebrow"><span class="dot">●</span> Brand &nbsp;&amp;&nbsp; Web &nbsp;&amp;&nbsp; Design <span class="slash">/</span> Nitra, SK</span>
@@ -2139,67 +2089,113 @@ textarea.field-input {
   }, { threshold: 0.6 });
   document.querySelectorAll('[data-count]').forEach(c => cio.observe(c));
 
-  /* Floating spheres — independent float + mouse repulsion */
+  /* ARTEO particle text */
   (function () {
-    const hero   = document.querySelector('.hero');
-    const gsEls  = Array.from(document.querySelectorAll('.gs'));
-    if (!hero || !gsEls.length) return;
+    const canvas = document.getElementById('arteo-particles');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const hero = canvas.closest('.hero');
 
-    /* per-sphere config: bx/by = CENTER position (%), ax/ay = float amplitude (px) */
-    const cfg = [
-      { bx:47, by:31, ax:22, ay:28, sx:0.0028, sy:0.0022, px:0.00, py:1.20, r:80 },
-      { bx:42, by:47, ax:18, ay:22, sx:0.0022, sy:0.0030, px:2.10, py:3.70, r:58 },
-      { bx:56, by:46, ax:26, ay:20, sx:0.0034, sy:0.0026, px:4.30, py:0.80, r:41 },
-    ];
+    const COLORS = ['dcfff2', '41f8ac', '00c874', '009454', '004828', '001a0d'];
+    const DENSITY = 3;
+    const FORCE   = 90;
+    const INTER_R = 150;
 
-    const state = cfg.map(c => ({
-      ...c, t: c.px * 80,     /* stagger start time by phase */
-      fx: 0, fy: 0,            /* current float position (px) */
-      dvx: 0, dvy: 0,          /* repulsion velocity */
-      ddx: 0, ddy: 0,          /* repulsion displacement */
-    }));
+    let particles = [];
+    let ptr = { x: -9999, y: -9999 };
+    let animId = null;
 
-    let mX = -9999, mY = -9999;
-    document.addEventListener('mousemove', e => { mX = e.clientX; mY = e.clientY; });
+    function rand(min, max) { return min + Math.random() * (max - min); }
 
-    (function tick() {
-      const rect = hero.getBoundingClientRect();
-      const W = rect.width, H = rect.height;
+    function build() {
+      const W = canvas.width  = hero.offsetWidth;
+      const H = canvas.height = hero.offsetHeight;
+      ctx.clearRect(0, 0, W, H);
 
-      state.forEach((s, i) => {
-        s.t += 1;
+      const str      = 'ARTEO';
+      const fontSize = Math.floor(W / str.length);
+      ctx.font          = `900 ${fontSize}px Verdana, sans-serif`;
+      ctx.textAlign     = 'center';
+      ctx.textBaseline  = 'middle';
 
-        /* organic Lissajous float — translate top-left so center lands on bx/by */
-        s.fx = (s.bx / 100) * W - s.r + Math.sin(s.t * s.sx + s.px) * s.ax;
-        s.fy = (s.by / 100) * H - s.r + Math.cos(s.t * s.sy + s.py) * s.ay;
+      const tw = Math.round(ctx.measureText(str).width);
+      const th = fontSize;
+      const tx = (W - tw) / 2;
+      const ty = (H - th) / 2;
 
-        /* sphere center in viewport coords */
-        const cx = rect.left + s.fx + s.ddx + s.r;
-        const cy = rect.top  + s.fy + s.ddy + s.r;
-        const dx = cx - mX, dy = cy - mY;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const repR = 200;
+      const grad = ctx.createLinearGradient(tx, ty, tx + tw, ty + th);
+      COLORS.forEach(function(c, i) { grad.addColorStop(i / (COLORS.length - 1), '#' + c); });
+      ctx.fillStyle = grad;
+      ctx.fillText(str, W / 2, H / 2);
 
-        if (dist < repR && dist > 1) {
-          const f = (1 - dist / repR) * 1.2;
-          s.dvx += (dx / dist) * f;
-          s.dvy += (dy / dist) * f;
+      const data = ctx.getImageData(tx, ty, tw, th).data;
+      ctx.clearRect(0, 0, W, H);
+
+      particles = [];
+      for (var y = 0; y < th; y += DENSITY) {
+        for (var x = 0; x < tw; x += DENSITY) {
+          var idx = (y * tw + x) * 4;
+          if (data[idx + 3] > 50) {
+            var ox = tx + x, oy = ty + y;
+            particles.push({
+              ox: ox, oy: oy, cx: ox, cy: oy,
+              r:  rand(1, 2.5),
+              f:  rand(FORCE - 15, FORCE + 15),
+              rgb: [
+                Math.max(0, Math.min(255, data[idx]     + rand(-13, 13))),
+                Math.max(0, Math.min(255, data[idx + 1] + rand(-13, 13))),
+                Math.max(0, Math.min(255, data[idx + 2] + rand(-13, 13))),
+              ],
+            });
+          }
         }
+      }
+    }
 
-        /* balloon physics — high inertia, very slow drift back */
-        s.dvx += -s.ddx * 0.005;
-        s.dvy += -s.ddy * 0.005;
-        s.dvx *= 0.978;
-        s.dvy *= 0.978;
-        s.ddx += s.dvx;
-        s.ddy += s.dvy;
+    function tick() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (var i = 0; i < particles.length; i++) {
+        var p   = particles[i];
+        var dx  = p.cx - ptr.x;
+        var dy  = p.cy - ptr.y;
+        var dst = Math.hypot(dx, dy);
+        if (dst < INTER_R && dst > 0) {
+          var force = Math.min(p.f, (INTER_R - dst) / dst * 2);
+          p.cx += (dx / dst) * force;
+          p.cy += (dy / dst) * force;
+        }
+        var odx = p.ox - p.cx, ody = p.oy - p.cy;
+        var od  = Math.hypot(odx, ody);
+        if (od > 1) {
+          var restore = Math.min(od * 0.1, 3);
+          p.cx += (odx / od) * restore;
+          p.cy += (ody / od) * restore;
+        }
+        ctx.fillStyle = 'rgb(' + p.rgb[0] + ',' + p.rgb[1] + ',' + p.rgb[2] + ')';
+        ctx.beginPath();
+        ctx.arc(p.cx, p.cy, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      animId = requestAnimationFrame(tick);
+    }
 
-        gsEls[i].style.transform =
-          `translate(${s.fx + s.ddx}px, ${s.fy + s.ddy}px)`;
-      });
+    document.addEventListener('mousemove', function(e) {
+      var rect   = canvas.getBoundingClientRect();
+      var scaleX = canvas.width  / rect.width;
+      var scaleY = canvas.height / rect.height;
+      ptr.x = (e.clientX - rect.left) * scaleX;
+      ptr.y = (e.clientY - rect.top)  * scaleY;
+    });
 
-      requestAnimationFrame(tick);
-    })();
+    window.addEventListener('resize', function() {
+      cancelAnimationFrame(animId);
+      animId = null;
+      build();
+      animId = requestAnimationFrame(tick);
+    });
+
+    build();
+    animId = requestAnimationFrame(tick);
   })();
 
   /* Nav theme switcher */
