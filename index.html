@@ -792,6 +792,50 @@ section { position: relative; }
 }
 
 /* ===========================================
+   CASE ROW — reveal images on hover
+=========================================== */
+.case-reveal {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  width: 72px;
+  height: 88px;
+  pointer-events: none;
+}
+.case-reveal-back,
+.case-reveal-front-inner {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  transform: scale(0);
+  opacity: 0;
+  box-shadow: none;
+  transition: transform 0.5s ease 0.1s, opacity 0.5s ease 0.1s, box-shadow 0.5s ease 0.1s;
+}
+.case-reveal-front-inner {
+  transition: transform 0.2s ease 0.15s, opacity 0.2s ease 0.15s, box-shadow 0.2s ease 0.15s;
+}
+.case-reveal-front {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.5s ease 0.15s;
+}
+.case-row:hover .case-reveal-back,
+.case-row:hover .case-reveal-front-inner {
+  transform: scale(1);
+  opacity: 1;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+.case-row:hover .case-reveal-front {
+  transform: translateX(20px) translateY(20px) rotate(12deg);
+}
+.case-reveal img { width: 100%; height: 100%; object-fit: cover; display: block; }
+@media (max-width: 900px) { .case-reveal { display: none; } }
+
+/* ===========================================
    GALLERY
 =========================================== */
 
@@ -1834,6 +1878,16 @@ textarea.field-input {
         <p class="case-desc">Pneuservis s motorsport DNA — od refresh loga po online rezervačný systém.</p>
         <span class="case-tags">Web design / Vývoj / Identita</span>
         <span class="case-loc">Žitavany, SK</span>
+        <div class="case-reveal" aria-hidden="true">
+          <div class="case-reveal-back">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&auto=format&fit=crop&q=60" alt="" loading="lazy" />
+          </div>
+          <div class="case-reveal-front">
+            <div class="case-reveal-front-inner">
+              <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=200&auto=format&fit=crop&q=60" alt="" loading="lazy" />
+            </div>
+          </div>
+        </div>
       </article>
       <article class="case-row reveal" data-gallery="zlavomat" role="button" tabindex="0" aria-label="Otvoriť galériu: Propagačné materiály">
         <span class="case-num">/ 02</span>
@@ -1841,6 +1895,16 @@ textarea.field-input {
         <p class="case-desc">Print kampaň pre Zľavomat — letáky, banery a propagačné materiály s konzistentnou vizuálnou linkou.</p>
         <span class="case-tags">Tlač / Propagácia</span>
         <span class="case-loc">Slovensko</span>
+        <div class="case-reveal" aria-hidden="true">
+          <div class="case-reveal-back">
+            <img src="https://images.unsplash.com/photo-1572044162444-ad60f128bdea?w=200&auto=format&fit=crop&q=60" alt="" loading="lazy" />
+          </div>
+          <div class="case-reveal-front">
+            <div class="case-reveal-front-inner">
+              <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?w=200&auto=format&fit=crop&q=60" alt="" loading="lazy" />
+            </div>
+          </div>
+        </div>
       </article>
       <article class="case-row reveal" data-gallery="logo" role="button" tabindex="0" aria-label="Otvoriť galériu: Logo dizajn">
         <span class="case-num">/ 03</span>
@@ -1848,6 +1912,16 @@ textarea.field-input {
         <p class="case-desc">Komplexný brand identity projekt — logo, vizitky a brand manuál pre rastúci biznis.</p>
         <span class="case-tags">Identita / Logo</span>
         <span class="case-loc">Nitra, SK</span>
+        <div class="case-reveal" aria-hidden="true">
+          <div class="case-reveal-back">
+            <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=200&auto=format&fit=crop&q=60" alt="" loading="lazy" />
+          </div>
+          <div class="case-reveal-front">
+            <div class="case-reveal-front-inner">
+              <img src="https://images.unsplash.com/photo-1634942536790-4489af3ba2c3?w=200&auto=format&fit=crop&q=60" alt="" loading="lazy" />
+            </div>
+          </div>
+        </div>
       </article>
       <article class="case-row reveal" data-gallery="branding" role="button" tabindex="0" aria-label="Otvoriť galériu: Vizuálna identita">
         <span class="case-num">/ 04</span>
@@ -1855,6 +1929,16 @@ textarea.field-input {
         <p class="case-desc">Full brand systém od A po Z — farebná paleta, typografia, gridy a aplikácie značky.</p>
         <span class="case-tags">Identita / Branding</span>
         <span class="case-loc">Slovensko</span>
+        <div class="case-reveal" aria-hidden="true">
+          <div class="case-reveal-back">
+            <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=200&auto=format&fit=crop&q=60" alt="" loading="lazy" />
+          </div>
+          <div class="case-reveal-front">
+            <div class="case-reveal-front-inner">
+              <img src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=200&auto=format&fit=crop&q=60" alt="" loading="lazy" />
+            </div>
+          </div>
+        </div>
       </article>
     </div>
   </div>
