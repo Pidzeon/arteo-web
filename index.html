@@ -701,7 +701,30 @@ section { position: relative; }
 /* ===========================================
    CASES (dark)
 =========================================== */
-.cases { padding: 140px 0 140px; }
+.cases {
+  padding: 140px 0 140px;
+  transition: background 0.7s ease, color 0.7s ease;
+}
+
+/* Child element transitions — vždy aktívne */
+.cases .case-num,
+.cases .case-desc,
+.cases .case-tags,
+.cases .case-loc { transition: color 0.7s ease; }
+.cases .case-list { transition: border-color 0.7s ease; }
+
+/* Light state (pred scroll triggerom) */
+.cases:not(.is-dark) { background: #ffffff; color: var(--text-dark); }
+.cases:not(.is-dark) .case-num,
+.cases:not(.is-dark) .case-desc,
+.cases:not(.is-dark) .case-tags,
+.cases:not(.is-dark) .case-loc { color: var(--text-muted-light); }
+.cases:not(.is-dark) .case-list { border-color: var(--border-light); }
+.cases:not(.is-dark) .case-row  { border-color: var(--border-light); }
+
+/* Dark state (po scroll triggeri) */
+.cases.is-dark { background: var(--bg-dark); color: var(--text-light); }
+
 .cases-head {
   display: grid;
   grid-template-columns: 1fr 1.4fr;
@@ -728,7 +751,7 @@ section { position: relative; }
   align-items: center;
   border-top: 1px solid var(--border-dark);
   padding: 28px 0;
-  transition: transform 0.4s cubic-bezier(.2,.8,.2,1);
+  transition: transform 0.4s cubic-bezier(.2,.8,.2,1), border-color 0.7s ease;
   position: relative;
 }
 .case-row::before {
