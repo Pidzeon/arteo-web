@@ -2108,95 +2108,113 @@ textarea.field-input {
     const ctx = canvas.getContext('2d');
     const hero = canvas.closest('.hero');
 
-    const COLORS = ['dcfff2', '41f8ac', '00c874', '009454', '004828', '001a0d'];
-    const DENSITY = 7;
-    const FORCE   = 90;
-    const INTER_R = 300;
+    const COLORS   = ['dcfff2', '41f8ac', '00c874', '009454', '004828', '001a0d'];
+    const DENSITY  = 7;
+    const FORCE    = 90;
+    const INTER_R  = 300;
+    const INTER_R2 = INTER_R * INTER_R;
 
-    let particles = [];
-    let ptr = { x: -9999, y: -9999 };
-    let animId = null;
+    /* Particles stored as parallel arrays per color-bucket for batched drawing.
+       Each bucket: { col, ox[], oy[], cx[], cy[], r[], f[] } */
+    var buckets = [];
+    var ptrX = -9999, ptrY = -9999;
+    var animId = null;
 
     function rand(min, max) { return min + Math.random() * (max - min); }
 
     function build() {
-      const W = canvas.width  = hero.offsetWidth;
-      const H = canvas.height = hero.offsetHeight;
+      var W = canvas.width  = hero.offsetWidth;
+      var H = canvas.height = hero.offsetHeight;
       ctx.clearRect(0, 0, W, H);
 
-      const str      = 'ARTEO';
-      const fontSize = Math.floor(W / str.length);
-      ctx.font          = `900 ${fontSize}px Verdana, sans-serif`;
-      ctx.textAlign     = 'center';
-      ctx.textBaseline  = 'middle';
+      var str      = 'ARTEO';
+      var fontSize = Math.floor(W / str.length);
+      ctx.font         = '900 ' + fontSize + 'px Verdana, sans-serif';
+      ctx.textAlign    = 'center';
+      ctx.textBaseline = 'middle';
 
-      const tw = Math.round(ctx.measureText(str).width);
-      const th = fontSize;
-      const tx = (W - tw) / 2;
-      const ty = (H - th) / 2;
+      var tw = Math.round(ctx.measureText(str).width);
+      var th = fontSize;
+      var tx = (W - tw) / 2;
+      var ty = (H - th) / 2;
 
-      const grad = ctx.createLinearGradient(tx, ty, tx + tw, ty + th);
+      var grad = ctx.createLinearGradient(tx, ty, tx + tw, ty + th);
       COLORS.forEach(function(c, i) { grad.addColorStop(i / (COLORS.length - 1), '#' + c); });
       ctx.fillStyle = grad;
       ctx.fillText(str, W / 2, H / 2);
 
-      const data = ctx.getImageData(tx, ty, tw, th).data;
+      var data = ctx.getImageData(tx, ty, tw, th).data;
       ctx.clearRect(0, 0, W, H);
 
-      particles = [];
+      /* Group particles into colour buckets (quantised to 16-step) so we can
+         batch all same-colour circles into one beginPath/fill call per frame. */
+      var map = Object.create(null);
       for (var y = 0; y < th; y += DENSITY) {
         for (var x = 0; x < tw; x += DENSITY) {
           var idx = (y * tw + x) * 4;
           if (data[idx + 3] > 50) {
+            var qr = Math.min(255, Math.max(0, Math.round((data[idx]     + rand(-13, 13)) / 16) * 16));
+            var qg = Math.min(255, Math.max(0, Math.round((data[idx + 1] + rand(-13, 13)) / 16) * 16));
+            var qb = Math.min(255, Math.max(0, Math.round((data[idx + 2] + rand(-13, 13)) / 16) * 16));
+            var key = qr + ',' + qg + ',' + qb;
+            if (!map[key]) map[key] = { col: 'rgb(' + key + ')', ox: [], oy: [], cx: [], cy: [], r: [], f: [] };
+            var bk = map[key];
             var ox = tx + x, oy = ty + y;
-            particles.push({
-              ox: ox, oy: oy, cx: ox, cy: oy,
-              r:  rand(3.5, 6),
-              f:  rand(FORCE - 15, FORCE + 15),
-              rgb: [
-                Math.max(0, Math.min(255, data[idx]     + rand(-13, 13))),
-                Math.max(0, Math.min(255, data[idx + 1] + rand(-13, 13))),
-                Math.max(0, Math.min(255, data[idx + 2] + rand(-13, 13))),
-              ],
-            });
+            bk.ox.push(ox); bk.oy.push(oy);
+            bk.cx.push(ox); bk.cy.push(oy);
+            bk.r.push(rand(3.5, 6));
+            bk.f.push(rand(FORCE - 15, FORCE + 15));
           }
         }
       }
+      buckets = Object.keys(map).map(function(k) { return map[k]; });
     }
 
     function tick() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (var i = 0; i < particles.length; i++) {
-        var p   = particles[i];
-        var dx  = p.cx - ptr.x;
-        var dy  = p.cy - ptr.y;
-        var dst = Math.hypot(dx, dy);
-        if (dst < INTER_R && dst > 0) {
-          var force = Math.min(p.f, (INTER_R - dst) / dst * 2);
-          p.cx += (dx / dst) * force;
-          p.cy += (dy / dst) * force;
+
+      for (var bi = 0; bi < buckets.length; bi++) {
+        var bk = buckets[bi];
+        var N  = bk.cx.length;
+
+        /* Physics — squared-distance check avoids sqrt for distant particles */
+        for (var i = 0; i < N; i++) {
+          var dx = bk.cx[i] - ptrX;
+          var dy = bk.cy[i] - ptrY;
+          var d2 = dx * dx + dy * dy;
+          if (d2 < INTER_R2 && d2 > 0) {
+            var dst   = Math.sqrt(d2);
+            var force = bk.f[i] < (INTER_R - dst) / dst * 2 ? bk.f[i] : (INTER_R - dst) / dst * 2;
+            bk.cx[i] += dx / dst * force;
+            bk.cy[i] += dy / dst * force;
+          }
+          var odx = bk.ox[i] - bk.cx[i], ody = bk.oy[i] - bk.cy[i];
+          var od2 = odx * odx + ody * ody;
+          if (od2 > 1) {
+            var od      = Math.sqrt(od2);
+            var restore = od * 0.1 < 3 ? od * 0.1 : 3;
+            bk.cx[i] += odx / od * restore;
+            bk.cy[i] += ody / od * restore;
+          }
         }
-        var odx = p.ox - p.cx, ody = p.oy - p.cy;
-        var od  = Math.hypot(odx, ody);
-        if (od > 1) {
-          var restore = Math.min(od * 0.1, 3);
-          p.cx += (odx / od) * restore;
-          p.cy += (ody / od) * restore;
-        }
-        ctx.fillStyle = 'rgb(' + p.rgb[0] + ',' + p.rgb[1] + ',' + p.rgb[2] + ')';
+
+        /* Draw — one beginPath + N arcs + one fill per bucket */
+        ctx.fillStyle = bk.col;
         ctx.beginPath();
-        ctx.arc(p.cx, p.cy, p.r, 0, Math.PI * 2);
+        for (var i = 0; i < N; i++) {
+          ctx.moveTo(bk.cx[i] + bk.r[i], bk.cy[i]);
+          ctx.arc(bk.cx[i], bk.cy[i], bk.r[i], 0, Math.PI * 2);
+        }
         ctx.fill();
       }
+
       animId = requestAnimationFrame(tick);
     }
 
     document.addEventListener('mousemove', function(e) {
-      var rect   = canvas.getBoundingClientRect();
-      var scaleX = canvas.width  / rect.width;
-      var scaleY = canvas.height / rect.height;
-      ptr.x = (e.clientX - rect.left) * scaleX;
-      ptr.y = (e.clientY - rect.top)  * scaleY;
+      var rect = canvas.getBoundingClientRect();
+      ptrX = (e.clientX - rect.left) * (canvas.width  / rect.width);
+      ptrY = (e.clientY - rect.top)  * (canvas.height / rect.height);
     });
 
     window.addEventListener('resize', function() {
