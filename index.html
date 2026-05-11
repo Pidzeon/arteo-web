@@ -72,11 +72,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   pointer-events: none;
   z-index: 9999;
   mix-blend-mode: difference;
-  transform: translate(-50%, -50%);
-  transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
   will-change: transform;
+  transition: background 0.18s ease;
 }
-.cursor.is-hover { width: 42px; height: 42px; background: #fff; }
+/* Veľkosť pri hoveri rieši scale() v JS — žiadna width/height animácia (layout) */
+.cursor.is-hover { background: #fff; }
 @media (max-width: 900px) { .cursor { display: none; } }
 
 /* ----- Layout ----- */
@@ -2052,30 +2052,39 @@ textarea.field-input {
   /* Custom cursor */
   const cursor = document.getElementById('cursor');
   let cx = window.innerWidth / 2, cy = window.innerHeight / 2;
-  let tx = cx, ty = cy;
+  let tx = cx, ty = cy, curScale = 1, _prevCT = performance.now();
   document.addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; });
-  (function tickCursor() {
-    cx += (tx - cx) * 0.22;
-    cy += (ty - cy) * 0.22;
-    cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+  (function tickCursor(now) {
+    const dt = Math.min(now - _prevCT, 50); /* cap: tab bola na pozadi */
+    _prevCT = now;
+    /* Frame-rate independent lerp — Math.pow zaručuje rovnaké správanie pri 60/120/144 Hz */
+    const pa = 1 - Math.pow(0.78, dt / 16.67); /* pozícia */
+    const sa = 1 - Math.pow(0.72, dt / 16.67); /* scale */
+    cx += (tx - cx) * pa;
+    cy += (ty - cy) * pa;
+    const ts = cursor.classList.contains('is-hover') ? 3 : 1;
+    curScale += (ts - curScale) * sa;
+    cursor.style.transform = `translate(${cx}px,${cy}px) translate(-50%,-50%) scale(${curScale.toFixed(3)})`;
     requestAnimationFrame(tickCursor);
-  })();
+  })(performance.now());
 
   document.querySelectorAll('a, button, [data-magnetic]').forEach(el => {
     el.addEventListener('mouseenter', () => cursor.classList.add('is-hover'));
     el.addEventListener('mouseleave', () => cursor.classList.remove('is-hover'));
   });
 
-  /* Magnetic pills */
+  /* Magnetic pills — getBoundingClientRect cachnutý pri mouseenter, nie pri každom pohybe */
   document.querySelectorAll('[data-magnetic]').forEach((el) => {
+    let rect = null;
+    el.addEventListener('mouseenter', () => { rect = el.getBoundingClientRect(); });
     el.addEventListener('mousemove', (e) => {
-      const r = el.getBoundingClientRect();
-      const dx = e.clientX - (r.left + r.width / 2);
-      const dy = e.clientY - (r.top + r.height / 2);
+      if (!rect) rect = el.getBoundingClientRect();
+      const dx = e.clientX - (rect.left + rect.width  / 2);
+      const dy = e.clientY - (rect.top  + rect.height / 2);
       const max = 8;
-      el.style.transform = `translate(${Math.max(-max, Math.min(max, dx * 0.25))}px, ${Math.max(-max, Math.min(max, dy * 0.25))}px)`;
+      el.style.transform = `translate(${Math.max(-max, Math.min(max, dx * 0.25))}px,${Math.max(-max, Math.min(max, dy * 0.25))}px)`;
     });
-    el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+    el.addEventListener('mouseleave', () => { el.style.transform = ''; rect = null; });
   });
 
   /* Reveal on scroll — letter-by-letter */
