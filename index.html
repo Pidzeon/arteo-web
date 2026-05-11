@@ -2109,7 +2109,6 @@ textarea.field-input {
     const hero = canvas.closest('.hero');
 
     const COLORS   = ['dcfff2', '41f8ac', '00c874', '009454', '004828', '001a0d'];
-    const DENSITY  = 7;
     const FORCE    = 90;
     const INTER_R  = 300;
     const INTER_R2 = INTER_R * INTER_R;
@@ -2127,13 +2126,26 @@ textarea.field-input {
       var H = canvas.height = hero.offsetHeight;
       ctx.clearRect(0, 0, W, H);
 
+      /* Responsive values — mobile gets denser, bigger particles, larger font */
+      var mobile  = W < 768;
+      var density = mobile ? 4 : 7;
+      var rMin    = mobile ? 3   : 3.5;
+      var rMax    = mobile ? 6   : 6;
+
       var str      = 'ARTEO';
-      var fontSize = Math.floor(W / str.length);
+      /* Mobile: scale font up so text fills more of the screen height */
+      var fontSize = Math.floor(W / str.length * (mobile ? 1.5 : 1));
       ctx.font         = '900 ' + fontSize + 'px Verdana, sans-serif';
       ctx.textAlign    = 'center';
       ctx.textBaseline = 'middle';
 
       var tw = Math.round(ctx.measureText(str).width);
+      /* Clamp so text never overflows canvas width */
+      if (tw > W * 0.96) {
+        fontSize = Math.floor(fontSize * (W * 0.96 / tw));
+        ctx.font = '900 ' + fontSize + 'px Verdana, sans-serif';
+        tw = Math.round(ctx.measureText(str).width);
+      }
       var th = fontSize;
       var tx = (W - tw) / 2;
       var ty = (H - th) / 2;
@@ -2149,8 +2161,8 @@ textarea.field-input {
       /* Group particles into colour buckets (quantised to 16-step) so we can
          batch all same-colour circles into one beginPath/fill call per frame. */
       var map = Object.create(null);
-      for (var y = 0; y < th; y += DENSITY) {
-        for (var x = 0; x < tw; x += DENSITY) {
+      for (var y = 0; y < th; y += density) {
+        for (var x = 0; x < tw; x += density) {
           var idx = (y * tw + x) * 4;
           if (data[idx + 3] > 50) {
             var qr = Math.min(255, Math.max(0, Math.round((data[idx]     + rand(-13, 13)) / 16) * 16));
@@ -2162,7 +2174,7 @@ textarea.field-input {
             var ox = tx + x, oy = ty + y;
             bk.ox.push(ox); bk.oy.push(oy);
             bk.cx.push(ox); bk.cy.push(oy);
-            bk.r.push(rand(3.5, 6));
+            bk.r.push(rand(rMin, rMax));
             bk.f.push(rand(FORCE - 15, FORCE + 15));
           }
         }
@@ -2216,6 +2228,14 @@ textarea.field-input {
       ptrX = (e.clientX - rect.left) * (canvas.width  / rect.width);
       ptrY = (e.clientY - rect.top)  * (canvas.height / rect.height);
     });
+    canvas.addEventListener('touchmove', function(e) {
+      var rect = canvas.getBoundingClientRect();
+      ptrX = (e.touches[0].clientX - rect.left) * (canvas.width  / rect.width);
+      ptrY = (e.touches[0].clientY - rect.top)  * (canvas.height / rect.height);
+    }, { passive: true });
+    canvas.addEventListener('touchend', function() {
+      ptrX = -9999; ptrY = -9999;
+    }, { passive: true });
 
     window.addEventListener('resize', function() {
       cancelAnimationFrame(animId);
