@@ -2132,6 +2132,20 @@ textarea.field-input {
   }
   document.addEventListener('scroll', updateNav, { passive: true });
   updateNav();
+
+  /* Cases scroll-to-dark */
+  const casesSection = document.getElementById('projekty');
+  function checkCasesDark() {
+    if (casesSection.getBoundingClientRect().top <= 0) {
+      casesSection.classList.add('is-dark');
+      casesSection.classList.remove('section-light');
+      casesSection.classList.add('section-dark');
+      document.removeEventListener('scroll', checkCasesDark);
+      updateNav();
+    }
+  }
+  document.addEventListener('scroll', checkCasesDark, { passive: true });
+  checkCasesDark();
 })();
 </script>
 
