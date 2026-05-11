@@ -2109,7 +2109,7 @@ textarea.field-input {
     const hero = canvas.closest('.hero');
 
     const COLORS = ['dcfff2', '41f8ac', '00c874', '009454', '004828', '001a0d'];
-    const DENSITY = 3;
+    const DENSITY = 7;
     const FORCE   = 90;
     const INTER_R = 150;
 
@@ -2151,7 +2151,7 @@ textarea.field-input {
             var ox = tx + x, oy = ty + y;
             particles.push({
               ox: ox, oy: oy, cx: ox, cy: oy,
-              r:  rand(1, 2.5),
+              r:  rand(3.5, 6),
               f:  rand(FORCE - 15, FORCE + 15),
               rgb: [
                 Math.max(0, Math.min(255, data[idx]     + rand(-13, 13))),
