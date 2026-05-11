@@ -1045,6 +1045,19 @@ section { position: relative; }
   background-clip: text;
   color: transparent;
 }
+.tw-cursor {
+  display: inline-block;
+  margin-left: 0.05em;
+  animation: twBlink 0.9s step-start infinite;
+  background: linear-gradient(120deg, var(--accent), var(--accent-magenta));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@keyframes twBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
 .awards-sub {
   color: var(--text-muted-light);
   font-size: 16px;
@@ -1941,7 +1954,7 @@ textarea.field-input {
     <div class="awards-head reveal">
       <div>
         <span class="eyebrow"><span class="dot">●</span> Awards &amp; momentum <span class="slash">/</span> 2026</span>
-        <h2 class="awards-title">Budujeme <em>značky.</em></h2>
+        <h2 class="awards-title">Budujeme <em><span id="tw-word"></span><span class="tw-cursor" aria-hidden="true">|</span></em></h2>
       </div>
       <p class="awards-sub">
         Awards sú dôkazom kreativity, dopadu a posúvania hraníc. Ale skutočný úspech meriame dynamikou, ktorú spustia naše projekty.
@@ -1995,6 +2008,35 @@ textarea.field-input {
     b.style.height = (60 + Math.cos(i * 0.4) * 20) + '%';
     aw.appendChild(b);
   }
+
+  /* Typewriter — awards title */
+  (function () {
+    var el = document.getElementById('tw-word');
+    if (!el) return;
+    var words = ['značky.', 'weby.', 'identitu.', 'zážitky.'];
+    var wIdx = 0, cIdx = 0, deleting = false;
+
+    function tick() {
+      var word = words[wIdx];
+      if (!deleting) {
+        cIdx++;
+        el.textContent = word.substring(0, cIdx);
+        if (cIdx === word.length) { deleting = true; setTimeout(tick, 2200); return; }
+        setTimeout(tick, 110);
+      } else {
+        cIdx--;
+        el.textContent = word.substring(0, cIdx);
+        if (cIdx === 0) {
+          deleting = false;
+          wIdx = (wIdx + 1) % words.length;
+          setTimeout(tick, 320);
+          return;
+        }
+        setTimeout(tick, 55);
+      }
+    }
+    tick();
+  })();
 
   /* Marquee */
   const items = [
