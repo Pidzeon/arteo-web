@@ -2141,6 +2141,7 @@ textarea.field-input {
       casesSection.classList.remove('section-light');
       casesSection.classList.add('section-dark');
       document.removeEventListener('scroll', checkCasesDark);
+      lightSections.splice(lightSections.indexOf(casesSection), 1);
       updateNav();
     }
   }
