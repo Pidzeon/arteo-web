@@ -2154,7 +2154,7 @@ textarea.field-input {
       var grad = ctx.createLinearGradient(tx, ty, tx + tw, ty + th);
       COLORS.forEach(function(c, i) { grad.addColorStop(i / (COLORS.length - 1), '#' + c); });
       ctx.fillStyle = grad;
-      ctx.fillText(str, W / 2, H / 2);
+      ctx.fillText(str, W / 2, ty + th / 2);
 
       var data = ctx.getImageData(tx, ty, tw, th).data;
       ctx.clearRect(0, 0, W, H);
