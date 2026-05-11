@@ -3,3 +3,10 @@
 extracted/
 docs/
 *.zip
+
+# Next.js (react/ subdirectory)
+react/node_modules/
+react/.next/
+react/out/
+react/tsconfig.tsbuildinfo
+react/next-env.d.ts
