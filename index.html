@@ -2148,7 +2148,8 @@ textarea.field-input {
       }
       var th = fontSize;
       var tx = (W - tw) / 2;
-      var ty = (H - th) / 2;
+      /* Mobile: posun text do hornej tretiny, aby sa neprekryval s hero contentom dolu */
+      var ty = mobile ? Math.floor(H * 0.18) : (H - th) / 2;
 
       var grad = ctx.createLinearGradient(tx, ty, tx + tw, ty + th);
       COLORS.forEach(function(c, i) { grad.addColorStop(i / (COLORS.length - 1), '#' + c); });
