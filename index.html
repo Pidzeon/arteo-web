@@ -2,6 +2,7 @@
 <html lang="sk">
 <head>
 <meta charset="utf-8" />
+<meta name="theme-color" content="#080d0a" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Arteo — Kreatívne štúdio | Branding & Web Design Nitra</title>
 <meta name="description" content="Arteo je kreatívne štúdio z Nitry. Tvoríme značky, weby a digitálne zážitky pre ambiciózne firmy." />
@@ -11,7 +12,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'" /><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" /></noscript>
 
 <style>
 :root {
@@ -325,6 +326,7 @@ section { position: relative; }
   z-index: 1;
   overflow: hidden;
   pointer-events: none;
+  contain: layout style paint;
 }
 .hero-aurora-blob {
   position: absolute;
@@ -378,13 +380,6 @@ section { position: relative; }
   pointer-events: none;
   z-index: 2;
 }
-.hero-noise {
-  position: absolute; inset: 0;
-  opacity: 0.05;
-  z-index: 3;
-  pointer-events: none;
-  mix-blend-mode: overlay;
-}
 
 /* ARTEO particle canvas */
 .arteo-canvas {
@@ -419,8 +414,8 @@ section { position: relative; }
   max-width: 16ch;
 }
 @keyframes heroTextGlow {
-  0%, 100% { filter: drop-shadow(0 0 8px rgba(0, 200, 120, 0.2)); }
-  50%       { filter: drop-shadow(0 0 18px rgba(0, 200, 120, 0.5)); }
+  0%, 100% { opacity: 0.88; }
+  50%       { opacity: 1; }
 }
 .hero-headline em {
   font-style: normal;
@@ -1741,14 +1736,6 @@ textarea.field-input {
   </div>
   <div class="hero-radial" aria-hidden="true"></div>
 
-  <svg class="hero-noise" aria-hidden="true">
-    <filter id="noise">
-      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/>
-      <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0"/>
-    </filter>
-    <rect width="100%" height="100%" filter="url(#noise)"/>
-  </svg>
-
   <canvas id="arteo-particles" class="arteo-canvas" aria-hidden="true"></canvas>
 
   <div class="hero-content shell">
@@ -1772,7 +1759,7 @@ textarea.field-input {
 <section class="about section-dark" id="onas" aria-label="O nás">
   <div class="shell">
     <div class="about-grid">
-      <div class="about-photo reveal" aria-hidden="true"><img src="founder.jpg" alt="Zakladateľ Arteo" /></div>
+      <div class="about-photo reveal" aria-hidden="true"><img src="founder.jpg" alt="Zakladateľ Arteo" loading="lazy" /></div>
       <div class="about-text reveal">
         <span class="eyebrow"><span class="dot">●</span> O štúdiu</span>
         <h2 class="about-heading">Robíme menej.<br>Ale poctivo.</h2>
@@ -2135,23 +2122,6 @@ textarea.field-input {
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(r => io.observe(r));
 
-  /* Number counters */
-  const cio = new IntersectionObserver((entries) => {
-    entries.forEach(en => {
-      if (!en.isIntersecting) return;
-      const el = en.target;
-      const target = parseInt(el.dataset.count, 10);
-      const t0 = performance.now();
-      (function step(t) {
-        const p = Math.min(1, (t - t0) / 1400);
-        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
-        if (p < 1) requestAnimationFrame(step);
-      })(t0);
-      cio.unobserve(el);
-    });
-  }, { threshold: 0.6 });
-  document.querySelectorAll('[data-count]').forEach(c => cio.observe(c));
-
   /* ARTEO particle text */
   (function () {
     const canvas = document.getElementById('arteo-particles');
@@ -2164,11 +2134,18 @@ textarea.field-input {
     const INTER_R  = 300;
     const INTER_R2 = INTER_R * INTER_R;
 
-    /* Particles stored as parallel arrays per color-bucket for batched drawing.
-       Each bucket: { col, ox[], oy[], cx[], cy[], r[], f[] } */
     var buckets = [];
     var ptrX = -9999, ptrY = -9999;
     var animId = null;
+    /* Cached hero geometry — recomputed on resize only (not scroll/mousemove) */
+    var _heroOffsetTop = 0, _heroOffsetLeft = 0, _scaleX = 1, _scaleY = 1;
+
+    function cacheGeo() {
+      _heroOffsetTop  = hero.offsetTop;
+      _heroOffsetLeft = hero.getBoundingClientRect().left;
+      _scaleX = canvas.width  / hero.offsetWidth;
+      _scaleY = canvas.height / hero.offsetHeight;
+    }
 
     function rand(min, max) { return min + Math.random() * (max - min); }
 
@@ -2177,21 +2154,18 @@ textarea.field-input {
       var H = canvas.height = hero.offsetHeight;
       ctx.clearRect(0, 0, W, H);
 
-      /* Responsive values — mobile gets denser, bigger particles, larger font */
       var mobile  = W < 768;
       var density = mobile ? 4 : 7;
       var rMin    = mobile ? 3   : 3.5;
       var rMax    = mobile ? 6   : 6;
 
       var str      = 'ARTEO';
-      /* Mobile: scale font up so text fills more of the screen height */
       var fontSize = Math.floor(W / str.length * (mobile ? 1.5 : 1));
       ctx.font         = '900 ' + fontSize + 'px Verdana, sans-serif';
       ctx.textAlign    = 'center';
       ctx.textBaseline = 'middle';
 
       var tw = Math.round(ctx.measureText(str).width);
-      /* Clamp so text never overflows canvas width */
       if (tw > W * 0.96) {
         fontSize = Math.floor(fontSize * (W * 0.96 / tw));
         ctx.font = '900 ' + fontSize + 'px Verdana, sans-serif';
@@ -2199,7 +2173,6 @@ textarea.field-input {
       }
       var th = fontSize;
       var tx = (W - tw) / 2;
-      /* Mobile: posun text do hornej tretiny, aby sa neprekryval s hero contentom dolu */
       var ty = mobile ? Math.floor(H * 0.18) : (H - th) / 2;
 
       var grad = ctx.createLinearGradient(tx, ty, tx + tw, ty + th);
@@ -2210,8 +2183,6 @@ textarea.field-input {
       var data = ctx.getImageData(tx, ty, tw, th).data;
       ctx.clearRect(0, 0, W, H);
 
-      /* Group particles into colour buckets (quantised to 16-step) so we can
-         batch all same-colour circles into one beginPath/fill call per frame. */
       var map = Object.create(null);
       for (var y = 0; y < th; y += density) {
         for (var x = 0; x < tw; x += density) {
@@ -2232,16 +2203,17 @@ textarea.field-input {
         }
       }
       buckets = Object.keys(map).map(function(k) { return map[k]; });
+      cacheGeo();
     }
 
     function tick() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      var anyMoved = false;
 
       for (var bi = 0; bi < buckets.length; bi++) {
         var bk = buckets[bi];
         var N  = bk.cx.length;
 
-        /* Physics — squared-distance check avoids sqrt for distant particles */
         for (var i = 0; i < N; i++) {
           var dx = bk.cx[i] - ptrX;
           var dy = bk.cy[i] - ptrY;
@@ -2251,18 +2223,19 @@ textarea.field-input {
             var force = bk.f[i] < (INTER_R - dst) / dst * 2 ? bk.f[i] : (INTER_R - dst) / dst * 2;
             bk.cx[i] += dx / dst * force;
             bk.cy[i] += dy / dst * force;
+            anyMoved = true;
           }
           var odx = bk.ox[i] - bk.cx[i], ody = bk.oy[i] - bk.cy[i];
           var od2 = odx * odx + ody * ody;
-          if (od2 > 1) {
+          if (od2 > 0.25) {
             var od      = Math.sqrt(od2);
             var restore = od * 0.1 < 3 ? od * 0.1 : 3;
             bk.cx[i] += odx / od * restore;
             bk.cy[i] += ody / od * restore;
+            anyMoved = true;
           }
         }
 
-        /* Draw — one beginPath + N arcs + one fill per bucket */
         ctx.fillStyle = bk.col;
         ctx.beginPath();
         for (var i = 0; i < N; i++) {
@@ -2272,44 +2245,54 @@ textarea.field-input {
         ctx.fill();
       }
 
-      animId = requestAnimationFrame(tick);
+      /* Stop the loop when all particles have settled — restarts on next pointer event */
+      animId = anyMoved ? requestAnimationFrame(tick) : null;
     }
 
+    function startTick() { if (!animId) animId = requestAnimationFrame(tick); }
+
+    /* Use cached hero geometry + live scrollY — avoids getBoundingClientRect on every event */
     document.addEventListener('mousemove', function(e) {
-      var rect = canvas.getBoundingClientRect();
-      ptrX = (e.clientX - rect.left) * (canvas.width  / rect.width);
-      ptrY = (e.clientY - rect.top)  * (canvas.height / rect.height);
+      ptrX = (e.clientX - _heroOffsetLeft) * _scaleX;
+      ptrY = (e.clientY - _heroOffsetTop + window.scrollY) * _scaleY;
+      startTick();
     });
-    canvas.addEventListener('touchmove', function(e) {
-      var rect = canvas.getBoundingClientRect();
-      ptrX = (e.touches[0].clientX - rect.left) * (canvas.width  / rect.width);
-      ptrY = (e.touches[0].clientY - rect.top)  * (canvas.height / rect.height);
+    /* touchmove on hero (canvas has pointer-events:none) */
+    hero.addEventListener('touchmove', function(e) {
+      ptrX = (e.touches[0].clientX - _heroOffsetLeft) * _scaleX;
+      ptrY = (e.touches[0].clientY - _heroOffsetTop + window.scrollY) * _scaleY;
+      startTick();
     }, { passive: true });
-    canvas.addEventListener('touchend', function() {
+    hero.addEventListener('touchend', function() {
       ptrX = -9999; ptrY = -9999;
+      startTick();
     }, { passive: true });
 
     window.addEventListener('resize', function() {
-      cancelAnimationFrame(animId);
-      animId = null;
+      if (animId) { cancelAnimationFrame(animId); animId = null; }
       build();
-      animId = requestAnimationFrame(tick);
+      startTick();
     });
 
     build();
-    animId = requestAnimationFrame(tick);
+    startTick();
   })();
 
-  /* Nav theme switcher */
+  /* Nav theme switcher — uses cached section offsets, no getBoundingClientRect on scroll */
   const nav = document.getElementById('nav');
   const lightSections = Array.from(document.querySelectorAll('.section-light'));
+  var _lightBounds = [];
+  function _cacheLightBounds() {
+    _lightBounds = lightSections.map(function(s) {
+      return { top: s.offsetTop, bottom: s.offsetTop + s.offsetHeight };
+    });
+  }
+  window.addEventListener('resize', _cacheLightBounds, { passive: true });
+  _cacheLightBounds();
+
   function updateNav() {
-    const navMid = 36;
-    let inLight = false;
-    for (const s of lightSections) {
-      const r = s.getBoundingClientRect();
-      if (r.top <= navMid && r.bottom >= navMid) { inLight = true; break; }
-    }
+    var navMid = window.scrollY + 36;
+    var inLight = _lightBounds.some(function(b) { return navMid >= b.top && navMid <= b.bottom; });
     nav.classList.toggle('is-light', inLight);
   }
   document.addEventListener('scroll', updateNav, { passive: true });
@@ -2317,14 +2300,16 @@ textarea.field-input {
 
   /* Cases scroll-to-dark */
   const casesSection = document.getElementById('projekty');
+  var _casesTop = casesSection.offsetTop;
+  window.addEventListener('resize', function() { _casesTop = casesSection.offsetTop; }, { passive: true });
   function checkCasesDark() {
-    if (casesSection.getBoundingClientRect().top <= 0) {
+    if (window.scrollY >= _casesTop) {
       casesSection.classList.add('is-dark');
       casesSection.classList.remove('section-light');
       casesSection.classList.add('section-dark');
       document.removeEventListener('scroll', checkCasesDark);
-      const idx = lightSections.indexOf(casesSection);
-      if (idx !== -1) lightSections.splice(idx, 1);
+      var idx = lightSections.indexOf(casesSection);
+      if (idx !== -1) { lightSections.splice(idx, 1); _cacheLightBounds(); }
       updateNav();
     }
   }
