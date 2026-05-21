@@ -323,7 +323,6 @@ section { position: relative; }
   padding: 120px 36px 56px;
   padding-top: max(120px, calc(80px + env(safe-area-inset-top)));
   will-change: transform;
-  transform-origin: center center;
   border-radius: 0px;
 }
 @media (max-width: 700px) {
@@ -2902,11 +2901,10 @@ document.getElementById('contactForm').addEventListener('submit', async function
     var about = document.querySelector('.about');
     if (!hero) return;
 
-    /* Hero: pin + scale down + rotate as user scrolls */
+    /* Hero: pin + scale down + round corners as user scrolls */
     gsap.to(hero, {
-      scale:        0.82,
-      rotation:     -5,
-      borderRadius: '20px',
+      scale:        0.88,
+      borderRadius: '24px',
       ease:         'none',
       scrollTrigger: {
         trigger:    hero,
@@ -2918,14 +2916,13 @@ document.getElementById('contactForm').addEventListener('submit', async function
       },
     });
 
-    /* About section: scale up + un-rotate coming into view */
+    /* About section: subtle scale-in coming into view */
     if (about) {
       gsap.fromTo(about,
-        { scale: 0.92, rotation: 4 },
+        { scale: 0.95 },
         {
-          scale:    1,
-          rotation: 0,
-          ease:     'none',
+          scale: 1,
+          ease:  'none',
           scrollTrigger: {
             trigger: about,
             start:   'top 90%',
