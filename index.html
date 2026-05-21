@@ -322,6 +322,9 @@ section { position: relative; }
   justify-content: flex-end;
   padding: 120px 36px 56px;
   padding-top: max(120px, calc(80px + env(safe-area-inset-top)));
+  will-change: transform;
+  transform-origin: center center;
+  border-radius: 0px;
 }
 @media (max-width: 700px) {
   .hero {
@@ -2891,6 +2894,60 @@ document.getElementById('contactForm').addEventListener('submit', async function
 
       /* Re-layout on resize */
       ScrollTrigger.addEventListener('refreshInit', layout);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+
+/* ----- Hero scroll animation ----- */
+(function () {
+  function init() {
+    if (!window.gsap || !window.ScrollTrigger) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    var hero  = document.querySelector('.hero');
+    var about = document.querySelector('.about');
+    if (!hero) return;
+
+    /* Hero: pin + scale down + rotate as user scrolls */
+    gsap.to(hero, {
+      scale:        0.82,
+      rotation:     -5,
+      borderRadius: '20px',
+      ease:         'none',
+      scrollTrigger: {
+        trigger:    hero,
+        start:      'top top',
+        end:        '+=900',
+        scrub:      1,
+        pin:        true,
+        pinSpacing: true,
+      },
+    });
+
+    /* About section: scale up + un-rotate coming into view */
+    if (about) {
+      gsap.fromTo(about,
+        { scale: 0.92, rotation: 4 },
+        {
+          scale:    1,
+          rotation: 0,
+          ease:     'none',
+          scrollTrigger: {
+            trigger: about,
+            start:   'top 90%',
+            end:     'top 20%',
+            scrub:   1,
+          },
+        }
+      );
     }
   }
 
