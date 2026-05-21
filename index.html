@@ -2597,7 +2597,9 @@ textarea.field-input {
 
   document.querySelectorAll('.acc-item[data-gallery]').forEach(function (item) {
     item.addEventListener('click', function () {
-      if (item.classList.contains('is-active')) openGallery(item.dataset.gallery);
+      if (window.matchMedia('(hover: hover)').matches && item.classList.contains('is-active')) {
+        openGallery(item.dataset.gallery);
+      }
     });
     item.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openGallery(item.dataset.gallery); }
@@ -2789,8 +2791,18 @@ document.getElementById('contactForm').addEventListener('submit', async function
         item.classList.add('is-active');
       });
       item.addEventListener('click', function () {
-        items.forEach(function (it) { it.classList.remove('is-active'); });
-        item.classList.add('is-active');
+        if (!hasHover) {
+          /* Touch: prvý tap = expand, druhý tap = galéria */
+          if (item.classList.contains('is-active') && item.hasAttribute('data-activated')) {
+            var key = item.dataset.gallery;
+            if (key && window._arteoOpenGallery) window._arteoOpenGallery(key);
+          } else {
+            items.forEach(function (it) { it.classList.remove('is-active'); it.removeAttribute('data-activated'); });
+            item.classList.add('is-active');
+            item.setAttribute('data-activated', '');
+          }
+        }
+        /* Desktop: galéria handler v gallery IIFE rieši otvorenie */
       });
       item.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' || e.key === ' ') {
