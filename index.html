@@ -119,7 +119,6 @@ section { position: relative; }
   color: var(--text-light);
   background: rgba(255, 255, 255, 0.02);
   transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
-  will-change: transform;
 }
 .pill:hover {
   border-color: var(--accent-bright);
@@ -379,6 +378,11 @@ section { position: relative; }
   0%, 100% { transform: translate(0,    0)    scale(1);    }
   33%       { transform: translate(-5%,  7%)  scale(0.93); }
   66%       { transform: translate(7%,  -5%)  scale(1.07); }
+}
+@media (max-width: 700px) {
+  .hero-aurora-blob:nth-child(1) { filter: blur(50px); }
+  .hero-aurora-blob:nth-child(2) { filter: blur(60px); animation: none; }
+  .hero-aurora-blob:nth-child(3) { animation: none; opacity: 0; }
 }
 
 .hero-radial {
@@ -671,27 +675,7 @@ section { position: relative; }
 =========================================== */
 .cases {
   padding: 140px 0 140px;
-  transition: background 0.7s ease, color 0.7s ease;
 }
-
-/* Child element transitions — vždy aktívne */
-.cases .case-num,
-.cases .case-desc,
-.cases .case-tags,
-.cases .case-loc { transition: color 0.7s ease; }
-.cases .case-list { transition: border-color 0.7s ease; }
-
-/* Light state (pred scroll triggerom) */
-.cases:not(.is-dark) { background: #ffffff; color: var(--text-dark); }
-.cases:not(.is-dark) .case-num,
-.cases:not(.is-dark) .case-desc,
-.cases:not(.is-dark) .case-tags,
-.cases:not(.is-dark) .case-loc { color: var(--text-muted-light); }
-.cases:not(.is-dark) .case-list { border-color: var(--border-light); }
-.cases:not(.is-dark) .case-row  { border-color: var(--border-light); }
-
-/* Dark state (po scroll triggeri) */
-.cases.is-dark { background: var(--bg-dark); color: var(--text-light); }
 
 .cases-head {
   display: grid;
@@ -1185,8 +1169,10 @@ section { position: relative; }
   transform-origin: bottom;
   opacity: 0.5;
   animation: barPulseLight 4s ease-in-out infinite;
+  animation-play-state: paused;
   animation-delay: calc(var(--i) * 0.045s);
 }
+.awards.is-visible .awards-waveform .bar { animation-play-state: running; }
 @keyframes barPulseLight {
   0%, 100% { transform: scaleY(0.3); opacity: 0.25; }
   50% { transform: scaleY(0.85); opacity: 0.7; }
@@ -1270,7 +1256,6 @@ section { position: relative; }
 .char {
   display: inline-block;
   opacity: 0;
-  will-change: filter, transform, opacity;
 }
 .reveal.in .char {
   animation: charReveal 0.225s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -2087,12 +2072,20 @@ textarea.field-input {
 (function () {
   /* Awards waveform */
   const aw = document.getElementById('awardsWave');
-  for (let i = 0; i < 80; i++) {
+  const barCount = window.matchMedia('(max-width: 700px)').matches ? 36 : 72;
+  for (let i = 0; i < barCount; i++) {
     const b = document.createElement('div');
     b.className = 'bar';
     b.style.setProperty('--i', i);
     b.style.height = (60 + Math.cos(i * 0.4) * 20) + '%';
     aw.appendChild(b);
+  }
+  /* Pause waveform when off-screen */
+  const awardsSection = document.querySelector('.awards');
+  if (awardsSection) {
+    new IntersectionObserver((entries) => {
+      awardsSection.classList.toggle('is-visible', entries[0].isIntersecting);
+    }, { rootMargin: '100px' }).observe(awardsSection);
   }
 
   /* Typewriter — awards title */
@@ -2135,43 +2128,44 @@ textarea.field-input {
   ).join('');
   track.innerHTML = buildSet() + buildSet();
 
-  /* Custom cursor */
-  const cursor = document.getElementById('cursor');
-  let cx = window.innerWidth / 2, cy = window.innerHeight / 2;
-  let tx = cx, ty = cy, curScale = 1, _prevCT = performance.now();
-  document.addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; });
-  (function tickCursor(now) {
-    const dt = Math.min(now - _prevCT, 50); /* cap: tab bola na pozadi */
-    _prevCT = now;
-    /* Frame-rate independent lerp — Math.pow zaručuje rovnaké správanie pri 60/120/144 Hz */
-    const pa = 1 - Math.pow(0.78, dt / 16.67); /* pozícia */
-    const sa = 1 - Math.pow(0.72, dt / 16.67); /* scale */
-    cx += (tx - cx) * pa;
-    cy += (ty - cy) * pa;
-    const ts = cursor.classList.contains('is-hover') ? 3 : 1;
-    curScale += (ts - curScale) * sa;
-    cursor.style.transform = `translate(${cx}px,${cy}px) translate(-50%,-50%) scale(${curScale.toFixed(3)})`;
-    requestAnimationFrame(tickCursor);
-  })(performance.now());
+  if (window.matchMedia('(pointer: fine)').matches) {
+    /* Custom cursor */
+    const cursor = document.getElementById('cursor');
+    let cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+    let tx = cx, ty = cy, curScale = 1, _prevCT = performance.now();
+    document.addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; });
+    (function tickCursor(now) {
+      const dt = Math.min(now - _prevCT, 50);
+      _prevCT = now;
+      const pa = 1 - Math.pow(0.78, dt / 16.67);
+      const sa = 1 - Math.pow(0.72, dt / 16.67);
+      cx += (tx - cx) * pa;
+      cy += (ty - cy) * pa;
+      const ts = cursor.classList.contains('is-hover') ? 3 : 1;
+      curScale += (ts - curScale) * sa;
+      cursor.style.transform = `translate(${cx}px,${cy}px) translate(-50%,-50%) scale(${curScale.toFixed(3)})`;
+      requestAnimationFrame(tickCursor);
+    })(performance.now());
 
-  document.querySelectorAll('a, button, [data-magnetic]').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('is-hover'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('is-hover'));
-  });
-
-  /* Magnetic pills — getBoundingClientRect cachnutý pri mouseenter, nie pri každom pohybe */
-  document.querySelectorAll('[data-magnetic]').forEach((el) => {
-    let rect = null;
-    el.addEventListener('mouseenter', () => { rect = el.getBoundingClientRect(); });
-    el.addEventListener('mousemove', (e) => {
-      if (!rect) rect = el.getBoundingClientRect();
-      const dx = e.clientX - (rect.left + rect.width  / 2);
-      const dy = e.clientY - (rect.top  + rect.height / 2);
-      const max = 8;
-      el.style.transform = `translate(${Math.max(-max, Math.min(max, dx * 0.25))}px,${Math.max(-max, Math.min(max, dy * 0.25))}px)`;
+    document.querySelectorAll('a, button, [data-magnetic]').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('is-hover'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('is-hover'));
     });
-    el.addEventListener('mouseleave', () => { el.style.transform = ''; rect = null; });
-  });
+
+    /* Magnetic pills */
+    document.querySelectorAll('[data-magnetic]').forEach((el) => {
+      let rect = null;
+      el.addEventListener('mouseenter', () => { rect = el.getBoundingClientRect(); });
+      el.addEventListener('mousemove', (e) => {
+        if (!rect) rect = el.getBoundingClientRect();
+        const dx = e.clientX - (rect.left + rect.width  / 2);
+        const dy = e.clientY - (rect.top  + rect.height / 2);
+        const max = 8;
+        el.style.transform = `translate(${Math.max(-max, Math.min(max, dx * 0.25))}px,${Math.max(-max, Math.min(max, dy * 0.25))}px)`;
+      });
+      el.addEventListener('mouseleave', () => { el.style.transform = ''; rect = null; });
+    });
+  }
 
   /* Reveal on scroll — letter-by-letter */
   const charDelay = window.matchMedia('(max-width: 700px)').matches ? 5 : 9;
@@ -2220,160 +2214,6 @@ textarea.field-input {
     });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(r => io.observe(r));
-
-  /* ARTEO particle text — removed */
-  (function () {
-    const canvas = document.getElementById('arteo-particles');
-    if (!canvas) return;
-
-    const COLORS   = ['dcfff2', '41f8ac', '00c874', '009454', '004828', '001a0d'];
-    const FORCE    = 90;
-    const INTER_R  = 300;
-    const INTER_R2 = INTER_R * INTER_R;
-
-    var buckets = [];
-    var ptrX = -9999, ptrY = -9999;
-    var animId = null;
-    /* Cached hero geometry — recomputed on resize only (not scroll/mousemove) */
-    var _heroOffsetTop = 0, _heroOffsetLeft = 0, _scaleX = 1, _scaleY = 1;
-
-    function cacheGeo() {
-      _heroOffsetTop  = hero.offsetTop;
-      _heroOffsetLeft = hero.getBoundingClientRect().left;
-      _scaleX = canvas.width  / hero.offsetWidth;
-      _scaleY = canvas.height / hero.offsetHeight;
-    }
-
-    function rand(min, max) { return min + Math.random() * (max - min); }
-
-    function build() {
-      var W = canvas.width  = hero.offsetWidth;
-      var H = canvas.height = hero.offsetHeight;
-      ctx.clearRect(0, 0, W, H);
-
-      var mobile  = W < 768;
-      var density = mobile ? 4 : 7;
-      var rMin    = mobile ? 3   : 3.5;
-      var rMax    = mobile ? 6   : 6;
-
-      var str      = 'ARTEO';
-      var fontSize = Math.floor(W / str.length * (mobile ? 1.5 : 1));
-      ctx.font         = '900 ' + fontSize + 'px Verdana, sans-serif';
-      ctx.textAlign    = 'center';
-      ctx.textBaseline = 'middle';
-
-      var tw = Math.round(ctx.measureText(str).width);
-      if (tw > W * 0.96) {
-        fontSize = Math.floor(fontSize * (W * 0.96 / tw));
-        ctx.font = '900 ' + fontSize + 'px Verdana, sans-serif';
-        tw = Math.round(ctx.measureText(str).width);
-      }
-      var th = fontSize;
-      var tx = (W - tw) / 2;
-      var ty = mobile ? Math.floor(H * 0.18) : (H - th) / 2;
-
-      var grad = ctx.createLinearGradient(tx, ty, tx + tw, ty + th);
-      COLORS.forEach(function(c, i) { grad.addColorStop(i / (COLORS.length - 1), '#' + c); });
-      ctx.fillStyle = grad;
-      ctx.fillText(str, W / 2, ty + th / 2);
-
-      var data = ctx.getImageData(tx, ty, tw, th).data;
-      ctx.clearRect(0, 0, W, H);
-
-      var map = Object.create(null);
-      for (var y = 0; y < th; y += density) {
-        for (var x = 0; x < tw; x += density) {
-          var idx = (y * tw + x) * 4;
-          if (data[idx + 3] > 50) {
-            var qr = Math.min(255, Math.max(0, Math.round((data[idx]     + rand(-13, 13)) / 16) * 16));
-            var qg = Math.min(255, Math.max(0, Math.round((data[idx + 1] + rand(-13, 13)) / 16) * 16));
-            var qb = Math.min(255, Math.max(0, Math.round((data[idx + 2] + rand(-13, 13)) / 16) * 16));
-            var key = qr + ',' + qg + ',' + qb;
-            if (!map[key]) map[key] = { col: 'rgb(' + key + ')', ox: [], oy: [], cx: [], cy: [], r: [], f: [] };
-            var bk = map[key];
-            var ox = tx + x, oy = ty + y;
-            bk.ox.push(ox); bk.oy.push(oy);
-            bk.cx.push(ox); bk.cy.push(oy);
-            bk.r.push(rand(rMin, rMax));
-            bk.f.push(rand(FORCE - 15, FORCE + 15));
-          }
-        }
-      }
-      buckets = Object.keys(map).map(function(k) { return map[k]; });
-      cacheGeo();
-    }
-
-    function tick() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      var anyMoved = false;
-
-      for (var bi = 0; bi < buckets.length; bi++) {
-        var bk = buckets[bi];
-        var N  = bk.cx.length;
-
-        for (var i = 0; i < N; i++) {
-          var dx = bk.cx[i] - ptrX;
-          var dy = bk.cy[i] - ptrY;
-          var d2 = dx * dx + dy * dy;
-          if (d2 < INTER_R2 && d2 > 0) {
-            var dst   = Math.sqrt(d2);
-            var force = bk.f[i] < (INTER_R - dst) / dst * 2 ? bk.f[i] : (INTER_R - dst) / dst * 2;
-            bk.cx[i] += dx / dst * force;
-            bk.cy[i] += dy / dst * force;
-            anyMoved = true;
-          }
-          var odx = bk.ox[i] - bk.cx[i], ody = bk.oy[i] - bk.cy[i];
-          var od2 = odx * odx + ody * ody;
-          if (od2 > 0.25) {
-            var od      = Math.sqrt(od2);
-            var restore = od * 0.1 < 3 ? od * 0.1 : 3;
-            bk.cx[i] += odx / od * restore;
-            bk.cy[i] += ody / od * restore;
-            anyMoved = true;
-          }
-        }
-
-        ctx.fillStyle = bk.col;
-        ctx.beginPath();
-        for (var i = 0; i < N; i++) {
-          ctx.moveTo(bk.cx[i] + bk.r[i], bk.cy[i]);
-          ctx.arc(bk.cx[i], bk.cy[i], bk.r[i], 0, Math.PI * 2);
-        }
-        ctx.fill();
-      }
-
-      /* Stop the loop when all particles have settled — restarts on next pointer event */
-      animId = anyMoved ? requestAnimationFrame(tick) : null;
-    }
-
-    function startTick() { if (!animId) animId = requestAnimationFrame(tick); }
-
-    /* Use cached hero geometry + live scrollY — avoids getBoundingClientRect on every event */
-    document.addEventListener('mousemove', function(e) {
-      ptrX = (e.clientX - _heroOffsetLeft) * _scaleX;
-      ptrY = (e.clientY - _heroOffsetTop + window.scrollY) * _scaleY;
-      startTick();
-    });
-    /* touchmove on hero (canvas has pointer-events:none) */
-    hero.addEventListener('touchmove', function(e) {
-      ptrX = (e.touches[0].clientX - _heroOffsetLeft) * _scaleX;
-      ptrY = (e.touches[0].clientY - _heroOffsetTop + window.scrollY) * _scaleY;
-      startTick();
-    }, { passive: true });
-    hero.addEventListener('touchend', function() {
-      ptrX = -9999; ptrY = -9999;
-      startTick();
-    }, { passive: true });
-
-    window.addEventListener('resize', function() {
-      if (animId) { cancelAnimationFrame(animId); animId = null; }
-      build();
-      startTick();
-    });
-
-    build();
-    startTick();
-  })();
 
   /* Nav theme switcher — uses cached section offsets, no getBoundingClientRect on scroll */
   const nav = document.getElementById('nav');
@@ -2767,9 +2607,6 @@ document.getElementById('contactForm').addEventListener('submit', async function
 })();
 </script>
 
-<!-- GSAP + ScrollTrigger -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
 <script>
 /* ----- Image Accordion ----- */
