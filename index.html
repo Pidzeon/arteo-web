@@ -1857,7 +1857,7 @@ textarea.field-input {
   <div class="hero-content shell">
     <span class="eyebrow hero-eyebrow"><span class="dot">●</span> Brand &nbsp;&amp;&nbsp; Web &nbsp;&amp;&nbsp; Design <span class="slash">/</span> Nitra, SK</span>
 
-    <h1 class="hero-headline">
+    <h1 class="hero-headline" id="heroHeadline">
       Pretože dobré nie je <em>dosť dobré.</em>
     </h1>
 
@@ -2714,6 +2714,64 @@ document.getElementById('contactForm').addEventListener('submit', async function
     btn.innerHTML = 'Odoslať <span>↗</span>';
   }
 });
+</script>
+
+<!-- Text scramble -->
+<script>
+(function () {
+  var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var DURATION = 1.1;
+  var SPEED    = 0.035;
+
+  function scrambleNode(node) {
+    var original = node.textContent;
+    var steps    = Math.round(DURATION / SPEED);
+    var step     = 0;
+
+    var id = setInterval(function () {
+      var progress  = step / steps;
+      var scrambled = '';
+
+      for (var i = 0; i < original.length; i++) {
+        if (original[i] === ' ') { scrambled += ' '; continue; }
+        if (progress * original.length > i) {
+          scrambled += original[i];
+        } else {
+          scrambled += CHARS[Math.floor(Math.random() * CHARS.length)];
+        }
+      }
+
+      node.textContent = scrambled;
+      step++;
+
+      if (step > steps) {
+        clearInterval(id);
+        node.textContent = original;
+      }
+    }, SPEED * 1000);
+  }
+
+  function init() {
+    var h1 = document.getElementById('heroHeadline');
+    if (!h1) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    h1.childNodes.forEach(function (node) {
+      if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+        scrambleNode(node);
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        scrambleNode(node);
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
 </script>
 
 <!-- GSAP + ScrollTrigger -->
