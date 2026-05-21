@@ -2775,12 +2775,15 @@ document.getElementById('contactForm').addEventListener('submit', async function
   function init() {
     var items = Array.from(document.querySelectorAll('.acc-item'));
     if (!items.length) return;
+    var hasHover = window.matchMedia('(hover: hover)').matches;
 
     items.forEach(function (item) {
-      item.addEventListener('mouseenter', function () {
-        items.forEach(function (it) { it.classList.remove('is-active'); });
-        item.classList.add('is-active');
-      });
+      if (hasHover) {
+        item.addEventListener('mouseenter', function () {
+          items.forEach(function (it) { it.classList.remove('is-active'); });
+          item.classList.add('is-active');
+        });
+      }
       item.addEventListener('focus', function () {
         items.forEach(function (it) { it.classList.remove('is-active'); });
         item.classList.add('is-active');
