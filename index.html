@@ -1676,106 +1676,108 @@ textarea.field-input {
 }
 
 /* ===========================================
-   RADIAL GALLERY
+   IMAGE ACCORDION
 =========================================== */
-.radial-wrap {
-  position: relative;
-  width: 100%;
+.accordion-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  align-items: flex-start;
+  padding: 80px 0 100px;
 }
-.radial-mask {
+@media (min-width: 900px) {
+  .accordion-layout {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+  }
+}
+.accordion-text { flex: 0 0 auto; max-width: 460px; }
+.accordion-sub {
+  margin-top: 20px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text-muted-dark);
+  max-width: 38ch;
+}
+.accordion-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 32px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-bright);
+  border: 1px solid var(--accent-bright);
+  border-radius: 999px;
+  padding: 10px 22px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.accordion-cta:hover {
+  background: var(--accent-bright);
+  color: var(--bg-dark);
+}
+.accordion-strip {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 10px;
+  flex-shrink: 0;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.acc-item {
   position: relative;
-  width: 100%;
+  height: 460px;
+  border-radius: 20px;
   overflow: hidden;
-  mask-image: linear-gradient(to top, transparent 0%, black 35%, black 100%);
-  -webkit-mask-image: linear-gradient(to top, transparent 0%, black 35%, black 100%);
-}
-.radial-wheel {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  will-change: transform;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-.radial-wheel.is-ready { opacity: 1; }
-.radial-item {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  will-change: transform;
-}
-.radial-card-inner {
-  transition: transform 0.5s cubic-bezier(.2,.8,.2,1), opacity 0.5s ease, filter 0.5s ease;
-}
-.radial-wheel.has-hover .radial-item:not(.is-hovered) .radial-card-inner {
-  opacity: 0.35;
-  filter: blur(1.5px) grayscale(0.4);
-}
-.radial-item.is-hovered .radial-card-inner {
-  transform: scale(1.12) translateY(-10px);
-}
-.radial-card {
-  width: 190px;
-  height: 270px;
-  border-radius: 18px;
-  overflow: hidden;
-  position: relative;
   cursor: pointer;
-  outline: none;
-  display: block;
-  border: 1px solid rgba(255,255,255,0.08);
+  flex-shrink: 0;
+  width: 62px;
+  transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255,255,255,0.07);
 }
-@media (min-width: 640px) {
-  .radial-card { width: 240px; height: 340px; }
+.acc-item.is-active { width: 380px; }
+@media (min-width: 900px) {
+  .acc-item { height: 500px; }
+  .acc-item.is-active { width: 420px; }
 }
-.rg-img {
+.acc-item img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.5s ease;
   display: block;
+  pointer-events: none;
 }
-.rg-img-secondary { opacity: 0; }
-.radial-item.is-hovered .rg-img-primary   { opacity: 0; }
-.radial-item.is-hovered .rg-img-secondary { opacity: 1; }
-.radial-card-overlay {
+.acc-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.08) 55%, transparent 100%);
+  background: rgba(0,0,0,0.38);
   pointer-events: none;
 }
-.radial-card-meta {
+.acc-label {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 14px 14px 16px;
-  pointer-events: none;
-}
-.radial-card-num {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.15em;
-  color: rgba(255,255,255,0.45);
-  display: block;
-  margin-bottom: 5px;
-}
-.radial-card-name {
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 600;
   color: #fff;
-  line-height: 1.3;
-  display: block;
-  transition: color 0.3s ease;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: bottom 0.3s ease, left 0.3s ease, transform 0.3s ease;
+  bottom: 88px;
+  left: 50%;
+  transform: translateX(-50%) rotate(90deg);
 }
-.radial-item.is-hovered .radial-card-name { color: var(--accent-bright); }
-.radial-card:focus-visible {
+.acc-item.is-active .acc-label {
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) rotate(0deg);
+}
+.acc-item:focus-visible {
   outline: 2px solid var(--accent-bright);
   outline-offset: 3px;
 }
@@ -1942,75 +1944,48 @@ textarea.field-input {
 <!-- ============ CASES ============ -->
 <section class="cases section-dark is-dark" id="projekty" aria-label="Projekty">
   <div class="shell">
-    <div class="cases-head reveal">
-      <span class="eyebrow"><span class="dot">●</span> Naše projekty <span class="slash">/</span> 2023 — 2026</span>
-      <h2 class="cases-title">
-        Naši klienti majú ambiciózne vízie. My im dávame tvar.
-      </h2>
-    </div>
-  </div>
+    <div class="accordion-layout">
 
-  <div id="radialWrap" class="radial-wrap">
-    <div id="radialMask" class="radial-mask">
-      <ul id="radialWheel" class="radial-wheel" role="list">
+      <!-- Left: text -->
+      <div class="accordion-text reveal">
+        <span class="eyebrow"><span class="dot">●</span> Naše projekty <span class="slash">/</span> 2023 — 2026</span>
+        <h2 class="cases-title">
+          Naši klienti majú ambiciózne vízie. My im dávame tvar.
+        </h2>
+        <p class="accordion-sub">
+          Tvoríme značky, weby a vizuálne identity, ktoré zanechajú dojem — od prvého písmena loga až po spustenie webu.
+        </p>
+        <a href="#kontakt" class="accordion-cta">Napíš nám <span>↗</span></a>
+      </div>
 
-        <li class="radial-item" role="listitem">
-          <div class="radial-card-inner">
-            <div class="radial-card" data-gallery="tomax" role="button" tabindex="0" aria-label="Otvoriť galériu: Weby">
-              <img class="rg-img rg-img-primary"   src="gallery/weby/tomax1.jpg"   alt="" loading="lazy" />
-              <img class="rg-img rg-img-secondary"  src="gallery/weby/tomax2.jpg"   alt="" loading="lazy" />
-              <div class="radial-card-overlay"></div>
-              <div class="radial-card-meta">
-                <span class="radial-card-num">/ 01</span>
-                <span class="radial-card-name">Weby</span>
-              </div>
-            </div>
-          </div>
-        </li>
+      <!-- Right: accordion -->
+      <div class="accordion-strip reveal">
 
-        <li class="radial-item" role="listitem">
-          <div class="radial-card-inner">
-            <div class="radial-card" data-gallery="zlavomat" role="button" tabindex="0" aria-label="Otvoriť galériu: Propagačné materiály">
-              <img class="rg-img rg-img-primary"   src="gallery/Propagačné materiály/zlavomat.jpg" alt="" loading="lazy" />
-              <img class="rg-img rg-img-secondary"  src="gallery/Propagačné materiály/businesscard_1.jpg" alt="" loading="lazy" />
-              <div class="radial-card-overlay"></div>
-              <div class="radial-card-meta">
-                <span class="radial-card-num">/ 02</span>
-                <span class="radial-card-name">Propagačné materiály</span>
-              </div>
-            </div>
-          </div>
-        </li>
+        <div class="acc-item is-active" data-gallery="tomax" role="button" tabindex="0" aria-label="Otvoriť galériu: Weby">
+          <img src="gallery/weby/tomax1.jpg" alt="Weby" loading="lazy" />
+          <div class="acc-overlay"></div>
+          <span class="acc-label">Weby</span>
+        </div>
 
-        <li class="radial-item" role="listitem">
-          <div class="radial-card-inner">
-            <div class="radial-card" data-gallery="logo" role="button" tabindex="0" aria-label="Otvoriť galériu: Logo dizajn">
-              <img class="rg-img rg-img-primary"   src="gallery/Logo dizajn/cups_mockup.jpg" alt="" loading="lazy" />
-              <img class="rg-img rg-img-secondary"  src="gallery/Logo dizajn/cofflower_mockup1.jpg" alt="" loading="lazy" />
-              <div class="radial-card-overlay"></div>
-              <div class="radial-card-meta">
-                <span class="radial-card-num">/ 03</span>
-                <span class="radial-card-name">Logo dizajn</span>
-              </div>
-            </div>
-          </div>
-        </li>
+        <div class="acc-item" data-gallery="zlavomat" role="button" tabindex="0" aria-label="Otvoriť galériu: Propagačné materiály">
+          <img src="gallery/Propagačné materiály/zlavomat.jpg" alt="Propagačné materiály" loading="lazy" />
+          <div class="acc-overlay"></div>
+          <span class="acc-label">Propagačné materiály</span>
+        </div>
 
-        <li class="radial-item" role="listitem">
-          <div class="radial-card-inner">
-            <div class="radial-card" data-gallery="branding" role="button" tabindex="0" aria-label="Otvoriť galériu: Vizuálna identita">
-              <img class="rg-img rg-img-primary"   src="gallery/Vizuálna identita/87_logo2.jpg" alt="" loading="lazy" />
-              <img class="rg-img rg-img-secondary"  src="gallery/Vizuálna identita/87_produkt1.png" alt="" loading="lazy" />
-              <div class="radial-card-overlay"></div>
-              <div class="radial-card-meta">
-                <span class="radial-card-num">/ 04</span>
-                <span class="radial-card-name">Vizuálna identita</span>
-              </div>
-            </div>
-          </div>
-        </li>
+        <div class="acc-item" data-gallery="logo" role="button" tabindex="0" aria-label="Otvoriť galériu: Logo dizajn">
+          <img src="gallery/Logo dizajn/cups_mockup.jpg" alt="Logo dizajn" loading="lazy" />
+          <div class="acc-overlay"></div>
+          <span class="acc-label">Logo dizajn</span>
+        </div>
 
-      </ul>
+        <div class="acc-item" data-gallery="branding" role="button" tabindex="0" aria-label="Otvoriť galériu: Vizuálna identita">
+          <img src="gallery/Vizuálna identita/87_logo2.jpg" alt="Vizuálna identita" loading="lazy" />
+          <div class="acc-overlay"></div>
+          <span class="acc-label">Vizuálna identita</span>
+        </div>
+
+      </div>
     </div>
   </div>
 </section>
@@ -2594,10 +2569,10 @@ textarea.field-input {
 
   window._arteoOpenGallery = openGallery;
 
-  document.querySelectorAll('.radial-card[data-gallery]').forEach(function (card) {
-    card.addEventListener('click', function () { openGallery(card.dataset.gallery); });
-    card.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openGallery(card.dataset.gallery); }
+  document.querySelectorAll('.acc-item[data-gallery]').forEach(function (item) {
+    item.addEventListener('click', function () { openGallery(item.dataset.gallery); });
+    item.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openGallery(item.dataset.gallery); }
     });
   });
 
@@ -2767,119 +2742,29 @@ document.getElementById('contactForm').addEventListener('submit', async function
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
 <script>
-/* ----- Radial Gallery ----- */
+/* ----- Image Accordion ----- */
 (function () {
-  var RADIUS_D  = 520;   // desktop
-  var RADIUS_M  = 240;   // mobile (<640px)
-  var SCROLL_DUR = 2200;
-  var VISIBLE    = 0.42;
-
-  function getRadius() {
-    return window.innerWidth < 640 ? RADIUS_M : RADIUS_D;
-  }
-
-  function layout() {
-    var wheel  = document.getElementById('radialWheel');
-    var mask   = document.getElementById('radialMask');
-    if (!wheel || !mask) return;
-
-    var radius   = getRadius();
-    var diameter = radius * 2;
-    var hidden   = 1 - VISIBLE;
-    var items    = Array.from(wheel.querySelectorAll('.radial-item'));
-    var n        = items.length;
-
-    wheel.style.width  = diameter + 'px';
-    wheel.style.height = diameter + 'px';
-    wheel.style.bottom = -(diameter * hidden) + 'px';
-
-    items.forEach(function (item, i) {
-      var angle  = (i / n) * 2 * Math.PI;
-      var x      = radius * Math.cos(angle);
-      var y      = radius * Math.sin(angle);
-      var rotDeg = (angle * 180) / Math.PI + 90;
-      item.style.transform = 'translate(-50%,-50%) translate3d(' + x + 'px,' + y + 'px,0) rotate(' + rotDeg + 'deg)';
-    });
-
-    var firstCard = wheel.querySelector('.radial-card');
-    var cardH     = firstCard ? firstCard.offsetHeight : 220;
-    var visH      = diameter * VISIBLE + cardH / 2 + 100;
-    mask.style.height = visH + 'px';
-  }
-
   function init() {
-    var wrap  = document.getElementById('radialWrap');
-    var wheel = document.getElementById('radialWheel');
-    if (!wrap || !wheel) return;
+    var items = Array.from(document.querySelectorAll('.acc-item'));
+    if (!items.length) return;
 
-    layout();
-    wheel.classList.add('is-ready');
-
-    var items = Array.from(wheel.querySelectorAll('.radial-item'));
-
-    /* Hover interactions */
-    items.forEach(function (item, i) {
-      var card = item.querySelector('.radial-card');
-      if (!card) return;
-
-      function enter() {
-        items.forEach(function (it, j) {
-          it.classList.toggle('is-hovered', j === i);
-        });
-        wheel.classList.add('has-hover');
-      }
-      function leave() {
-        items.forEach(function (it) { it.classList.remove('is-hovered'); });
-        wheel.classList.remove('has-hover');
-      }
-
-      card.addEventListener('mouseenter', enter);
-      card.addEventListener('mouseleave', leave);
-      card.addEventListener('focus',      enter);
-      card.addEventListener('blur',       leave);
+    items.forEach(function (item) {
+      item.addEventListener('mouseenter', function () {
+        items.forEach(function (it) { it.classList.remove('is-active'); });
+        item.classList.add('is-active');
+      });
+      item.addEventListener('focus', function () {
+        items.forEach(function (it) { it.classList.remove('is-active'); });
+        item.classList.add('is-active');
+      });
+      item.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          var key = item.dataset.gallery;
+          if (key && window._arteoOpenGallery) window._arteoOpenGallery(key);
+        }
+      });
     });
-
-    /* GSAP animations */
-    if (window.gsap && window.ScrollTrigger) {
-      gsap.registerPlugin(ScrollTrigger);
-
-      var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      if (!prefersReduced) {
-        /* Entrance stagger */
-        gsap.fromTo(items,
-          { scale: 0, autoAlpha: 0 },
-          {
-            scale: 1, autoAlpha: 1,
-            duration: 1.2,
-            ease: 'back.out(1.2)',
-            stagger: 0.06,
-            scrollTrigger: {
-              trigger: wrap,
-              start: 'top 80%',
-              toggleActions: 'play none none reverse',
-            }
-          }
-        );
-
-        /* Scroll-driven rotation */
-        gsap.to(wheel, {
-          rotation: 360,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: wrap,
-            pin: true,
-            start: 'center center',
-            end: '+=' + SCROLL_DUR,
-            scrub: 1,
-            invalidateOnRefresh: true,
-          }
-        });
-      }
-
-      /* Re-layout on resize */
-      ScrollTrigger.addEventListener('refreshInit', layout);
-    }
   }
 
   if (document.readyState === 'loading') {
