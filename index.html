@@ -433,9 +433,9 @@ section { position: relative; }
   z-index: 5;
   padding: clamp(60px, 11vh, 130px) clamp(24px, 6vw, 96px);
   background: linear-gradient(90deg,
-    rgba(7,11,9,0) 0%, rgba(7,11,9,0.86) 12%,
-    rgba(7,11,9,0.92) 50%,
-    rgba(7,11,9,0.86) 88%, rgba(7,11,9,0) 100%);
+    rgba(7,11,9,0) 0%, rgba(7,11,9,0.88) 5%,
+    rgba(7,11,9,0.94) 50%,
+    rgba(7,11,9,0.88) 95%, rgba(7,11,9,0) 100%);
   border-top: 1px solid var(--border-dark);
   border-bottom: 1px solid var(--border-dark);
   text-align: center;
@@ -479,13 +479,9 @@ section { position: relative; }
 .v6-status {
   position: absolute; left: 0; right: 0; bottom: 0;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 16px clamp(20px, 4vw, 56px);
-  font-family: var(--font-mono);
-  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--text-muted-dark);
+  padding: 8px 0;
   z-index: 6;
   border-top: 1px solid var(--border-soft);
-  background: linear-gradient(180deg, transparent, rgba(0,0,0,.4));
 }
 .v6-status-dot {
   width: 7px; height: 7px; border-radius: 50%;
@@ -1948,11 +1944,7 @@ textarea.field-input {
   </div>
 
   <!-- Bottom status bar -->
-  <footer class="v6-status">
-    <span><span class="v6-status-dot"></span>Booking <b>Q2 / 2026</b></span>
-    <span>14 projektov · <b>Est. 2020</b></span>
-    <span>scroll ↓</span>
-  </footer>
+  <footer class="v6-status" aria-hidden="true"></footer>
 
 </section>
 
