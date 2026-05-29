@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="sk">
 <head>
 <meta charset="utf-8" />
@@ -340,8 +340,8 @@ section { position: relative; }
   animation-delay: var(--d, 0ms);
   will-change: transform, opacity;
 }
-.ar-em { font-style: italic; }
-.ar-em .ar-char {
+.ar-em {
+  font-style: italic;
   font-weight: 400;
   background: linear-gradient(115deg, var(--accent-bright) 0%, var(--accent) 55%, #67ffd0 100%);
   -webkit-background-clip: text; background-clip: text;
@@ -2620,14 +2620,21 @@ document.getElementById('contactForm').addEventListener('submit', async function
       var text = isEm ? tok.slice(1) : tok;
       var word = document.createElement('span');
       word.className = isEm ? 'ar-word ar-em' : 'ar-word';
-      Array.from(text).forEach(function (ch) {
-        var s = document.createElement('span');
-        s.className = 'ar-char';
-        s.style.setProperty('--d', delay + 'ms');
-        s.textContent = ch === ' ' ? ' ' : ch;
-        word.appendChild(s);
-        delay += step;
-      });
+      if (isEm) {
+        word.classList.add('ar-char');
+        word.style.setProperty('--d', delay + 'ms');
+        word.textContent = text;
+        delay += step * text.length;
+      } else {
+        Array.from(text).forEach(function (ch) {
+          var s = document.createElement('span');
+          s.className = 'ar-char';
+          s.style.setProperty('--d', delay + 'ms');
+          s.textContent = ch === ' ' ? ' ' : ch;
+          word.appendChild(s);
+          delay += step;
+        });
+      }
       line.appendChild(word);
       if (ti < tokens.length - 1) {
         var sp = document.createElement('span');
