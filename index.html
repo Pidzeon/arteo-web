@@ -377,6 +377,27 @@ section { position: relative; }
 }
 .ar-pill:hover .ar-pill-arrow { transform: rotate(-45deg); }
 
+.ar-pill--ghost {
+  border-color: rgba(255,255,255,0.14);
+  color: rgba(255,255,255,0.55);
+}
+.ar-pill--ghost:hover {
+  border-color: var(--accent);
+  background: rgba(0,200,122,0.06);
+  box-shadow: 0 0 36px rgba(0,200,122,.22), inset 0 0 0 1px rgba(62,245,168,.18);
+  color: var(--text-light);
+}
+.ar-pill-arrow--ghost {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.55);
+}
+.ar-pill--ghost:hover .ar-pill-arrow--ghost {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: none;
+}
+
 /* --- background layer --- */
 .v6-bg { position: absolute; inset: 0; pointer-events: none; }
 
@@ -1965,7 +1986,16 @@ textarea.field-input {
     <div class="v6-actions">
       <a href="#sluzby" class="ar-pill" data-hover>
         <span class="ar-pill-arrow">↓</span>
-        <span>Pozri prácu</span>
+        <span>Čo robíme?</span>
+      </a>
+      <a href="#kontakt" class="ar-pill ar-pill--ghost" data-hover>
+        <span class="ar-pill-arrow ar-pill-arrow--ghost">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <line x1="1" y1="12" x2="12" y2="1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <polyline points="4,1 12,1 12,9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </span>
+        <span>Kontaktuj nás</span>
       </a>
     </div>
   </div>
