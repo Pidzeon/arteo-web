@@ -2064,7 +2064,7 @@ textarea.field-input {
         <p class="accordion-sub">
           Tvoríme značky, weby a vizuálne identity, ktoré zanechajú dojem — od prvého písmena loga až po spustenie webu.
         </p>
-        <a href="#kontakt" class="accordion-cta">Napíš nám <span>↗&#xFE0E;</span></a>
+        <a href="#kontakt" class="accordion-cta">Napíš nám <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><line x1="1" y1="12" x2="12" y2="1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><polyline points="4,1 12,1 12,9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></a>
       </div>
 
       <!-- Right: accordion -->
@@ -2134,7 +2134,7 @@ textarea.field-input {
       <p class="cta-text">Máte nápad? Poďme mu dať tvar.</p>
       <button class="pill cta-pill" data-magnetic onclick="openContactOverlay()">
         <span>Napíš nám</span>
-        <span class="cta-arrow">↗&#xFE0E;</span>
+        <span class="cta-arrow"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><line x1="1" y1="12" x2="12" y2="1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><polyline points="4,1 12,1 12,9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span>
       </button>
     </div>
   </div>
@@ -2411,7 +2411,7 @@ textarea.field-input {
 
         <div class="form-footer">
           <span class="form-note">* povinné polia</span>
-          <button type="submit" class="submit-btn" id="submitBtn">Odoslať <span>↗&#xFE0E;</span></button>
+          <button type="submit" class="submit-btn" id="submitBtn">Odoslať <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><line x1="1" y1="12" x2="12" y2="1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><polyline points="4,1 12,1 12,9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button>
         </div>
         <div class="form-error" id="formError">Nastala chyba. Skúste znova alebo napíšte priamo na hello@arteo.sk.</div>
       </form>
@@ -2607,7 +2607,7 @@ function closeContactOverlay() {
     document.getElementById('formError').classList.remove('visible');
     const btn = document.getElementById('submitBtn');
     btn.disabled = false;
-    btn.innerHTML = 'Odoslať <span>↗︎</span>';
+    btn.innerHTML = 'Odoslať <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><line x1="1" y1="12" x2="12" y2="1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><polyline points="4,1 12,1 12,9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>';
   }, 350);
 }
 
@@ -2641,12 +2641,12 @@ document.getElementById('contactForm').addEventListener('submit', async function
     } else {
       errEl.classList.add('visible');
       btn.disabled = false;
-      btn.innerHTML = 'Odoslať <span>↗︎</span>';
+      btn.innerHTML = 'Odoslať <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><line x1="1" y1="12" x2="12" y2="1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><polyline points="4,1 12,1 12,9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>';
     }
   } catch {
     errEl.classList.add('visible');
     btn.disabled = false;
-    btn.innerHTML = 'Odoslať <span>↗︎</span>';
+    btn.innerHTML = 'Odoslať <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><line x1="1" y1="12" x2="12" y2="1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><polyline points="4,1 12,1 12,9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>';
   }
 });
 </script>
