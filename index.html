@@ -379,6 +379,18 @@ section { position: relative; }
 
 /* --- background layer --- */
 .v6-bg { position: absolute; inset: 0; pointer-events: none; }
+
+/* --- video background --- */
+.v6-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.55;
+}
+.v6-video-overlay {
+  position: absolute; inset: 0;
+  background: rgba(8,13,10,0.45);
+}
 .v6-grain {
   position: absolute; inset: 0;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='11'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
@@ -423,24 +435,25 @@ section { position: relative; }
 .v6-col--down .v6-col-track { animation: v6-down 38s linear infinite; }
 .v6-col:nth-child(2) .v6-col-track { animation-duration: 46s; }
 .v6-col:nth-child(3) .v6-col-track { animation-duration: 34s; }
+.v6-col:nth-child(2),
+.v6-col:nth-child(3) {
+  mask-image: linear-gradient(to bottom, #000 0%, #000 12%, transparent 26%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 12%, transparent 26%);
+}
 .v6-col:nth-child(4) .v6-col-track { animation-duration: 52s; }
 @keyframes v6-up   { from { transform: translateY(0); }    to { transform: translateY(-50%); } }
 @keyframes v6-down { from { transform: translateY(-50%); } to { transform: translateY(0); }    }
 
 /* --- center band --- */
 .v6-band {
-  position: absolute; top: 18%; left: 0; right: 0; bottom: 0;
+  position: absolute; inset: 0;
   z-index: 5;
-  display: flex; flex-direction: column; align-items: center;
-  padding: clamp(30px, 14vh, 130px) clamp(24px, 6vw, 96px) clamp(40px, 6vh, 80px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 0 clamp(24px, 6vw, 96px);
   background: linear-gradient(90deg,
-    rgba(7,11,9,0) 0%, rgba(7,11,9,0.88) 5%,
-    rgba(7,11,9,0.94) 50%,
-    rgba(7,11,9,0.88) 95%, rgba(7,11,9,0) 100%);
-  border-top: 1px solid var(--border-dark);
+    rgba(8,13,10,0) 0%, rgba(8,13,10,0.72) 12%,
+    rgba(8,13,10,0.72) 88%, rgba(8,13,10,0) 100%);
   text-align: center;
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
 }
 
 /* eyebrow inside band */
@@ -480,9 +493,7 @@ section { position: relative; }
   .v6-sub { font-size: 15px; max-width: 90%; }
   .v6-headline { font-size: clamp(34px, 10vw, 72px); }
   .v6-band {
-    top: 0;
     border-top: none;
-    justify-content: center;
   }
   /* columns: show 2, hide middle two */
   .v6-cols { padding: 0 8px; }
@@ -1911,8 +1922,12 @@ textarea.field-input {
 <main id="top">
 <section class="hero section-dark" aria-label="Úvod">
 
-  <!-- Background layer: grain + halftone dots + cursor glow -->
+  <!-- Background layer: video + grain + halftone dots + cursor glow -->
   <div class="v6-bg" aria-hidden="true">
+    <video class="v6-video" autoplay loop muted playsinline preload="auto">
+      <source src="hero-bg.mp4.mp4" type="video/mp4" />
+    </video>
+    <div class="v6-video-overlay"></div>
     <div class="v6-dots"></div>
     <div class="v6-cursor-glow"></div>
     <div class="v6-grain"></div>
