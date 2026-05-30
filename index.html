@@ -2688,55 +2688,45 @@ document.getElementById('contactForm').addEventListener('submit', async function
   var hero = document.querySelector('.hero');
   if (!hero) return;
 
-  /* 1. Build staggered char-reveal headline */
+  /* 1. Scramble headline */
   var line = hero.querySelector('[data-words]');
-  if (line && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    var tokens = line.getAttribute('data-words').split('|');
-    var delay = 150, step = 18;
-    tokens.forEach(function (tok, ti) {
-      var isEm = tok.charAt(0) === '*';
-      var text = isEm ? tok.slice(1) : tok;
-      var word = document.createElement('span');
-      word.className = isEm ? 'ar-word ar-em' : 'ar-word';
-      if (isEm) {
-        word.classList.add('ar-char');
-        word.style.setProperty('--d', delay + 'ms');
-        word.textContent = text;
-        delay += step * text.length;
-      } else {
-        Array.from(text).forEach(function (ch) {
-          var s = document.createElement('span');
-          s.className = 'ar-char';
-          s.style.setProperty('--d', delay + 'ms');
-          s.textContent = ch === ' ' ? ' ' : ch;
-          word.appendChild(s);
-          delay += step;
-        });
-      }
-      line.appendChild(word);
-      if (ti < tokens.length - 1) {
-        var sp = document.createElement('span');
-        sp.className = 'ar-char';
-        sp.style.setProperty('--d', delay + 'ms');
-        sp.textContent = ' ';
-        line.appendChild(sp);
-        delay += step;
-      }
-    });
-  } else if (line) {
-    /* reduced motion: render plain text */
-    var tokens = line.getAttribute('data-words').split('|');
-    tokens.forEach(function (tok, ti) {
-      var isEm = tok.charAt(0) === '*';
-      var text = isEm ? tok.slice(1) : tok;
-      var word = document.createElement('span');
-      word.className = isEm ? 'ar-word ar-em' : 'ar-word';
-      word.textContent = text;
-      line.appendChild(word);
-      if (ti < tokens.length - 1) {
-        line.appendChild(document.createTextNode(' '));
-      }
-    });
+  if (line) {
+    var PLAIN   = 'Pretože dobré nie je ';
+    var EM_TEXT = 'dosť dobré.';
+    var FULL    = PLAIN + EM_TEXT;
+    var CHARS   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!?#@&%';
+
+    var plainSpan = document.createElement('span');
+    var emSpan    = document.createElement('span');
+    emSpan.className = 'ar-word ar-em';
+    line.appendChild(plainSpan);
+    line.appendChild(emSpan);
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      plainSpan.textContent = PLAIN;
+      emSpan.textContent    = EM_TEXT;
+    } else {
+      var SPEED = 30, STEPS = Math.round(1500 / SPEED), scStep = 0;
+
+      var scInterval = setInterval(function () {
+        var progress = scStep / STEPS;
+        var out = '';
+        for (var i = 0; i < FULL.length; i++) {
+          if (FULL[i] === ' ') { out += ' '; continue; }
+          out += progress * FULL.length > i
+            ? FULL[i]
+            : CHARS[Math.floor(Math.random() * CHARS.length)];
+        }
+        plainSpan.textContent = out.slice(0, PLAIN.length);
+        emSpan.textContent    = out.slice(PLAIN.length);
+        scStep++;
+        if (scStep > STEPS) {
+          clearInterval(scInterval);
+          plainSpan.textContent = PLAIN;
+          emSpan.textContent    = EM_TEXT;
+        }
+      }, SPEED);
+    }
   }
 
   /* 2. Fill kinetic columns */
