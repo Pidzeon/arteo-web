@@ -1418,8 +1418,18 @@ section { position: relative; }
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 14px;
+  position: relative;
 }
+.overlay-close .x-circle::before,
+.overlay-close .x-circle::after {
+  content: '';
+  position: absolute;
+  width: 12px; height: 1.5px;
+  background: currentColor;
+  border-radius: 1px;
+}
+.overlay-close .x-circle::before { transform: rotate(45deg); }
+.overlay-close .x-circle::after  { transform: rotate(-45deg); }
 
 /* Left branding */
 .overlay-left {
@@ -2351,7 +2361,7 @@ textarea.field-input {
   <div class="overlay-inner" id="overlayInner" role="dialog" aria-modal="true">
     <button class="overlay-close" onclick="closeContactOverlay()" aria-label="Zavrieť">
       <span>Zavrieť</span>
-      <span class="x-circle">✕</span>
+      <span class="x-circle"></span>
     </button>
 
     <!-- Left branding -->
@@ -2409,11 +2419,15 @@ textarea.field-input {
 
     <!-- Success state -->
     <div class="overlay-success" id="overlaySuccess">
-      <div class="success-icon">✓</div>
+      <div class="success-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <polyline points="5,14 11,21 23,8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
       <div class="success-tag">● Správa odoslaná</div>
       <h2 class="success-title">Ďakujeme.<br>Ozveme sa čoskoro.</h2>
       <p class="success-sub">Tvoja správa dorazila. Odpovieme do 24 hodín na uvedený email.</p>
-      <button class="success-close-btn" onclick="closeContactOverlay()">Zavrieť ✕</button>
+      <button class="success-close-btn" onclick="closeContactOverlay()">Zavrieť</button>
     </div>
   </div>
 </div>
