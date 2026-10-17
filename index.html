@@ -1,2859 +1,356 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="sk">
 <head>
-<meta charset="utf-8" />
-<meta name="google-site-verification" content="lWQt0ZwegtKyydKPhfAMXHKIw6Rw15KivehQlXp2u1A" />
-<meta name="theme-color" content="#080d0a" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Arteo — Kreatívne štúdio | Branding & Web Design Nitra</title>
-<meta name="description" content="Arteo je kreatívne štúdio z Nitry. Tvoríme značky, weby a digitálne zážitky pre ambiciózne firmy." />
-<meta property="og:title" content="Arteo — Kreatívne štúdio" />
-<meta property="og:type" content="website" />
-<meta property="og:description" content="Tvoríme značky, weby a digitálne zážitky pre ambiciózne firmy." />
-<meta property="og:image" content="arteo_logo_new.jpg" />
-<link rel="icon" type="image/jpeg" href="arteo_logo_new.jpg" />
-<link rel="apple-touch-icon" href="arteo_logo_new.jpg" />
-
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'" /><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" /></noscript>
-
-<style>
-:root {
-  --bg-dark: #080d0a;
-  --bg-darker: #040806;
-  --bg-light: #ffffff;
-  --bg-light-soft: #f5f5f3;
-  --text-light: #ffffff;
-  --text-dark: #0a100d;
-  --text-muted-dark: rgba(255, 255, 255, 0.55);
-  --text-muted-light: rgba(11, 10, 20, 0.55);
-  --accent: #00c87a;
-  --accent-bright: #3ef5a8;
-  --accent-deep: #007a48;
-  --accent-magenta: #00d4aa;
-  --border-dark: rgba(255, 255, 255, 0.08);
-  --border-light: rgba(11, 10, 20, 0.1);
-
-  --font-display: "Space Grotesk", "Helvetica Neue", Helvetica, sans-serif;
-  --font-body: "Space Grotesk", "Helvetica Neue", Helvetica, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
-}
-
-*, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; hyphens: none; -webkit-hyphens: none; }
-html, body { margin: 0; padding: 0; }
-body {
-  background: var(--bg-dark);
-  color: var(--text-light);
-  font-family: var(--font-body);
-  font-weight: 400;
-  font-size: 17px;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
-  cursor: none;
-  hyphens: none;
-  -webkit-hyphens: none;
-  word-break: normal;
-  overflow-wrap: normal;
-}
-@media (max-width: 900px) {
-  body { cursor: auto; }
-}
-img { max-width: 100%; display: block; }
-a { color: inherit; text-decoration: none; }
-button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: none; }
-@media (max-width: 900px) { button { cursor: pointer; } }
-
-/* ----- Custom cursor ----- */
-.cursor {
-  position: fixed;
-  top: 0; left: 0;
-  width: 14px; height: 14px;
-  border-radius: 50%;
-  background: var(--accent-bright);
-  pointer-events: none;
-  z-index: 9999;
-  mix-blend-mode: difference;
-  will-change: transform;
-  transition: background 0.18s ease;
-}
-/* Veľkosť pri hoveri rieši scale() v JS — žiadna width/height animácia (layout) */
-.cursor.is-hover { background: #fff; }
-@media (max-width: 900px) { .cursor { display: none; } }
-
-/* ----- Layout ----- */
-.shell { width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 36px; }
-@media (max-width: 700px) { .shell { padding: 0 20px; } }
-
-section { position: relative; }
-.section-dark { background: var(--bg-dark); color: var(--text-light); }
-.section-light { background: var(--bg-light-soft); color: var(--text-dark); }
-
-/* ----- Eyebrow ----- */
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6em;
-  color: var(--text-muted-dark);
-}
-.section-light .eyebrow { color: var(--text-muted-light); }
-.eyebrow .dot { color: var(--accent); }
-.eyebrow .slash { opacity: 0.6; }
-
-/* ----- Pill button ----- */
-.pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6em;
-  border: 1px solid var(--border-dark);
-  border-radius: 999px;
-  padding: 9px 18px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-light);
-  background: rgba(255, 255, 255, 0.02);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
-}
-.pill:hover {
-  border-color: var(--accent-bright);
-  box-shadow: 0 0 30px rgba(0, 200, 120, 0.4);
-  background: rgba(0, 200, 120, 0.08);
-}
-.section-light .pill {
-  border-color: var(--border-light);
-  color: var(--text-dark);
-  background: rgba(11, 10, 20, 0.02);
-}
-.section-light .pill:hover {
-  border-color: var(--accent);
-  box-shadow: 0 0 30px rgba(0, 200, 120, 0.25);
-}
-.pill .pulse {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--accent-bright);
-  box-shadow: 0 0 8px var(--accent-bright);
-  animation: pulseDot 1.6s ease-in-out infinite;
-}
-@keyframes pulseDot { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
-
-/* ===========================================
-   NAVBAR
-=========================================== */
-.nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  padding: 18px 36px;
-  padding-top: calc(18px + env(safe-area-inset-top));
-  padding-left: calc(36px + env(safe-area-inset-left));
-  padding-right: calc(36px + env(safe-area-inset-right));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  background: rgba(11, 10, 20, 0.55);
-  border-bottom: 1px solid var(--border-dark);
-}
-.nav.is-light {
-  background: rgba(245, 245, 243, 0.7);
-  border-bottom-color: var(--border-light);
-  color: var(--text-dark);
-}
-.nav.is-light .pill { color: var(--text-dark); border-color: var(--border-light); }
-.nav.is-light .logo path { fill: var(--text-dark); }
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-.logo svg { width: 28px; height: 28px; }
-
-.nav-left {
-  display: flex;
-  align-items: center;
-}
-
-/* ----- Desktop nav links ----- */
-.nav-links {
-  justify-self: end;
-  display: flex;
-  align-items: center;
-  gap: 2px;
-}
-.nav-link {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 8px 16px;
-  border-radius: 999px;
-  color: var(--text-muted-dark);
-  transition: color 0.2s ease, background 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
-}
-.nav-link:hover {
-  color: var(--text-light);
-  background: rgba(255,255,255,0.05);
-}
-.nav-link--cta {
-  border: 1px solid var(--border-dark);
-  color: var(--text-light);
-  background: rgba(255,255,255,0.02);
-  margin-left: 8px;
-}
-.nav-link--cta:hover {
-  border-color: var(--accent-bright);
-  box-shadow: 0 0 24px rgba(0,200,120,0.35);
-  background: rgba(0,200,120,0.08);
-  color: var(--text-light);
-}
-.nav.is-light .nav-link { color: var(--text-muted-light); }
-.nav.is-light .nav-link:hover { color: var(--text-dark); background: rgba(11,10,20,0.05); }
-.nav.is-light .nav-link--cta { border-color: var(--border-light); color: var(--text-dark); }
-.nav.is-light .nav-link--cta:hover { border-color: var(--accent); box-shadow: 0 0 24px rgba(0,200,120,0.2); }
-
-/* ----- Mobile hamburger ----- */
-.nav-hamburger {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-  width: 40px;
-  height: 40px;
-  padding: 8px;
-  border-radius: 8px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.nav-hamburger:hover { background: rgba(255,255,255,0.06); }
-.nav-hamburger span {
-  display: block;
-  height: 1.5px;
-  background: var(--text-light);
-  border-radius: 2px;
-  transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
-  transform-origin: center;
-}
-.nav-hamburger span:nth-child(2) { width: 70%; margin-left: auto; }
-.nav-hamburger.is-open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-.nav-hamburger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-.nav-hamburger.is-open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-.nav.is-light .nav-hamburger span { background: var(--text-dark); }
-
-/* ----- Mobile menu overlay ----- */
-.mobile-menu {
-  display: none;
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 99;
-  background: var(--bg-darker);
-  border-bottom: 1px solid var(--border-dark);
-  padding: 80px 20px 32px;
-  padding-top: calc(80px + env(safe-area-inset-top));
-  transform: translateY(-110%);
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.mobile-menu.is-open {
-  transform: translateY(0);
-}
-.mobile-menu-links {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.mobile-link {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-muted-dark);
-  padding: 14px 16px;
-  border-radius: 10px;
-  transition: color 0.2s, background 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 0.6em;
-}
-.mobile-link:hover, .mobile-link:active { color: var(--text-light); background: rgba(255,255,255,0.05); }
-.mobile-link--cta {
-  color: var(--accent-bright);
-  margin-top: 8px;
-  border: 1px solid rgba(0,200,120,0.25);
-  justify-content: center;
-}
-.mobile-link--cta:hover { background: rgba(0,200,120,0.1); border-color: var(--accent-bright); color: var(--accent-bright); }
-
-.nav-hamburger { display: none; }
-
-@media (max-width: 900px) {
-  .nav { padding: 14px 20px; padding-top: calc(14px + env(safe-area-inset-top)); }
-  .nav-links { display: none; }
-  .nav-hamburger { display: flex; }
-  .mobile-menu { display: block; }
-}
-
-/* ===========================================
-   HERO — V6 · KINETIC COLUMNS
-=========================================== */
-.hero {
-  position: relative;
-  width: 100%;
-  height: 100dvh;
-  min-height: 600px;
-  background: var(--bg-dark);
-  color: var(--text-light);
-  font-family: var(--font-display);
-  overflow: hidden;
-  cursor: none;
-}
-.hero *, .hero *::before, .hero *::after { box-sizing: border-box; }
-@media (hover: none) { .hero { cursor: auto; } }
-
-/* --- char-reveal headline --- */
-.ar-line { display: block; }
-.ar-word { display: inline-block; white-space: nowrap; }
-.ar-char {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(0.7em);
-  animation: ar-char-in 1s cubic-bezier(.16,.84,.32,1) forwards;
-  animation-delay: var(--d, 0ms);
-  will-change: transform, opacity;
-}
-.ar-em {
-  font-style: italic;
-  font-weight: 400;
-  background: linear-gradient(115deg, var(--accent-bright) 0%, var(--accent) 55%, #67ffd0 100%);
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent;
-}
-@keyframes ar-char-in {
-  0%   { opacity: 0; transform: translateY(0.7em) skewY(4deg); }
-  100% { opacity: 1; transform: translateY(0) skewY(0); }
-}
-
-/* --- pill CTA --- */
-.ar-pill {
-  display: inline-flex; align-items: center; gap: 14px;
-  padding: 15px 24px 15px 18px;
-  border: 1px solid var(--border-dark);
-  border-radius: 99px;
-  font-family: var(--font-mono);
-  font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--text-light);
-  transition: border-color .25s, box-shadow .3s, background .25s;
-  cursor: none;
-}
-.ar-pill:hover {
-  border-color: var(--accent);
-  background: rgba(0,200,122,0.06);
-  box-shadow: 0 0 36px rgba(0,200,122,.22), inset 0 0 0 1px rgba(62,245,168,.18);
-}
-.ar-pill-arrow {
-  width: 28px; height: 28px; border-radius: 50%;
-  background: var(--accent); color: #042319;
-  display: inline-flex; align-items: center; justify-content: center;
-  font-size: 14px; transition: transform .3s ease;
-}
-.ar-pill:hover .ar-pill-arrow { transform: rotate(-45deg); }
-
-.ar-pill--ghost {
-  border-color: rgba(255,255,255,0.14);
-  color: rgba(255,255,255,0.55);
-}
-.ar-pill--ghost:hover {
-  border-color: var(--accent);
-  background: rgba(0,200,122,0.06);
-  box-shadow: 0 0 36px rgba(0,200,122,.22), inset 0 0 0 1px rgba(62,245,168,.18);
-  color: var(--text-light);
-}
-.ar-pill--ghost:hover .ar-pill-arrow {
-  transform: none;
-}
-
-.ar-pill--solid {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #042319;
-}
-.ar-pill--solid:hover {
-  background: #3ef5a8;
-  border-color: #3ef5a8;
-  box-shadow: 0 0 40px rgba(0,200,122,.45);
-  color: #042319;
-}
-.ar-pill--solid .ar-pill-arrow {
-  background: rgba(4,35,25,0.2);
-  color: #042319;
-}
-.ar-pill--solid:hover .ar-pill-arrow {
-  transform: rotate(45deg);
-}
-
-/* --- background layer --- */
-.v6-bg { position: absolute; inset: 0; pointer-events: none; }
-
-/* --- video background --- */
-.v6-video {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  opacity: 0.55;
-}
-.v6-video-overlay {
-  position: absolute; inset: 0;
-  background: rgba(8,13,10,0.45);
-}
-.v6-grain {
-  position: absolute; inset: 0;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='11'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
-  background-size: 180px 180px; opacity: .3; mix-blend-mode: overlay;
-}
-.v6-dots {
-  position: absolute; inset: 0;
-  background-image: radial-gradient(rgba(0,200,122,0.16) 1.1px, transparent 1.2px);
-  background-size: 26px 26px;
-  mask-image: radial-gradient(90% 70% at 50% 50%, #000 25%, transparent 78%);
-  -webkit-mask-image: radial-gradient(90% 70% at 50% 50%, #000 25%, transparent 78%);
-  opacity: .5;
-}
-.v6-cursor-glow {
-  position: absolute; inset: 0;
-  background: radial-gradient(26% 34% at 50% 50%, rgba(62,245,168,0.16), transparent 70%);
-}
-
-/* --- scrolling columns --- */
-.v6-cols {
-  position: absolute; inset: 0;
-  display: flex; justify-content: space-between;
-  padding: 0 clamp(20px, 4vw, 64px);
-  z-index: 2;
-  mask-image: linear-gradient(180deg, transparent, #000 14%, #000 86%, transparent);
-  -webkit-mask-image: linear-gradient(180deg, transparent, #000 14%, #000 86%, transparent);
-  pointer-events: none;
-}
-.v6-col { position: relative; height: 100%; overflow: hidden; width: max-content; }
-.v6-col-track {
-  display: flex; flex-direction: column;
-  font-family: var(--font-mono);
-  font-size: clamp(13px, 1.05vw, 18px);
-  letter-spacing: .12em; text-transform: uppercase;
-  line-height: 2.6;
-  color: rgba(255,255,255,.16);
-  will-change: transform;
-}
-.v6-col-track span { white-space: nowrap; }
-.v6-col-track b { color: rgba(62,245,168,.55); font-weight: 400; }
-.v6-col--up   .v6-col-track { animation: v6-up   30s linear infinite; }
-.v6-col--down .v6-col-track { animation: v6-down 38s linear infinite; }
-.v6-col:nth-child(2) .v6-col-track { animation-duration: 46s; }
-.v6-col:nth-child(3) .v6-col-track { animation-duration: 34s; }
-.v6-col:nth-child(2),
-.v6-col:nth-child(3) {
-  mask-image: linear-gradient(to bottom, #000 0%, #000 12%, transparent 26%);
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 12%, transparent 26%);
-}
-.v6-col:nth-child(4) .v6-col-track { animation-duration: 52s; }
-@keyframes v6-up   { from { transform: translateY(0); }    to { transform: translateY(-50%); } }
-@keyframes v6-down { from { transform: translateY(-50%); } to { transform: translateY(0); }    }
-
-/* --- center band --- */
-.v6-band {
-  position: absolute; inset: 0;
-  z-index: 5;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 0 clamp(24px, 6vw, 96px);
-  background: linear-gradient(90deg,
-    rgba(8,13,10,0) 0%, rgba(8,13,10,0.72) 12%,
-    rgba(8,13,10,0.72) 88%, rgba(8,13,10,0) 100%);
-  text-align: center;
-}
-
-/* eyebrow inside band */
-.v6-band .eyebrow {
-  justify-content: center; margin-bottom: 20px;
-  opacity: 0; animation: v6-fade-up 1s ease-out .2s forwards;
-}
-
-/* headline */
-.v6-headline {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(40px, 7.6vw, 128px);
-  line-height: 0.92; letter-spacing: -0.045em;
-  margin: 0; text-wrap: balance;
-}
-
-/* sub + actions */
-.v6-sub {
-  max-width: 560px; margin: 24px auto 0;
-  color: var(--text-muted-dark); font-size: 17px; line-height: 1.55;
-  opacity: 0; animation: v6-fade-up 1s ease-out 1.5s forwards;
-}
-.v6-sub-accent { color: var(--text-light); }
-.v6-actions {
-  display: inline-flex; gap: 16px; align-items: center;
-  margin-top: 30px;
-  opacity: 0; animation: v6-fade-up 1s ease-out 1.65s forwards;
-}
-@keyframes v6-fade-up {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* --- responsive --- */
-@media (max-width: 720px) {
-  .v6-sub { font-size: 15px; max-width: 90%; }
-  .v6-headline { font-size: clamp(34px, 10vw, 72px); }
-  .v6-band {
-    border-top: none;
-  }
-  .v6-actions {
-    flex-direction: column;
-    align-items: stretch;
-    width: min(100%, 320px);
-    gap: 12px;
-  }
-  .ar-pill {
-    justify-content: center;
-    padding: 14px 20px;
-    font-size: 11px;
-  }
-  /* columns: show 2, hide middle two */
-  .v6-cols { padding: 0 8px; }
-  .v6-col:nth-child(2),
-  .v6-col:nth-child(3) { display: none; }
-  .v6-col-track {
-    font-size: 11px;
-    line-height: 2.6;
-    color: rgba(255,255,255,.11);
-  }
-  .v6-col-track b { color: rgba(62,245,168,.35); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .v6-col-track { animation: none !important; }
-  .ar-char { animation: none !important; opacity: 1; transform: none; }
-  .v6-band .eyebrow, .v6-sub, .v6-actions { animation: none !important; opacity: 1; }
-}
-
-/* ===========================================
-   ABOUT
-=========================================== */
-.about {
-  padding: 140px 0 160px;
-  border-top: 1px solid var(--border-dark);
-}
-.about-grid {
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 80px;
-  align-items: start;
-}
-@media (max-width: 900px) {
-  .about-grid { grid-template-columns: 1fr; gap: 40px; }
-}
-.about-photo img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  border-radius: 50%;
-}
-.about-photo {
-  width: 320px;
-  height: 320px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 30% 25%, rgba(255,255,255,0.18), transparent 55%),
-    linear-gradient(135deg, var(--accent-deep) 0%, var(--accent) 45%, var(--accent-magenta) 100%);
-  position: relative;
-  overflow: hidden;
-  border: 1px solid var(--border-dark);
-  box-shadow: 0 30px 80px rgba(0, 200, 120, 0.25);
-}
-.about-photo::after {
-  content: none;
-}
-.about-photo::before {
-  content: "";
-  position: absolute;
-  inset: 18px;
-  border-radius: 50%;
-  border: 1px dashed rgba(255,255,255,0.25);
-}
-.about-text { font-size: 19px; line-height: 1.5; }
-.about-text p { margin: 0 0 1.2em; color: rgba(255,255,255,0.82); }
-.about-text p:last-child { margin-bottom: 0; }
-.about-text strong { color: var(--text-light); font-weight: 600; }
-.about-heading {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  letter-spacing: -0.03em;
-  line-height: 1.05;
-  margin: 12px 0 28px;
-}
-.stack-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
-.stack-tag {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.45);
-  border: 1px solid rgba(255,255,255,0.1);
-  padding: 5px 10px;
-  border-radius: 3px;
-  transition: color 0.2s, border-color 0.2s;
-}
-.stack-tag:hover { color: var(--accent-bright); border-color: rgba(0, 200, 120, 0.35); }
-
-/* ===========================================
-   SERVICES (light)
-=========================================== */
-.services { padding: 140px 0 120px; }
-.services-head {
-  display: grid;
-  grid-template-columns: 1fr 1.4fr;
-  gap: 60px;
-  align-items: end;
-  margin-bottom: 80px;
-}
-@media (max-width: 900px) { .services-head { grid-template-columns: 1fr; gap: 32px; } }
-.services-desc {
-  font-family: var(--font-mono);
-  font-size: 14px;
-  color: var(--text-muted-light);
-  line-height: 1.9;
-  max-width: 300px;
-  padding-top: 56px;
-}
-.services-title {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(2.2rem, 5vw, 4.4rem);
-  line-height: 1.0;
-  letter-spacing: -0.03em;
-  margin: 18px 0 0;
-  max-width: 18ch;
-}
-
-.svc-list { border-bottom: 1px solid var(--border-light); }
-.svc-row {
-  display: grid;
-  grid-template-columns: 60px 1fr 1.3fr 280px;
-  gap: 32px;
-  align-items: center;
-  border-top: 1px solid var(--border-light);
-  padding: 26px 0;
-  transition: transform 0.4s cubic-bezier(.2,.8,.2,1), background 0.4s ease;
-  position: relative;
-}
-.svc-row::before {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; bottom: -1px;
-  height: 1px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
-}
-.svc-row:hover { transform: translateX(8px); }
-.svc-row:hover::before { transform: scaleX(1); }
-.svc-num {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.15em;
-  color: var(--text-muted-light);
-}
-.svc-name {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 28px;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-}
-.svc-desc {
-  color: var(--text-muted-light);
-  font-size: 16px;
-  line-height: 1.5;
-  max-width: 48ch;
-}
-.svc-card {
-  width: 280px;
-  height: 160px;
-  border-radius: 14px;
-  border: 1px solid var(--border-light);
-  position: relative;
-  overflow: hidden;
-  justify-self: end;
-}
-.svc-card.c-strategy {
-  background:
-    conic-gradient(from 220deg at 50% 50%, var(--accent-deep), var(--accent), var(--accent-magenta), var(--accent-bright), var(--accent-deep));
-}
-.svc-card.c-identity {
-  background:
-    radial-gradient(60% 80% at 30% 50%, var(--accent-bright) 0%, var(--accent) 30%, var(--accent-deep) 60%, #001a10 100%);
-}
-.svc-card.c-web {
-  background:
-    radial-gradient(40% 60% at 80% 30%, var(--accent-magenta), transparent 60%),
-    radial-gradient(50% 70% at 20% 70%, var(--accent), transparent 60%),
-    linear-gradient(135deg, #001a0e, var(--accent-deep));
-}
-.svc-card.c-print {
-  background: linear-gradient(135deg, #001a10 0%, var(--accent-deep) 50%, var(--accent) 100%);
-}
-.svc-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    repeating-linear-gradient(115deg, rgba(255,255,255,0.0) 0, rgba(255,255,255,0.0) 14px, rgba(255,255,255,0.06) 14px, rgba(255,255,255,0.06) 15px);
-  pointer-events: none;
-}
-@media (max-width: 1100px) {
-  .svc-row { grid-template-columns: 50px 1fr 1fr; }
-  .svc-card { display: none; }
-}
-@media (max-width: 700px) {
-  .svc-row { grid-template-columns: 40px 1fr; }
-  .svc-desc { grid-column: 2; }
-}
-
-/* ===========================================
-   MARQUEE (light)
-=========================================== */
-.marquee {
-  background: var(--bg-light-soft);
-  padding: 60px 0 80px;
-  border-top: 1px solid var(--border-light);
-  overflow: hidden;
-  position: relative;
-}
-.marquee-track {
-  display: flex;
-  gap: 60px;
-  width: max-content;
-  animation: scroll 38s linear infinite;
-}
-@keyframes scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-.marquee-item {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(28px, 3.4vw, 44px);
-  letter-spacing: -0.02em;
-  color: var(--text-muted-light);
-  opacity: 0.55;
-  display: inline-flex;
-  align-items: center;
-  gap: 60px;
-  white-space: nowrap;
-  transition: opacity 0.3s ease, color 0.3s ease;
-}
-.marquee-item:hover { opacity: 1; color: var(--accent); }
-.marquee-item .sep { color: var(--accent); opacity: 0.7; }
-
-/* ===========================================
-   CASES (dark)
-=========================================== */
-.cases {
-  padding: 140px 0 140px;
-}
-
-.cases-head {
-  display: grid;
-  grid-template-columns: 1fr 1.4fr;
-  gap: 60px;
-  align-items: end;
-  margin-bottom: 80px;
-}
-@media (max-width: 900px) { .cases-head { grid-template-columns: 1fr; } }
-.cases-title {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(2.2rem, 5vw, 4.4rem);
-  line-height: 1.0;
-  letter-spacing: -0.03em;
-  margin: 18px 0 0;
-  max-width: 20ch;
-}
-
-.case-list { border-bottom: 1px solid var(--border-dark); }
-.case-row {
-  display: grid;
-  grid-template-columns: 60px 1.2fr 2fr 1fr 0.8fr;
-  gap: 32px;
-  align-items: center;
-  border-top: 1px solid var(--border-dark);
-  padding: 28px 0;
-  transition: transform 0.4s cubic-bezier(.2,.8,.2,1), border-color 0.7s ease;
-  position: relative;
-}
-.case-row::before {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; bottom: -1px;
-  height: 1px;
-  background: var(--accent-bright);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
-}
-.case-row:hover { transform: translateX(8px); }
-.case-row:hover::before { transform: scaleX(1); }
-.case-row:hover .case-name { color: var(--accent-bright); }
-
-.case-num {
-  font-family: var(--font-mono); font-size: 11px;
-  letter-spacing: 0.15em; color: var(--text-muted-dark);
-}
-.case-name {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 26px;
-  letter-spacing: -0.02em;
-  transition: color 0.3s ease;
-}
-.case-desc { color: var(--text-muted-dark); font-size: 15px; line-height: 1.55; max-width: 44ch; }
-.case-tags { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--text-muted-dark); }
-.case-loc  { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--text-muted-dark); justify-self: end; text-align: right; }
-@media (max-width: 1100px) {
-  .case-row { grid-template-columns: 50px 1fr 1.6fr 1fr; }
-  .case-loc { display: none; }
-}
-@media (max-width: 700px) {
-  .case-row { grid-template-columns: 40px 1fr; gap: 14px; }
-  .case-desc, .case-tags { grid-column: 2; }
-}
-
-/* ===========================================
-   CASE ROW — reveal images on hover
-=========================================== */
-.case-reveal {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 40;
-  width: 72px;
-  height: 88px;
-  pointer-events: none;
-}
-.case-reveal-back,
-.case-reveal-front-inner {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  border-radius: 8px;
-  transform: scale(0);
-  opacity: 0;
-  box-shadow: none;
-  transition: transform 0.5s ease 0.1s, opacity 0.5s ease 0.1s, box-shadow 0.5s ease 0.1s;
-}
-.case-reveal-front-inner {
-  transition: transform 0.2s ease 0.15s, opacity 0.2s ease 0.15s, box-shadow 0.2s ease 0.15s;
-}
-.case-reveal-front {
-  position: absolute;
-  inset: 0;
-  transition: transform 0.5s ease 0.15s;
-}
-.case-row:hover .case-reveal-back,
-.case-row:hover .case-reveal-front-inner {
-  transform: scale(1);
-  opacity: 1;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
-}
-.case-row:hover .case-reveal-front {
-  transform: translateX(20px) translateY(20px) rotate(12deg);
-}
-.case-reveal img { width: 100%; height: 100%; object-fit: cover; display: block; }
-@media (max-width: 900px) { .case-reveal { display: none; } }
-
-/* ===========================================
-   GALLERY
-=========================================== */
-
-/* Fullscreen overlay – scroll container + blur backdrop */
-.gallery-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 300;
-  background: rgba(4, 8, 6, 0.72);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 56px 24px 80px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.35s ease;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.1) transparent;
-}
-.gallery-backdrop.is-open {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* Centered content panel – no bg, floats on blurred page */
-.gallery-panel {
-  width: 100%;
-  max-width: 780px;
-  transform: translateY(28px);
-  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.gallery-backdrop.is-open .gallery-panel {
-  transform: translateY(0);
-}
-
-/* Header: sticky inside backdrop scroll */
-.gallery-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 0 0 24px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  margin-bottom: 28px;
-}
-.gallery-meta {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-}
-.gallery-num {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.15em;
-  color: var(--accent);
-  margin-top: 4px;
-  white-space: nowrap;
-}
-.gallery-title {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 22px;
-  letter-spacing: -0.02em;
-  margin: 0 0 5px;
-  line-height: 1.2;
-  color: var(--text-light);
-}
-.gallery-tags {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: var(--text-muted-dark);
-  margin: 0;
-}
-.gallery-close {
-  flex-shrink: 0;
-  width: 38px; height: 38px;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.55);
-  background: rgba(255,255,255,0.04);
-  cursor: pointer;
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
-}
-.gallery-close svg { width: 16px; height: 16px; }
-.gallery-close:hover {
-  border-color: rgba(255,255,255,0.4);
-  color: var(--text-light);
-  background: rgba(255,255,255,0.08);
-}
-
-/* Photos stacked vertically, full width of panel */
-.gallery-photos {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-.gallery-photo {
-  width: 100%;
-  border-radius: 14px;
-  overflow: hidden;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-  aspect-ratio: 16/10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.gallery-photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-.gallery-photo-placeholder {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.25);
-}
-
-/* Case rows clickable */
-.case-row[data-gallery] { cursor: pointer; }
-.case-row[data-gallery]:focus-visible {
-  outline: 2px solid var(--accent-bright);
-  outline-offset: 4px;
-  border-radius: 4px;
-}
-
-@media (max-width: 700px) {
-  .gallery-backdrop { padding: 40px 16px 60px; }
-  .gallery-title { font-size: 18px; }
-}
-
-/* ===========================================
-   TESTIMONIAL
-=========================================== */
-.testimonial {
-  padding: 120px 0 140px;
-  border-top: 1px solid var(--border-dark);
-}
-.t-grid {
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 80px;
-  align-items: center;
-}
-@media (max-width: 900px) {
-  .t-grid { grid-template-columns: 1fr; gap: 40px; }
-  .t-photo { width: 100%; max-width: 320px; height: auto; aspect-ratio: 320 / 360; margin: 0 auto; }
-}
-.t-photo {
-  position: relative;
-  width: 320px;
-  height: 360px;
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2), transparent 60%),
-    linear-gradient(160deg, var(--accent-deep), var(--accent) 50%, var(--accent-magenta));
-  clip-path: polygon(0 0, 100% 0, 100% 80%, 80% 100%, 0 100%);
-  border: 1px solid var(--border-dark);
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 200, 120, 0.2);
-}
-.t-photo::after {
-  content: "KLIENT / PORTRÉT";
-  position: absolute;
-  inset: auto 0 28px 0;
-  text-align: center;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  color: rgba(255,255,255,0.55);
-}
-.t-quote {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(1.5rem, 2.6vw, 2.2rem);
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-  margin: 0 0 32px;
-  max-width: 28ch;
-}
-.t-quote .qmark {
-  color: var(--accent-bright);
-  font-family: var(--font-display);
-  margin-right: 6px;
-}
-.t-cite { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
-.t-cite .name {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 16px;
-}
-.t-cite .role {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-muted-dark);
-}
-
-/* ===========================================
-   AWARDS / MOMENTUM (light)
-=========================================== */
-.awards {
-  padding: 140px 0 0;
-  position: relative;
-  overflow: hidden;
-}
-.awards-head {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: end;
-  margin-bottom: 100px;
-}
-@media (max-width: 900px) { .awards-head { grid-template-columns: 1fr; gap: 30px; } }
-.awards-title {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(3.2rem, 9vw, 9rem);
-  line-height: 0.92;
-  letter-spacing: -0.04em;
-  margin: 18px 0 0;
-  max-width: 12ch;
-}
-.awards-title em {
-  font-style: normal;
-  background: linear-gradient(120deg, var(--accent), var(--accent-magenta));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.tw-cursor {
-  display: inline-block;
-  margin-left: 0.05em;
-  animation: twBlink 0.9s step-start infinite;
-  background: linear-gradient(120deg, var(--accent), var(--accent-magenta));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-@keyframes twBlink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
-}
-.awards-sub {
-  color: var(--text-muted-light);
-  font-size: 16px;
-  line-height: 1.55;
-  max-width: 32ch;
-}
-.stats {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 40px;
-  margin-bottom: 100px;
-  position: relative;
-  z-index: 2;
-}
-@media (max-width: 700px) { .stats { grid-template-columns: 1fr; } }
-.stat {
-  border-top: 1px solid var(--border-light);
-  padding-top: 28px;
-}
-.stat-num {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(4rem, 9vw, 7.5rem);
-  line-height: 0.95;
-  letter-spacing: -0.04em;
-  color: var(--text-dark);
-}
-.stat-num .plus { color: var(--accent); }
-.stat-label {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-muted-light);
-  margin-top: 16px;
-}
-.stat-desc {
-  margin-top: 14px;
-  color: var(--text-muted-light);
-  font-size: 15px;
-  line-height: 1.5;
-  max-width: 36ch;
-}
-
-/* CTA block */
-.awards-cta {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 40px;
-  align-items: center;
-  padding: 80px 0 140px;
-  border-top: 1px solid var(--border-light);
-}
-@media (max-width: 700px) {
-  .awards-cta { grid-template-columns: 1fr; padding: 50px 0 100px; }
-}
-.cta-text {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(2rem, 4.5vw, 3.4rem);
-  line-height: 1.0;
-  letter-spacing: -0.03em;
-  margin: 0;
-  max-width: 18ch;
-}
-.cta-pill {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: auto;
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-  border-radius: 16px;
-  padding: 28px 40px;
-  font-family: var(--font-display);
-  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  text-transform: none;
-  transform: scale(1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.cta-pill:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-  transform: scale(1.02);
-  box-shadow: 0 20px 60px rgba(0, 200, 120, 0.45);
-}
-.cta-pill:hover .cta-arrow {
-  transform: translate(4px, -4px);
-}
-.cta-arrow {
-  width: 52px;
-  height: 52px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  flex-shrink: 0;
-  transition: transform 0.3s ease;
-}
-
-/* Light waveform */
-.awards-waveform {
-  position: absolute;
-  left: 0; right: 0;
-  bottom: 0;
-  height: 60%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  pointer-events: none;
-  z-index: 1;
-  padding: 0 4px;
-  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.6) 30%, rgba(0,0,0,0.05) 90%);
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.6) 30%, rgba(0,0,0,0.05) 90%);
-}
-.awards-waveform .bar {
-  flex: 1 1 auto;
-  height: 100%;
-  background: linear-gradient(180deg, rgba(0, 200, 120, 0) 0%, rgba(0, 200, 120, 0.55) 60%, rgba(0, 200, 120, 0.85) 100%);
-  margin: 0 1px;
-  transform-origin: bottom;
-  opacity: 0.5;
-  animation: barPulseLight 4s ease-in-out infinite;
-  animation-play-state: paused;
-  animation-delay: calc(var(--i) * 0.045s);
-}
-.awards.is-visible .awards-waveform .bar { animation-play-state: running; }
-@keyframes barPulseLight {
-  0%, 100% { transform: scaleY(0.3); opacity: 0.25; }
-  50% { transform: scaleY(0.85); opacity: 0.7; }
-}
-
-/* ===========================================
-   FOOTER
-=========================================== */
-.footer {
-  background: var(--bg-light-soft);
-  color: var(--text-dark);
-  padding: 50px 0 32px;
-  border-top: 1px solid var(--border-light);
-  position: relative;
-  z-index: 3;
-}
-.footer-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: 30px;
-  padding-bottom: 40px;
-  border-bottom: 1px solid var(--border-light);
-}
-@media (max-width: 700px) { .footer-grid { grid-template-columns: 1fr; } }
-.socials { display: flex; gap: 12px; }
-.s-icon {
-  width: 40px; height: 40px;
-  border: 1px solid var(--border-light);
-  border-radius: 50%;
-  display: inline-flex; align-items: center; justify-content: center;
-  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
-}
-.s-icon:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-.s-icon svg { width: 16px; height: 16px; fill: currentColor; }
-
-.f-nav {
-  display: flex;
-  gap: 26px;
-  justify-self: end;
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: 15px;
-  flex-wrap: wrap;
-}
-@media (max-width: 700px) { .f-nav { justify-self: start; } }
-.f-nav a { position: relative; padding: 4px 0; }
-.f-nav a::after {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 1px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.3s ease;
-}
-.f-nav a:hover { color: var(--accent-deep); }
-.f-nav a:hover::after { transform: scaleX(1); transform-origin: left; }
-
-.f-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 28px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: var(--text-muted-light);
-  flex-wrap: wrap;
-  gap: 14px;
-}
-
-/* ===========================================
-   Reveal animation (IntersectionObserver)
-=========================================== */
-.reveal { opacity: 0; }
-.reveal.in { opacity: 1; transition: opacity 0.4s ease; }
-
-.char {
-  display: inline-block;
-  opacity: 0;
-}
-.reveal.in .char {
-  animation: charReveal 0.225s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: var(--d, 0ms);
-}
-@keyframes charReveal {
-  0%   { opacity: 0; filter: blur(20px); transform: translateY(-7px) scale(1.12); }
-  60%  { opacity: 1; filter: blur(0.4px); transform: translateY(2px) scale(0.984); }
-  100% { opacity: 1; filter: blur(0); transform: none; }
-}
-
-/* prefers-reduced-motion */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; }
-  .reveal { opacity: 1; }
-  .char { opacity: 1; filter: none; transform: none; }
-}
-
-/* ============================================
-   CONTACT OVERLAY
-============================================ */
-
-/* Backdrop */
-.contact-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: rgba(4, 8, 6, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease, backdrop-filter 0.3s ease;
-  overflow-y: auto;
-}
-.contact-overlay.is-open {
-  opacity: 1;
-  pointer-events: all;
-}
-.contact-overlay.is-open .overlay-inner {
-  transform: scale(1);
-  opacity: 1;
-}
-
-/* Popup window */
-.overlay-inner {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  width: 100%;
-  max-width: 860px;
-  max-height: calc(100vh - 48px);
-  overflow-y: auto;
-  background: var(--bg-dark);
-  border-radius: 20px;
-  border: 1px solid rgba(255,255,255,0.07);
-  box-shadow:
-    0 0 0 1px rgba(0,200,122,0.08),
-    0 0 60px rgba(0,200,122,0.18),
-    0 40px 100px rgba(0,0,0,0.6);
-  transform: scale(0.95);
-  opacity: 0;
-  transition: transform 0.35s cubic-bezier(0.34,1.3,0.64,1), opacity 0.3s ease;
-}
-
-/* Close button */
-.overlay-close {
-  position: absolute;
-  top: 20px; right: 20px;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.35);
-  cursor: pointer;
-  background: none;
-  border: none;
-  transition: color 0.2s;
-}
-.overlay-close:hover { color: rgba(255,255,255,0.7); }
-.overlay-close .x-circle {
-  width: 32px; height: 32px;
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  position: relative;
-}
-.overlay-close .x-circle::before,
-.overlay-close .x-circle::after {
-  content: '';
-  position: absolute;
-  width: 12px; height: 1.5px;
-  background: currentColor;
-  border-radius: 1px;
-}
-.overlay-close .x-circle::before { transform: rotate(45deg); }
-.overlay-close .x-circle::after  { transform: rotate(-45deg); }
-
-/* Left branding */
-.overlay-left {
-  padding: 48px 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-right: 1px solid var(--border-dark);
-  position: relative;
-  overflow: hidden;
-  min-height: 0;
-}
-.overlay-left::before {
-  content: "";
-  position: absolute;
-  width: 320px; height: 320px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0,200,122,0.14) 0%, transparent 70%);
-  bottom: -60px; left: -40px;
-  pointer-events: none;
-}
-.ol-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 32px;
-}
-.ol-eyebrow .pulse-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--accent-bright);
-  box-shadow: 0 0 8px var(--accent-bright);
-  animation: pulseDot 1.6s ease-in-out infinite;
-}
-.ol-title {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 3.5vw, 3rem);
-  font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  margin-bottom: 20px;
-}
-.ol-title em {
-  font-style: normal;
-  background: linear-gradient(120deg, var(--accent-bright), var(--accent-magenta));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.ol-sub {
-  font-size: 15px;
-  color: rgba(255,255,255,0.5);
-  line-height: 1.6;
-  max-width: 30ch;
-}
-.ol-direct-email {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  color: rgba(255,255,255,0.3);
-  margin-top: auto;
-  padding-top: 40px;
-}
-.ol-direct-email a {
-  color: var(--accent);
-  text-decoration: none;
-}
-
-/* Right form */
-.overlay-right {
-  padding: 48px 40px;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-.form-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.3);
-  margin-bottom: 32px;
-}
-.field-group { margin-bottom: 16px; }
-.field-label {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.35);
-  margin-bottom: 6px;
-  display: flex;
-  justify-content: space-between;
-}
-.field-req { color: var(--accent); }
-.field-opt { color: rgba(255,255,255,0.2); font-size: 8px; }
-.field-input {
-  width: 100%;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.09);
-  border-radius: 8px;
-  height: 44px;
-  padding: 0 14px;
-  font-family: var(--font-display);
-  font-size: 14px;
-  color: #fff;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  outline: none;
-}
-.field-input:focus {
-  border-color: rgba(0,200,122,0.4);
-  box-shadow: 0 0 0 3px rgba(0,200,122,0.06);
-}
-.field-input::placeholder { color: rgba(255,255,255,0.2); }
-textarea.field-input {
-  height: 110px;
-  resize: none;
-  padding-top: 12px;
-}
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-.form-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 12px;
-}
-.form-note {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.2);
-}
-.form-error {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: #ff6b6b;
-  margin-top: 10px;
-  display: none;
-}
-.form-error.visible { display: block; }
-.submit-btn {
-  background: var(--accent);
-  color: #000;
-  border: none;
-  border-radius: 999px;
-  padding: 12px 26px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-weight: 500;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: background 0.2s, box-shadow 0.2s;
-}
-.submit-btn:hover {
-  background: var(--accent-bright);
-  box-shadow: 0 0 28px rgba(0,200,122,0.4);
-}
-.submit-btn:disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-
-/* Success state */
-.overlay-success {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 60px 48px;
-  grid-column: 1 / -1;
-  position: relative;
-  overflow: hidden;
-  min-height: 400px;
-}
-.overlay-success.visible { display: flex; }
-.overlay-success::before {
-  content: "";
-  position: absolute;
-  width: 600px; height: 600px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0,200,122,0.08) 0%, transparent 70%);
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-.success-icon {
-  width: 68px; height: 68px;
-  border: 2px solid var(--accent);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 26px;
-  color: var(--accent);
-  margin-bottom: 28px;
-  box-shadow: 0 0 40px rgba(0,200,122,0.2);
-  position: relative; z-index: 1;
-}
-.success-tag {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 14px;
-  position: relative; z-index: 1;
-}
-.success-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
-  margin-bottom: 16px;
-  position: relative; z-index: 1;
-}
-.success-sub {
-  font-size: 14px;
-  color: rgba(255,255,255,0.5);
-  max-width: 32ch;
-  line-height: 1.6;
-  margin-bottom: 40px;
-  position: relative; z-index: 1;
-}
-.success-close-btn {
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 999px;
-  padding: 11px 24px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
-  background: rgba(255,255,255,0.02);
-  cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
-  position: relative; z-index: 1;
-}
-.success-close-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-/* Responsive */
-@media (max-width: 700px) {
-  .overlay-inner { grid-template-columns: 1fr; max-height: calc(100vh - 32px); }
-  .overlay-left { display: none; }
-  .overlay-right { padding: 52px 28px 40px; }
-  .overlay-success { padding: 48px 28px; }
-}
-
-/* ===========================================
-   MOBILE FIXES
-=========================================== */
-
-/* Tablet + mobile: about photo fluid, services desc no top padding */
-@media (max-width: 900px) {
-  .about-photo {
-    width: 100%;
-    max-width: 320px;
-    height: auto;
-    aspect-ratio: 1 / 1;
-    margin: 0 auto;
-  }
-  .services-desc { padding-top: 0; }
-  .awards-head { margin-bottom: 60px; }
-}
-
-/* Mobile ≤ 700px */
-@media (max-width: 700px) {
-  .about    { padding: 72px 0 90px; }
-  .services { padding: 72px 0 72px; }
-  .cases    { padding: 72px 0 72px; }
-  .awards   { padding: 72px 0 0; }
-
-  .about-text { font-size: 16px; }
-
-  .svc-row  { gap: 12px 16px; }
-  .svc-name { font-size: 20px; }
-
-  .cta-pill {
-    width: 100%;
-    justify-content: space-between;
-  }
-}
-
-/* Small phones ≤ 580px: single-column contact form rows */
-@media (max-width: 580px) {
-  .field-row { grid-template-columns: 1fr; }
-}
-
-/* Mobile: faster, lighter char reveal (blur is expensive on phone GPUs) */
-@media (max-width: 700px) {
-  .reveal.in .char {
-    animation-name: charRevealMobile;
-    animation-duration: 0.25s;
-  }
-  @keyframes charRevealMobile {
-    0%   { opacity: 0; filter: blur(14px); transform: translateY(-4px); }
-    100% { opacity: 1; filter: blur(0); transform: none; }
-  }
-}
-
-/* ===========================================
-   IMAGE ACCORDION
-=========================================== */
-.accordion-layout {
-  display: flex;
-  flex-direction: column;
-  gap: 56px;
-  align-items: flex-start;
-  padding: 80px 0 100px;
-}
-@media (min-width: 900px) {
-  .accordion-layout {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 60px;
-  }
-}
-.accordion-text { flex: 0 0 auto; max-width: 460px; }
-.accordion-sub {
-  margin-top: 20px;
-  font-size: 17px;
-  line-height: 1.6;
-  color: var(--text-muted-dark);
-  max-width: 38ch;
-}
-.accordion-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 32px;
-  font-family: var(--font-display);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--accent-bright);
-  border: 1px solid var(--accent-bright);
-  border-radius: 999px;
-  padding: 10px 22px;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-.accordion-cta:hover {
-  background: var(--accent-bright);
-  color: var(--bg-dark);
-}
-.accordion-strip {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  gap: 10px;
-  flex-shrink: 0;
-}
-.acc-item {
-  position: relative;
-  height: 460px;
-  border-radius: 20px;
-  overflow: hidden;
-  cursor: pointer;
-  flex-shrink: 0;
-  width: 62px;
-  transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(255,255,255,0.07);
-}
-.acc-item.is-active { width: 380px; }
-@media (min-width: 900px) {
-  .acc-item { height: 500px; }
-  .acc-item.is-active { width: 420px; }
-}
-.acc-item img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  pointer-events: none;
-}
-.acc-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.38);
-  pointer-events: none;
-}
-.acc-label {
-  position: absolute;
-  color: #fff;
-  font-family: var(--font-display);
-  font-size: 16px;
-  font-weight: 600;
-  white-space: nowrap;
-  pointer-events: none;
-  transition: bottom 0.3s ease, left 0.3s ease, transform 0.3s ease;
-  bottom: 88px;
-  left: 50%;
-  transform: translateX(-50%) rotate(90deg);
-}
-.acc-item.is-active .acc-label {
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%) rotate(0deg);
-}
-.acc-item:focus-visible {
-  outline: 2px solid var(--accent-bright);
-  outline-offset: 3px;
-}
-
-/* Mobile: vertical accordion */
-@media (max-width: 699px) {
-  .accordion-layout { padding: 60px 0 80px; gap: 40px; }
-  .accordion-strip {
-    flex-direction: column;
-    width: 100%;
-    gap: 8px;
-  }
-  .acc-item {
-    width: 100% !important;
-    height: 68px;
-    border-radius: 16px;
-    transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .acc-item.is-active {
-    height: 260px;
-  }
-  .acc-label {
-    bottom: 50%;
-    left: 20px;
-    transform: translateY(50%) rotate(0deg);
-    font-size: 15px;
-  }
-  .acc-item.is-active .acc-label {
-    bottom: 20px;
-    left: 20px;
-    transform: none;
-  }
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arteo | Kreatívne štúdio v Nitre</title>
+  <meta name="description" content="Arteo je kreatívne štúdio z Nitry. Navrhujeme weby, vizuálne identity a propagačné materiály pre firmy, ktoré nechcú vyzerať priemerne.">
+  <meta name="theme-color" content="#EEEEE9">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.arteo.sk/">
+  <meta property="og:title" content="Arteo | Kreatívne štúdio">
+  <meta property="og:description" content="Pretože dobré nie je dosť dobré.">
+  <meta property="og:image" content="https://www.arteo.sk/assets/img/work/kavovy-dvor.jpg">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <script>
+    // Theme before paint, so there is no flash of the wrong mode.
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('arteo-theme'); } catch (e) {}
+      if (saved === 'light' || saved === 'dark') document.documentElement.dataset.theme = saved;
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@75..125,200..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <a class="skip" href="#prace">Preskočiť na obsah</a>
+  <div class="grain" aria-hidden="true"></div>
 
-<!-- Custom cursor -->
-<div class="cursor" id="cursor" aria-hidden="true"></div>
-
-<!-- ============ NAV ============ -->
-<header class="nav" id="nav">
-  <!-- Left slot: hamburger on mobile, empty on desktop -->
-  <div class="nav-left">
-    <button class="nav-hamburger" id="navHamburger" aria-label="Otvoriť menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-
-  <!-- Center: logo -->
-  <a href="#top" class="logo" aria-label="Arteo">
-    <svg viewBox="0 0 60 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <filter id="logo-glow" x="-30%" y="-30%" width="160%" height="160%">
-          <feGaussianBlur stdDeviation="1.8" result="b"/>
-          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-      </defs>
-      <g filter="url(#logo-glow)">
-        <circle cx="30" cy="19" r="19" fill="#00c87a" opacity="0.72"/>
-        <circle cx="19" cy="39" r="19" fill="#00c87a" opacity="0.72"/>
-        <circle cx="41" cy="39" r="19" fill="#00c87a" opacity="0.72"/>
-      </g>
-    </svg>
-    <span>Arteo</span>
-  </a>
-
-  <!-- Right slot: nav links on desktop, empty on mobile -->
-  <nav class="nav-links" aria-label="Hlavná navigácia">
-    <a href="#onas" class="nav-link">O nás</a>
-    <a href="#sluzby" class="nav-link">Služby</a>
-    <a href="#projekty" class="nav-link">Projekty</a>
-    <a href="#kontakt" class="nav-link nav-link--cta" onclick="event.preventDefault(); openContactOverlay()">
-      <span class="pulse"></span>Kontakt
+  <!-- Navigation -->
+  <header class="nav">
+    <a class="brand" href="#top" aria-label="Arteo, na začiatok">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i></span>
+      <span class="brand-word">arteo</span>
     </a>
-  </nav>
-</header>
+    <nav class="nav-links" aria-label="Hlavná navigácia">
+      <a href="#prace">Práce</a>
+      <a href="#studio">Štúdio</a>
+      <a href="#sluzby">Služby</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" type="button" aria-label="Prepnúť na tmavý režim">
+        <i class="ph ph-moon" aria-hidden="true"></i>
+      </button>
+      <a class="btn btn-ink magnetic nav-cta" href="#kontakt"><span>Napíšte nám</span></a>
+      <button class="icon-btn menu-toggle" type="button" aria-label="Otvoriť menu" aria-expanded="false" aria-controls="mobile-menu">
+        <i class="ph ph-list" aria-hidden="true"></i>
+      </button>
+    </div>
+  </header>
 
-<!-- Mobile menu overlay -->
-<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-  <nav class="mobile-menu-links">
-    <a href="#onas" class="mobile-link" data-close-menu>O nás</a>
-    <a href="#sluzby" class="mobile-link" data-close-menu>Služby</a>
-    <a href="#projekty" class="mobile-link" data-close-menu>Projekty</a>
-    <a href="#kontakt" class="mobile-link mobile-link--cta" data-close-menu onclick="openContactOverlay()">Kontakt</a>
-  </nav>
-</div>
-
-<!-- ============ HERO ============ -->
-<main id="top">
-<section class="hero section-dark" aria-label="Úvod">
-
-  <!-- Background layer: video + grain + halftone dots + cursor glow -->
-  <div class="v6-bg" aria-hidden="true">
-    <video class="v6-video" autoplay loop muted playsinline preload="auto">
-      <source src="hero-bg.mp4.mp4" type="video/mp4" />
-    </video>
-    <div class="v6-video-overlay"></div>
-    <div class="v6-dots"></div>
-    <div class="v6-cursor-glow"></div>
-    <div class="v6-grain"></div>
+  <div class="mobile-menu" id="mobile-menu" hidden>
+    <nav aria-label="Mobilná navigácia">
+      <a href="#prace">Práce</a>
+      <a href="#studio">Štúdio</a>
+      <a href="#sluzby">Služby</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
   </div>
 
-  <!-- Kinetic columns — filled by JS -->
-  <div class="v6-cols" aria-hidden="true"></div>
-
-  <!-- Center band — vertically centered, columns bleed through the sides -->
-  <div class="v6-band">
-    <div class="eyebrow">
-      <span class="dot">●</span>
-      Brand &nbsp;&amp;&nbsp; Web &nbsp;&amp;&nbsp; Design
-      <span class="slash">/</span>
-      Nitra, SK
-    </div>
-
-    <h1 class="v6-headline" data-words="Pretože|dobré|nie|je|*dosť dobré."></h1>
-
-    <p class="v6-sub">
-      Pre značky, ktoré nechcú vyzerať priemerne.
-    </p>
-
-    <div class="v6-actions">
-      <a href="#sluzby" class="ar-pill" data-hover>
-        <span class="ar-pill-arrow">↓</span>
-        <span>Čo robíme?</span>
-      </a>
-      <a href="#kontakt" class="ar-pill ar-pill--solid" data-hover>
-        <span class="ar-pill-arrow">
-          <svg width="9" height="9" viewBox="0 0 13 13" fill="none" aria-hidden="true">
-            <line x1="1" y1="12" x2="12" y2="1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-            <polyline points="4,1 12,1 12,9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          </svg>
-        </span>
-        <span>Kontaktuj nás</span>
-      </a>
-    </div>
-  </div>
-
-
-</section>
-
-<!-- ============ ABOUT ============ -->
-<section class="about section-dark" id="onas" aria-label="O nás">
-  <div class="shell">
-    <div class="about-grid">
-      <div class="about-photo reveal" aria-hidden="true"><img src="founder.jpg" alt="Zakladateľ Arteo" loading="lazy" /></div>
-      <div class="about-text reveal">
-        <span class="eyebrow"><span class="dot">●</span> O štúdiu</span>
-        <h2 class="about-heading">Robíme menej.<br>Ale poctivo.</h2>
-        <p>
-          Neberieme desiatky projektov naraz. Každému klientovi venujeme čas — či ide o web, vizuálnu identitu alebo propagačné materiály.
-        </p>
-        <p>
-          Hľadáte kreatívneho partnera, ktorý váš projekt pochopí a odovzdá načas? <strong>Sme to my.</strong>
-        </p>
-        <p>
-          Veríme, že aj malá firma si zaslúži profesionálny vizuál. Preto pracujeme rýchlo, transparentne a bez zbytočných komplikácií.
-        </p>
-        <div class="stack-row">
-          <span class="stack-tag">HTML</span>
-          <span class="stack-tag">CSS</span>
-          <span class="stack-tag">Figma</span>
-          <span class="stack-tag">Illustrator</span>
-          <span class="stack-tag">Photoshop</span>
-          <span class="stack-tag">InDesign</span>
+  <main>
+    <!-- Hero -->
+    <section class="hero" id="top">
+      <div class="hero-top">
+        <h1 class="hero-title reg" data-text="Pretože dobré&#10;nie je dosť dobré.">Pretože dobré<br>nie je dosť dobré.</h1>
+        <div class="hero-side">
+          <p class="hero-sub">Sme kreatívne štúdio z Nitry. Navrhujeme weby, vizuálne identity a propagačné materiály pre firmy, ktoré chcú vyniknúť.</p>
+          <div class="hero-ctas">
+            <a class="btn btn-ink magnetic" href="#kontakt"><span>Napíšte nám</span></a>
+            <a class="btn btn-line magnetic" href="#prace"><span>Pozrieť práce</span></a>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- ============ SERVICES (LIGHT) ============ -->
-<section class="services section-light" id="sluzby" aria-label="Služby">
-  <div class="shell">
-    <div class="services-head reveal">
-      <div>
-        <span class="eyebrow"><span class="dot">●</span> Čo robíme <span class="slash">/</span> 04 disciplín</span>
-        <h2 class="services-title">
-          Nestaviame len weby. Tvoríme spôsob, akým ľudia vnímajú značku.
-        </h2>
+      <div class="wordmark" aria-hidden="true">
+        <div class="wm-layer wm-blue"></div>
+        <div class="wm-layer wm-pink"></div>
       </div>
-      <p class="services-desc">Každý projekt je iný. Či potrebujete web, logo alebo letáky — prispôsobíme sa presne tomu, čo vaša firma potrebuje.</p>
-    </div>
+      <p class="sr-only">Arteo</p>
+    </section>
 
-    <div class="svc-list">
-      <article class="svc-row reveal">
-        <span class="svc-num">01 /</span>
-        <h3 class="svc-name">Tvorba webu</h3>
-        <p class="svc-desc">Vlastnoručne písaný kód — web, ktorý načítava rýchlo, vyzerá skvele a predáva.</p>
-        <div class="svc-card c-web" aria-hidden="true"></div>
-      </article>
-      <article class="svc-row reveal">
-        <span class="svc-num">02 /</span>
-        <h3 class="svc-name">Vizuálna identita</h3>
-        <p class="svc-desc">Logo, paleta, typografia, gridy. Systém, ktorý drží naprieč printom aj digitálom.</p>
-        <div class="svc-card c-identity" aria-hidden="true"></div>
-      </article>
-      <article class="svc-row reveal">
-        <span class="svc-num">03 /</span>
-        <h3 class="svc-name">Propagačné materiály</h3>
-        <p class="svc-desc">Plagáty, vizitky, letáky, brožúry — tlač s rovnakou starostlivosťou o detail ako digitál.</p>
-        <div class="svc-card c-print" aria-hidden="true"></div>
-      </article>
-      <article class="svc-row reveal">
-        <span class="svc-num">04 /</span>
-        <h3 class="svc-name">Starostlivosť o web</h3>
-        <p class="svc-desc">Aktualizácie, zálohy, optimalizácia. Váš web v dobrej kondícii bez starostí na vašej strane.</p>
-        <div class="svc-card c-strategy" aria-hidden="true"></div>
-      </article>
-    </div>
-  </div>
-</section>
+    <!-- Selected work: horizontal pan -->
+    <section class="work" id="prace" aria-labelledby="work-title">
+      <div class="work-pin">
+        <div class="work-track">
+          <div class="work-intro">
+            <h2 class="section-title reg" id="work-title" data-text="Vybrané práce">Vybrané práce</h2>
+            <p>Projekty z rokov 2023 až 2026: weby, vizuálne identity, logá a tlačoviny.</p>
+          </div>
 
-<!-- ============ CLIENT MARQUEE ============ -->
-<section class="marquee section-light" aria-label="Klienti">
-  <div class="marquee-track" id="marqueeTrack"></div>
-</section>
+          <article class="project project--tall">
+            <figure class="project-media">
+              <img src="assets/img/work/tomax-mobil.jpg" alt="Web TOMAX Pneuservis v mobile, tmavý dizajn s červeným nadpisom Rýchlo. Presne. Načas." width="1200" height="1600" loading="eager">
+            </figure>
+            <div class="project-meta">
+              <h3>TOMAX Pneuservis</h3>
+              <p>Web</p>
+            </div>
+          </article>
 
-<!-- ============ CASES ============ -->
-<section class="cases section-dark is-dark" id="projekty" aria-label="Projekty">
-  <div class="shell">
-    <div class="accordion-layout">
+          <article class="project project--wide project--low">
+            <figure class="project-media">
+              <img src="assets/img/work/kavovy-dvor.jpg" alt="Dva kelímky s logom Kávový dvor na kamennom schode" width="1800" height="1200" loading="lazy">
+            </figure>
+            <div class="project-meta">
+              <h3>Kávový dvor</h3>
+              <p>Logo a branding kaviarne</p>
+            </div>
+          </article>
 
-      <!-- Left: text -->
-      <div class="accordion-text reveal">
-        <span class="eyebrow"><span class="dot">●</span> Naše projekty <span class="slash">/</span> 2023 — 2026</span>
-        <h2 class="cases-title">
-          Pomáhame firmám vyniknúť<span style="color:var(--accent)">.</span> <span style="white-space:nowrap">Dizajnom, ktorý</span><br>má zmysel<span style="color:var(--accent)">.</span>
-        </h2>
-        <p class="accordion-sub">
-          Tvoríme značky, propagačné materiály a weby, ktoré budujú dôveru a zanechávajú dojem.
-        </p>
-        <a href="#kontakt" class="accordion-cta">Napíš nám <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><line x1="1" y1="12" x2="12" y2="1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><polyline points="4,1 12,1 12,9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></a>
-      </div>
+          <article class="project project--square">
+            <figure class="project-media">
+              <img src="assets/img/work/eightyseven-mikina.jpg" alt="Čierne mikiny so značkou Eightyseven v bielej, modrej a červenej" width="1200" height="1200" loading="lazy">
+            </figure>
+            <div class="project-meta">
+              <h3>Eightyseven</h3>
+              <p>Vizuálna identita</p>
+            </div>
+          </article>
 
-      <!-- Right: accordion -->
-      <div class="accordion-strip reveal">
+          <article class="project project--mid project--low">
+            <figure class="project-media">
+              <img src="assets/img/work/cofflower.jpg" alt="Tri fľaše cold brew kávy s etiketami Cofflower na mramore" width="1800" height="1201" loading="lazy">
+            </figure>
+            <div class="project-meta">
+              <h3>Cofflower</h3>
+              <p>Logo a etikety</p>
+            </div>
+          </article>
 
-        <div class="acc-item is-active" data-gallery="tomax" role="button" tabindex="0" aria-label="Otvoriť galériu: Weby">
-          <img src="gallery/weby/tomax1.jpg" alt="Weby" loading="lazy" />
-          <div class="acc-overlay"></div>
-          <span class="acc-label">Weby</span>
-        </div>
+          <article class="project project--wide">
+            <figure class="project-media">
+              <img src="assets/img/work/solidoart.jpg" alt="Vývesný štít s logom SolidoArt na fasáde" width="1200" height="801" loading="lazy">
+            </figure>
+            <div class="project-meta">
+              <h3>SolidoArt</h3>
+              <p>Logo</p>
+            </div>
+          </article>
 
-        <div class="acc-item" data-gallery="zlavomat" role="button" tabindex="0" aria-label="Otvoriť galériu: Propagačné materiály">
-          <img src="gallery/Propagačné materiály/zlavomat.jpg" alt="Propagačné materiály" loading="lazy" />
-          <div class="acc-overlay"></div>
-          <span class="acc-label">Propagačné materiály</span>
-        </div>
+          <article class="project project--mid project--low">
+            <figure class="project-media">
+              <img src="assets/img/work/zlavomat.jpg" alt="Vizitky Zľavomat v modrej a tmavomodrej" width="1800" height="1350" loading="lazy">
+            </figure>
+            <div class="project-meta">
+              <h3>Zľavomat</h3>
+              <p>Vizitky</p>
+            </div>
+          </article>
 
-        <div class="acc-item" data-gallery="logo" role="button" tabindex="0" aria-label="Otvoriť galériu: Logo dizajn">
-          <img src="gallery/Logo dizajn/cups_mockup.jpg" alt="Logo dizajn" loading="lazy" />
-          <div class="acc-overlay"></div>
-          <span class="acc-label">Logo dizajn</span>
-        </div>
-
-        <div class="acc-item" data-gallery="branding" role="button" tabindex="0" aria-label="Otvoriť galériu: Vizuálna identita">
-          <img src="gallery/Vizuálna identita/87_logo2.jpg" alt="Vizuálna identita" loading="lazy" />
-          <div class="acc-overlay"></div>
-          <span class="acc-label">Vizuálna identita</span>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ TESTIMONIAL ============ -->
-<section class="testimonial section-dark" aria-label="Referencia" style="display:none">
-  <div class="shell">
-    <div class="t-grid">
-      <div class="t-photo reveal" aria-hidden="true"></div>
-      <div class="t-quote-wrap reveal">
-        <p class="t-quote">
-          <span class="qmark">"</span>S Arteo sme dostali nielen krásny web, ale aj jasnú strategickú líniu pre celú značku. Výsledok je nad očakávanie.
-        </p>
-        <div class="t-cite">
-          <span class="name">Marek Tomovič</span>
-          <span class="role">TOMAX Pneuservis · Founder</span>
+          <div class="work-outro">
+            <p>Ďalšie práce pribúdajú na Instagrame.</p>
+            <a class="btn btn-line magnetic" href="https://www.instagram.com/arteo_sk/" target="_blank" rel="noopener"><span>Otvoriť Instagram</span></a>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- ============ AWARDS / MOMENTUM (LIGHT) ============ -->
-<section class="awards section-light" aria-label="Awards a štatistiky">
-  <div class="awards-waveform" id="awardsWave" aria-hidden="true"></div>
-  <div class="shell">
-    <div class="awards-head reveal">
-      <div>
-        <h2 class="awards-title">Budujeme <em><span id="tw-word"></span><span class="tw-cursor" aria-hidden="true">|</span></em></h2>
-      </div>
-      <p class="awards-sub">
-        Každý projekt začína otázkou — čo chcete povedať a komu. Odtiaľ tvoríme značky, weby a vizuálne identity, ktoré zanechajú dojem.
+    <!-- Manifesto -->
+    <section class="manifesto" id="studio" aria-label="O štúdiu">
+      <p class="manifesto-text">
+        Robíme menej, ale poctivo. Neberieme desiatky projektov naraz
+        <span class="inline-img" aria-hidden="true"><img src="assets/img/work/kavovy-dvor.jpg" alt=""></span>,
+        každému klientovi venujeme čas. Veríme, že aj malá firma si zaslúži profesionálny vizuál
+        <span class="inline-img inline-img--round" aria-hidden="true"><img src="assets/img/work/tomax-mobil.jpg" alt=""></span>.
+        Preto pracujeme rýchlo, transparentne a bez zbytočných komplikácií.
       </p>
-    </div>
+    </section>
 
-    <div class="awards-cta reveal" id="kontakt">
-      <p class="cta-text">Máte nápad? Poďme mu dať tvar.</p>
-      <button class="pill cta-pill" data-magnetic onclick="openContactOverlay()">
-        <span>Napíš nám</span>
-        <span class="cta-arrow"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><line x1="1" y1="12" x2="12" y2="1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><polyline points="4,1 12,1 12,9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span>
-      </button>
-    </div>
-  </div>
-</section>
-</main>
+    <!-- Services: horizontal accordion -->
+    <section class="services" id="sluzby" aria-labelledby="services-title">
+      <h2 class="section-title reg" id="services-title" data-text="Čo pre vás urobíme">Čo pre vás urobíme</h2>
 
-<!-- ============ FOOTER ============ -->
-<footer class="footer">
-  <div class="shell">
+      <div class="accordion">
+        <div class="acc-item is-open" data-tone="blue">
+          <button class="acc-head" type="button" aria-expanded="true" aria-controls="acc-1" id="acc-h-1">
+            <span class="acc-name">Tvorba webu</span>
+          </button>
+          <div class="acc-body" id="acc-1" role="region" aria-labelledby="acc-h-1">
+            <div class="acc-copy">
+              <h3>Tvorba webu</h3>
+              <p>Vlastnoručne písaný kód. Web, ktorý sa rýchlo načíta, dobre vyzerá a predáva.</p>
+              <ul><li>Návrh vo Figme</li><li>Kód na mieru</li><li>Mobilná verzia</li></ul>
+            </div>
+            <figure class="acc-media"><img src="assets/img/work/tomax-web.jpg" alt="" loading="lazy"></figure>
+          </div>
+        </div>
+
+        <div class="acc-item" data-tone="pink">
+          <button class="acc-head" type="button" aria-expanded="false" aria-controls="acc-2" id="acc-h-2">
+            <span class="acc-name">Vizuálna identita</span>
+          </button>
+          <div class="acc-body" id="acc-2" role="region" aria-labelledby="acc-h-2">
+            <div class="acc-copy">
+              <h3>Vizuálna identita</h3>
+              <p>Logo, paleta, typografia a gridy. Systém, ktorý drží pokope v tlači aj na obrazovke.</p>
+              <ul><li>Logo</li><li>Farby a písmo</li><li>Pravidlá použitia</li></ul>
+            </div>
+            <figure class="acc-media"><img src="assets/img/work/eightyseven-logo.jpg" alt="" loading="lazy"></figure>
+          </div>
+        </div>
+
+        <div class="acc-item" data-tone="paper">
+          <button class="acc-head" type="button" aria-expanded="false" aria-controls="acc-3" id="acc-h-3">
+            <span class="acc-name">Propagačné materiály</span>
+          </button>
+          <div class="acc-body" id="acc-3" role="region" aria-labelledby="acc-h-3">
+            <div class="acc-copy">
+              <h3>Propagačné materiály</h3>
+              <p>Plagáty, vizitky, letáky a brožúry. Tlačovinám venujeme rovnakú starostlivosť o detail ako webu.</p>
+              <ul><li>Plagáty</li><li>Vizitky</li><li>Letáky a brožúry</li></ul>
+            </div>
+            <figure class="acc-media"><img src="assets/img/work/kebab.jpg" alt="" loading="lazy"></figure>
+          </div>
+        </div>
+
+        <div class="acc-item" data-tone="ink">
+          <button class="acc-head" type="button" aria-expanded="false" aria-controls="acc-4" id="acc-h-4">
+            <span class="acc-name">Starostlivosť o web</span>
+          </button>
+          <div class="acc-body" id="acc-4" role="region" aria-labelledby="acc-h-4">
+            <div class="acc-copy">
+              <h3>Starostlivosť o web</h3>
+              <p>Aktualizácie, zálohy a optimalizácia. Váš web ostane v dobrej kondícii a vy sa oň nemusíte starať.</p>
+              <ul><li>Aktualizácie</li><li>Zálohy</li><li>Optimalizácia</li></ul>
+            </div>
+            <figure class="acc-media acc-media--care" aria-hidden="true">
+              <div class="care"><i></i><i></i></div>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Clients marquee -->
+    <section class="clients" aria-label="Klienti">
+      <div class="marquee">
+        <div class="marquee-track">
+          <ul class="marquee-group">
+            <li class="c c1">TOMAX Pneuservis</li>
+            <li class="c c2">Kávový dvor</li>
+            <li class="c c3">Eightyseven</li>
+            <li class="c c4">Cofflower</li>
+            <li class="c c5">SolidoArt</li>
+            <li class="c c6">Zľavomat</li>
+            <li class="c c7">Döner Kebab L&amp;D</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonial: hidden for now, remove the hidden attribute to show it again -->
+    <section class="voices" aria-labelledby="voices-title" hidden>
+      <h2 class="sr-only" id="voices-title">Čo hovoria klienti</h2>
+      <div class="voices-grid">
+        <div class="voices-media" aria-hidden="true">
+          <img class="vm is-active" src="assets/img/work/tomax-web.jpg" alt="">
+          <div class="voices-wipe"></div>
+        </div>
+        <div class="voices-body">
+          <figure class="quote is-active">
+            <blockquote>„S Arteo sme dostali nielen krásny web, ale aj jasnú strategickú líniu pre celú značku. Výsledok je nad očakávanie.“</blockquote>
+            <figcaption><strong>Marek Tomovič</strong> zakladateľ, TOMAX Pneuservis</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="kontakt" aria-labelledby="contact-title">
+      <h2 class="contact-title reg" id="contact-title" data-text="Máte nápad? Dáme mu tvar.">Máte nápad? Dáme mu tvar.</h2>
+
+      <div class="contact-body">
+        <div class="contact-aside">
+          <a class="contact-mail" href="mailto:hello@arteo.sk">hello@arteo.sk</a>
+          <p>Napíšte, čo potrebujete: web, identitu alebo tlač. Ozveme sa do 24 hodín.</p>
+          <p>Sídlime v Nitre. Dohodnúť sa vieme osobne aj online.</p>
+        </div>
+
+        <form class="form" novalidate>
+          <div class="field">
+            <label for="f-name">Meno</label>
+            <input id="f-name" name="name" type="text" autocomplete="name" required>
+            <p class="field-error" id="e-name" hidden>Napíšte, ako vás máme osloviť.</p>
+          </div>
+          <div class="field">
+            <label for="f-mail">E-mail</label>
+            <input id="f-mail" name="email" type="email" autocomplete="email" required>
+            <p class="field-error" id="e-mail" hidden>Zadajte e-mail v tvare meno@domena.sk.</p>
+          </div>
+          <div class="field">
+            <label for="f-phone">Telefón <span class="field-opt">(nepovinné)</span></label>
+            <input id="f-phone" name="phone" type="tel" autocomplete="tel">
+          </div>
+          <div class="field">
+            <label for="f-company">Firma <span class="field-opt">(nepovinné)</span></label>
+            <input id="f-company" name="company" type="text" autocomplete="organization">
+          </div>
+          <fieldset class="field field--wide">
+            <legend>Čo potrebujete</legend>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="topic" value="Web"><span>Web</span></label>
+              <label class="chip"><input type="radio" name="topic" value="Vizuálna identita"><span>Vizuálna identita</span></label>
+              <label class="chip"><input type="radio" name="topic" value="Propagačné materiály"><span>Propagačné materiály</span></label>
+              <label class="chip"><input type="radio" name="topic" value="Starostlivosť o web"><span>Starostlivosť o web</span></label>
+            </div>
+          </fieldset>
+          <div class="field field--wide">
+            <label for="f-msg">O čom je projekt</label>
+            <textarea id="f-msg" name="message" rows="4" required></textarea>
+            <p class="field-hint">Stačí pár viet: čo robíte, čo potrebujete a do kedy.</p>
+            <p class="field-error" id="e-msg" hidden>Napíšte aspoň jednu vetu o projekte.</p>
+          </div>
+          <div class="form-foot field--wide">
+            <button class="btn btn-ink btn-lg magnetic" type="submit"><span>Odoslať správu</span></button>
+            <p class="form-status" role="status" hidden></p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
     <div class="footer-grid">
-      <div class="socials">
-        <a class="s-icon" href="https://www.instagram.com/arteo_sk/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zM12 0C8.7 0 8.3 0 7.1.1 5.8.1 5 .3 4.2.6c-.8.3-1.5.7-2.2 1.4C1.3 2.7.9 3.4.6 4.2.3 5 .1 5.8.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.1 1.3.3 2.1.6 2.9.3.8.7 1.5 1.4 2.2.7.7 1.4 1.1 2.2 1.4.8.3 1.6.5 2.9.6 1.2.1 1.6.1 4.9.1s3.7 0 4.9-.1c1.3-.1 2.1-.3 2.9-.6.8-.3 1.5-.7 2.2-1.4.7-.7 1.1-1.4 1.4-2.2.3-.8.5-1.6.6-2.9.1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.1-1.3-.3-2.1-.6-2.9-.3-.8-.7-1.5-1.4-2.2-.7-.7-1.4-1.1-2.2-1.4-.8-.3-1.6-.5-2.9-.6C15.7 0 15.3 0 12 0zM12 5.8c-3.4 0-6.2 2.8-6.2 6.2s2.8 6.2 6.2 6.2 6.2-2.8 6.2-6.2S15.4 5.8 12 5.8zM12 16c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4zM18.4 4.2c-.8 0-1.4.6-1.4 1.4s.6 1.4 1.4 1.4 1.4-.6 1.4-1.4-.6-1.4-1.4-1.4z"/></svg></a>
-        <a class="s-icon" href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M19 0h-14C2.2 0 0 2.2 0 5v14c0 2.8 2.2 5 5 5h14c2.8 0 5-2.2 5-5V5c0-2.8-2.2-5-5-5zM7.1 20.5H3.6V9h3.5v11.5zM5.4 7.4c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM20.5 20.5H17v-5.6c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9v5.7H9.5V9h3.4v1.6h.1c.5-.9 1.6-1.8 3.3-1.8 3.5 0 4.2 2.3 4.2 5.4v6.3z"/></svg></a>
-        <a class="s-icon" href="#" aria-label="Behance"><svg viewBox="0 0 24 24"><path d="M9.5 7.7c.6-.5.9-1.2.9-2 0-.5-.1-1-.3-1.4-.2-.4-.4-.7-.8-1-.3-.2-.7-.4-1.2-.5-.5-.1-1-.2-1.6-.2H0v13.4h6.7c.6 0 1.1-.1 1.7-.2.5-.1 1-.4 1.4-.7.4-.3.8-.7 1-1.2.3-.5.4-1.1.4-1.8 0-.9-.2-1.6-.6-2.2-.4-.5-1.1-1-1.9-1.2 1-.4 1.7-1 2-1.7-.4 0-1-.6-1.2-1.3zM3 5.1h2.8c.3 0 .5 0 .8.1.2.1.4.1.6.3.2.1.3.3.4.5.1.2.1.4.1.7 0 .5-.2.9-.5 1.1-.3.2-.7.3-1.2.3H3V5.1zm5 7.4c-.1.3-.3.5-.5.6s-.5.3-.7.3c-.3.1-.6.1-.9.1H3v-3.7h3c.6 0 1.1.1 1.5.4s.5.7.5 1.4c.1.4 0 .7-.1.9zm10.6-7c-.7-.3-1.5-.4-2.4-.4-.9 0-1.7.2-2.4.5-.7.3-1.3.7-1.8 1.2s-.9 1.2-1.1 1.9c-.3.7-.4 1.5-.4 2.4 0 .9.1 1.7.4 2.4.3.7.6 1.4 1.1 1.9.5.5 1.1.9 1.8 1.2.7.3 1.5.4 2.4.4 1.3 0 2.4-.3 3.3-.9.9-.6 1.6-1.6 2-3h-2.5c-.1.3-.4.7-.8.9-.4.3-.9.4-1.5.4-.8 0-1.5-.2-1.9-.6-.4-.4-.7-1.1-.7-1.9h7.6c.1-.8 0-1.6-.2-2.4-.2-.7-.5-1.4-1-2-.5-.6-1.1-1.1-1.9-1.4zm-4.5 4c0-.2.1-.4.2-.7.1-.2.2-.5.4-.7.2-.2.4-.4.7-.5.3-.1.7-.2 1.1-.2.7 0 1.2.2 1.5.6.3.4.6.9.7 1.5h-4.6zM18.7 4h-6V2.5h6V4z"/></svg></a>
-        <a class="s-icon" href="#" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-      </div>
-      <nav class="f-nav">
-        <a href="#top">Domov</a>
-        <a href="#onas">O nás</a>
-        <a href="#sluzby">Služby</a>
-        <a href="#projekty">Projekty</a>
-        <a href="#kontakt">Kontakt</a>
-      </nav>
-    </div>
-    <div class="f-bottom">
-      <span>© 2026 Arteo · Nitra, SK</span>
-      <span>hello@arteo.sk</span>
-    </div>
-  </div>
-</footer>
-
-<script>
-(function () {
-  /* Awards waveform */
-  const aw = document.getElementById('awardsWave');
-  const barCount = window.matchMedia('(max-width: 700px)').matches ? 36 : 72;
-  for (let i = 0; i < barCount; i++) {
-    const b = document.createElement('div');
-    b.className = 'bar';
-    b.style.setProperty('--i', i);
-    b.style.height = (60 + Math.cos(i * 0.4) * 20) + '%';
-    aw.appendChild(b);
-  }
-  /* Pause waveform when off-screen */
-  const awardsSection = document.querySelector('.awards');
-  if (awardsSection) {
-    new IntersectionObserver((entries) => {
-      awardsSection.classList.toggle('is-visible', entries[0].isIntersecting);
-    }, { rootMargin: '100px' }).observe(awardsSection);
-  }
-
-  /* Typewriter — awards title */
-  (function () {
-    var el = document.getElementById('tw-word');
-    if (!el) return;
-    var words = ['značky.', 'weby.', 'identitu.', 'zážitky.'];
-    var wIdx = 0, cIdx = 0, deleting = false;
-
-    function tick() {
-      var word = words[wIdx];
-      if (!deleting) {
-        cIdx++;
-        el.textContent = word.substring(0, cIdx);
-        if (cIdx === word.length) { deleting = true; setTimeout(tick, 2200); return; }
-        setTimeout(tick, 110);
-      } else {
-        cIdx--;
-        el.textContent = word.substring(0, cIdx);
-        if (cIdx === 0) {
-          deleting = false;
-          wIdx = (wIdx + 1) % words.length;
-          setTimeout(tick, 320);
-          return;
-        }
-        setTimeout(tick, 55);
-      }
-    }
-    tick();
-  })();
-
-  /* Marquee */
-  const items = [
-    'HTML', 'CSS', 'Figma', 'Illustrator', 'Photoshop',
-    'InDesign', 'Branding', 'Web Design'
-  ];
-  const track = document.getElementById('marqueeTrack');
-  const buildSet = () => items.map((t, i) =>
-    `<span class="marquee-item">${t}${i < items.length - 1 ? ' <span class="sep">·</span> ' : ' <span class="sep">·</span> '}</span>`
-  ).join('');
-  track.innerHTML = buildSet() + buildSet();
-
-  if (window.matchMedia('(pointer: fine)').matches) {
-    /* Custom cursor */
-    const cursor = document.getElementById('cursor');
-    let cx = window.innerWidth / 2, cy = window.innerHeight / 2;
-    let tx = cx, ty = cy, curScale = 1, _prevCT = performance.now();
-    document.addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; });
-    (function tickCursor(now) {
-      const dt = Math.min(now - _prevCT, 50);
-      _prevCT = now;
-      const pa = 1 - Math.pow(0.78, dt / 16.67);
-      const sa = 1 - Math.pow(0.72, dt / 16.67);
-      cx += (tx - cx) * pa;
-      cy += (ty - cy) * pa;
-      const ts = cursor.classList.contains('is-hover') ? 3 : 1;
-      curScale += (ts - curScale) * sa;
-      cursor.style.transform = `translate(${cx}px,${cy}px) translate(-50%,-50%) scale(${curScale.toFixed(3)})`;
-      requestAnimationFrame(tickCursor);
-    })(performance.now());
-
-    document.querySelectorAll('a, button, [data-magnetic]').forEach(el => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('is-hover'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('is-hover'));
-    });
-
-    /* Magnetic pills */
-    document.querySelectorAll('[data-magnetic]').forEach((el) => {
-      let rect = null;
-      el.addEventListener('mouseenter', () => { rect = el.getBoundingClientRect(); });
-      el.addEventListener('mousemove', (e) => {
-        if (!rect) rect = el.getBoundingClientRect();
-        const dx = e.clientX - (rect.left + rect.width  / 2);
-        const dy = e.clientY - (rect.top  + rect.height / 2);
-        const max = 8;
-        el.style.transform = `translate(${Math.max(-max, Math.min(max, dx * 0.25))}px,${Math.max(-max, Math.min(max, dy * 0.25))}px)`;
-      });
-      el.addEventListener('mouseleave', () => { el.style.transform = ''; rect = null; });
-    });
-  }
-
-  /* Reveal on scroll — letter-by-letter */
-  const charDelay = window.matchMedia('(max-width: 700px)').matches ? 5 : 9;
-
-  function splitChars(el) {
-    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
-      acceptNode(n) {
-        return n.textContent.trim().length ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
-      }
-    });
-    const nodes = [];
-    while (walker.nextNode()) nodes.push(walker.currentNode);
-    if (!nodes.length) return false;
-
-    let idx = 0;
-    for (const tn of nodes) {
-      const frag = document.createDocumentFragment();
-      const words = tn.textContent.trim().split(/\s+/).filter(Boolean);
-      words.forEach((word, wi) => {
-        if (wi > 0) frag.appendChild(document.createTextNode(' '));
-        const wordSpan = document.createElement('span');
-        wordSpan.style.cssText = 'display:inline-block;white-space:nowrap';
-        for (const ch of [...word]) {
-          const s = document.createElement('span');
-          s.className = 'char';
-          s.style.setProperty('--d', (idx * charDelay) + 'ms');
-          s.textContent = ch;
-          wordSpan.appendChild(s);
-          idx++;
-        }
-        frag.appendChild(wordSpan);
-      });
-      tn.parentNode.replaceChild(frag, tn);
-    }
-    el.style.opacity = '1';
-    return true;
-  }
-
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        splitChars(e.target);
-        e.target.classList.add('in');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(r => io.observe(r));
-
-  /* Nav theme switcher — uses cached section offsets, no getBoundingClientRect on scroll */
-  const nav = document.getElementById('nav');
-  const lightSections = Array.from(document.querySelectorAll('.section-light'));
-  var _lightBounds = [];
-  function _cacheLightBounds() {
-    _lightBounds = lightSections.map(function(s) {
-      return { top: s.offsetTop, bottom: s.offsetTop + s.offsetHeight };
-    });
-  }
-  window.addEventListener('resize', _cacheLightBounds, { passive: true });
-  _cacheLightBounds();
-
-  function updateNav() {
-    var navMid = window.scrollY + 36;
-    var inLight = _lightBounds.some(function(b) { return navMid >= b.top && navMid <= b.bottom; });
-    nav.classList.toggle('is-light', inLight);
-  }
-  document.addEventListener('scroll', updateNav, { passive: true });
-  updateNav();
-
-  /* Cases section is always dark — no toggle needed */
-})();
-</script>
-
-<!-- ============ CONTACT OVERLAY ============ -->
-<!-- ============ GALLERY ============ -->
-<div class="gallery-backdrop" id="galleryBackdrop" aria-hidden="true">
-  <aside class="gallery-panel" id="galleryPanel" aria-label="Galéria projektu">
-    <div class="gallery-header">
-      <div class="gallery-meta">
-        <span class="gallery-num" id="galleryNum"></span>
-        <div>
-          <h2 class="gallery-title" id="galleryTitle"></h2>
-          <p class="gallery-tags" id="galleryTags"></p>
-        </div>
-      </div>
-      <button class="gallery-close" id="galleryClose" aria-label="Zatvoriť galériu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-    <div class="gallery-photos" id="galleryPhotos"></div>
-  </aside>
-</div>
-
-<div class="contact-overlay" id="contactOverlay" aria-label="Kontaktný formulár">
-  <div class="overlay-inner" id="overlayInner" role="dialog" aria-modal="true">
-    <button class="overlay-close" onclick="closeContactOverlay()" aria-label="Zavrieť">
-      <span>Zavrieť</span>
-      <span class="x-circle"></span>
-    </button>
-
-    <!-- Left branding -->
-    <div class="overlay-left">
       <div>
-        <div class="ol-eyebrow"><span class="pulse-dot"></span> Arteo Studio / Kontakt</div>
-        <h2 class="ol-title">Napíš nám.<br><em>Odpovedáme</em><br>rýchlo.</h2>
-        <p class="ol-sub">Popíš, čo potrebuješ — web, identitu alebo print. My sa ozveme do 24 hodín.</p>
+        <p class="footer-label">Štúdio</p>
+        <p>Arteo, kreatívne štúdio<br>Nitra, Slovensko</p>
       </div>
-      <div class="ol-direct-email">
-        Alebo priamo na <a href="mailto:hello@arteo.sk">hello@arteo.sk</a>
+      <div>
+        <p class="footer-label">Kontakt</p>
+        <p><a href="mailto:hello@arteo.sk">hello@arteo.sk</a></p>
+      </div>
+      <div>
+        <p class="footer-label">Sledujte nás</p>
+        <p><a href="https://www.instagram.com/arteo_sk/" target="_blank" rel="noopener">Instagram</a></p>
+      </div>
+      <div class="footer-end">
+        <a class="to-top" href="#top">Späť hore <i class="ph ph-arrow-up" aria-hidden="true"></i></a>
+        <p>© 2026 Arteo</p>
       </div>
     </div>
+  </footer>
 
-    <!-- Right form -->
-    <div class="overlay-right">
-      <div class="form-eyebrow">Formulár / Kontakt</div>
-      <form id="contactForm" novalidate>
-        <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
-
-        <div class="field-row">
-          <div class="field-group">
-            <div class="field-label">Meno <span class="field-req">*</span></div>
-            <input class="field-input" type="text" name="name" placeholder="Ján Novák" required autocomplete="name">
-          </div>
-          <div class="field-group">
-            <div class="field-label">Email <span class="field-req">*</span></div>
-            <input class="field-input" type="email" name="email" placeholder="jan@firma.sk" required autocomplete="email">
-          </div>
-        </div>
-
-        <div class="field-row">
-          <div class="field-group">
-            <div class="field-label">Telefón <span class="field-opt">— voliteľné</span></div>
-            <input class="field-input" type="tel" name="phone" placeholder="+421 9XX XXX XXX" autocomplete="tel">
-          </div>
-          <div class="field-group">
-            <div class="field-label">Firma <span class="field-opt">— voliteľné</span></div>
-            <input class="field-input" type="text" name="company" placeholder="Názov firmy" autocomplete="organization">
-          </div>
-        </div>
-
-        <div class="field-group" style="flex:1">
-          <div class="field-label">Správa <span class="field-req">*</span></div>
-          <textarea class="field-input" name="message" placeholder="Popíšte váš projekt alebo dopyt..." required></textarea>
-        </div>
-
-        <div class="form-footer">
-          <span class="form-note">* povinné polia</span>
-          <button type="submit" class="submit-btn" id="submitBtn">Odoslať <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><line x1="1" y1="12" x2="12" y2="1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><polyline points="4,1 12,1 12,9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button>
-        </div>
-        <div class="form-error" id="formError">Nastala chyba. Skúste znova alebo napíšte priamo na hello@arteo.sk.</div>
-      </form>
-    </div>
-
-    <!-- Success state -->
-    <div class="overlay-success" id="overlaySuccess">
-      <div class="success-icon">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-          <polyline points="5,14 11,21 23,8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <div class="success-tag">● Správa odoslaná</div>
-      <h2 class="success-title">Ďakujeme.<br>Ozveme sa čoskoro.</h2>
-      <p class="success-sub">Tvoja správa dorazila. Odpovieme do 24 hodín na uvedený email.</p>
-      <button class="success-close-btn" onclick="closeContactOverlay()">Zavrieť</button>
-    </div>
-  </div>
-</div>
-
-<script>
-/* ----- Gallery ----- */
-(function () {
-  const PROJECTS = {
-    tomax: {
-      num: '/ 01',
-      name: 'Weby',
-      tags: 'Web design / Vývoj / Identita',
-      images: [
-        { src: 'gallery/weby/tomax1.jpg', alt: 'Weby – 1' },
-        { src: 'gallery/weby/tomax2.jpg', alt: 'Weby – 2' },
-      ]
-    },
-    zlavomat: {
-      num: '/ 02',
-      name: 'Propagačné materiály',
-      tags: 'Tlač / Propagácia',
-      images: [
-        { src: 'gallery/Propagačné materiály/zlavomat.jpg',        alt: 'Propagačné materiály – Zľavomat' },
-        { src: 'gallery/Propagačné materiály/Instagram_post1.jpg', alt: 'Propagačné materiály – Instagram' },
-        { src: 'gallery/Propagačné materiály/businesscard_1.jpg',  alt: 'Propagačné materiály – Vizitka 1' },
-        { src: 'gallery/Propagačné materiály/businesscard_2.jpg',  alt: 'Propagačné materiály – Vizitka 2' },
-        { src: 'gallery/Propagačné materiály/kebab1.jpg',          alt: 'Propagačné materiály – Kebab' },
-        { src: 'gallery/Propagačné materiály/plagát2.png',         alt: 'Propagačné materiály – Plagát' },
-      ]
-    },
-    logo: {
-      num: '/ 03',
-      name: 'Logo dizajn',
-      tags: 'Identita / Logo',
-      images: [
-        { src: 'gallery/Logo dizajn/logo1.jpg',           alt: 'Logo dizajn – návrh' },
-        { src: 'gallery/Logo dizajn/cofflower_logo.jpg',  alt: 'Logo dizajn – Cofflower logo' },
-        { src: 'gallery/Logo dizajn/cofflower_mockup1.jpg', alt: 'Logo dizajn – Cofflower mockup' },
-        { src: 'gallery/Logo dizajn/cups_mockup.jpg',     alt: 'Logo dizajn – cups mockup' },
-        { src: 'gallery/Logo dizajn/solidoart_logo.jpg',  alt: 'Logo dizajn – Solidoart logo' },
-        { src: 'gallery/Logo dizajn/solidoart_logo2.jpg', alt: 'Logo dizajn – Solidoart logo 2' },
-      ]
-    },
-    branding: {
-      num: '/ 04',
-      name: 'Vizuálna identita',
-      tags: 'Identita / Branding',
-      images: [
-        { src: 'gallery/Vizuálna identita/87_logo.png',     alt: 'Vizuálna identita – logo' },
-        { src: 'gallery/Vizuálna identita/87_logo2.jpg',    alt: 'Vizuálna identita – logo 2' },
-        { src: 'gallery/Vizuálna identita/87_logo3.png',    alt: 'Vizuálna identita – logo 3' },
-        { src: 'gallery/Vizuálna identita/87_mikina.png',   alt: 'Vizuálna identita – mikina' },
-        { src: 'gallery/Vizuálna identita/87_obal.png',     alt: 'Vizuálna identita – obal' },
-        { src: 'gallery/Vizuálna identita/87_produkt1.png', alt: 'Vizuálna identita – produkt 1' },
-        { src: 'gallery/Vizuálna identita/87_produkt2.png', alt: 'Vizuálna identita – produkt 2' },
-        { src: 'gallery/Vizuálna identita/87_produkt3.png', alt: 'Vizuálna identita – produkt 3' },
-        { src: 'gallery/Vizuálna identita/87_produkt4.png', alt: 'Vizuálna identita – produkt 4' },
-      ]
-    }
-  };
-
-  const backdrop = document.getElementById('galleryBackdrop');
-  const panel    = document.getElementById('galleryPanel');
-  const closeBtn = document.getElementById('galleryClose');
-  const titleEl  = document.getElementById('galleryTitle');
-  const tagsEl   = document.getElementById('galleryTags');
-  const numEl    = document.getElementById('galleryNum');
-  const photosEl = document.getElementById('galleryPhotos');
-
-  function openGallery(key) {
-    const project = PROJECTS[key];
-    if (!project) return;
-
-    numEl.textContent  = project.num;
-    titleEl.textContent = project.name;
-    tagsEl.textContent  = project.tags;
-
-    photosEl.innerHTML = '';
-    project.images.forEach(function (img) {
-      const wrap = document.createElement('div');
-      wrap.className = 'gallery-photo';
-      const image = new Image();
-      image.alt = img.alt;
-      image.onload = function () { wrap.innerHTML = ''; wrap.appendChild(image); };
-      image.onerror = function () {
-        wrap.innerHTML = '<span class="gallery-photo-placeholder">Fotografia bude doplnená</span>';
-      };
-      image.src = img.src;
-      wrap.innerHTML = '<span class="gallery-photo-placeholder">Načítavam…</span>';
-      photosEl.appendChild(wrap);
-    });
-
-    panel.scrollTop = 0;
-    backdrop.classList.add('is-open');
-    backdrop.setAttribute('aria-hidden', 'false');
-    panel.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-    closeBtn.focus();
-  }
-
-  function closeGallery() {
-    backdrop.classList.remove('is-open');
-    backdrop.setAttribute('aria-hidden', 'true');
-    panel.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  }
-
-  window._arteoOpenGallery = openGallery;
-
-  document.querySelectorAll('.acc-item[data-gallery]').forEach(function (item) {
-    item.addEventListener('click', function () {
-      if (window.matchMedia('(hover: hover)').matches && item.classList.contains('is-active')) {
-        openGallery(item.dataset.gallery);
-      }
-    });
-    item.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openGallery(item.dataset.gallery); }
-    });
-  });
-
-  closeBtn.addEventListener('click', closeGallery);
-  backdrop.addEventListener('click', function (e) {
-    if (e.target === backdrop) closeGallery();
-  });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && panel.classList.contains('is-open')) closeGallery();
-  });
-})();
-
-/* ----- Mobile menu ----- */
-(function () {
-  const btn = document.getElementById('navHamburger');
-  const menu = document.getElementById('mobileMenu');
-
-  function openMenu() {
-    btn.classList.add('is-open');
-    btn.setAttribute('aria-expanded', 'true');
-    menu.classList.add('is-open');
-    menu.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeMenu() {
-    btn.classList.remove('is-open');
-    btn.setAttribute('aria-expanded', 'false');
-    menu.classList.remove('is-open');
-    menu.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  }
-
-  btn.addEventListener('click', function () {
-    if (menu.classList.contains('is-open')) closeMenu(); else openMenu();
-  });
-
-  menu.querySelectorAll('[data-close-menu]').forEach(function (link) {
-    link.addEventListener('click', function () {
-      closeMenu();
-    });
-  });
-})();
-
-function openContactOverlay() {
-  const overlay = document.getElementById('contactOverlay');
-  overlay.classList.add('is-open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeContactOverlay() {
-  const overlay = document.getElementById('contactOverlay');
-  overlay.classList.remove('is-open');
-  document.body.style.overflow = '';
-  setTimeout(() => {
-    document.getElementById('overlaySuccess').classList.remove('visible');
-    document.querySelector('.overlay-left').style.display = '';
-    document.querySelector('.overlay-right').style.display = '';
-    document.getElementById('contactForm').reset();
-    document.getElementById('formError').classList.remove('visible');
-    const btn = document.getElementById('submitBtn');
-    btn.disabled = false;
-    btn.innerHTML = 'Odoslať <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><line x1="1" y1="12" x2="12" y2="1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><polyline points="4,1 12,1 12,9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>';
-  }, 350);
-}
-
-document.getElementById('contactOverlay').addEventListener('click', function(e) {
-  if (e.target === this) closeContactOverlay();
-});
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeContactOverlay();
-});
-
-document.getElementById('contactForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const form = this;
-  const btn = document.getElementById('submitBtn');
-  const errEl = document.getElementById('formError');
-
-  errEl.classList.remove('visible');
-  btn.disabled = true;
-  btn.textContent = 'Odosielam…';
-
-  const data = new FormData(form);
-
-  try {
-    const res = await fetch('https://formspree.io/f/mpqoeljo', { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
-    const json = await res.json();
-    if (json.ok) {
-      document.querySelector('.overlay-left').style.display = 'none';
-      document.querySelector('.overlay-right').style.display = 'none';
-      document.getElementById('overlaySuccess').classList.add('visible');
-    } else {
-      errEl.classList.add('visible');
-      btn.disabled = false;
-      btn.innerHTML = 'Odoslať <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><line x1="1" y1="12" x2="12" y2="1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><polyline points="4,1 12,1 12,9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>';
-    }
-  } catch {
-    errEl.classList.add('visible');
-    btn.disabled = false;
-    btn.innerHTML = 'Odoslať <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><line x1="1" y1="12" x2="12" y2="1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><polyline points="4,1 12,1 12,9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>';
-  }
-});
-</script>
-
-<!-- Text scramble -->
-<script>
-/* ---- V6 Hero: char-reveal headline + kinetic columns + cursor glow ---- */
-(function () {
-  var hero = document.querySelector('.hero');
-  if (!hero) return;
-
-  /* 1. Scramble headline */
-  var line = hero.querySelector('[data-words]');
-  if (line) {
-    var PLAIN   = 'Pretože dobré nie je ';
-    var EM_TEXT = 'dosť dobré.';
-    var FULL    = PLAIN + EM_TEXT;
-    var CHARS   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!?#@&%';
-
-    var plainSpan = document.createElement('span');
-    var emSpan    = document.createElement('span');
-    emSpan.className = 'ar-word ar-em';
-    line.appendChild(plainSpan);
-    line.appendChild(emSpan);
-
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      plainSpan.textContent = PLAIN;
-      emSpan.textContent    = EM_TEXT;
-    } else {
-      var SPEED = 30, STEPS = Math.round(1500 / SPEED), scStep = 0;
-
-      var scInterval = setInterval(function () {
-        var progress = scStep / STEPS;
-        var out = '';
-        for (var i = 0; i < FULL.length; i++) {
-          if (FULL[i] === ' ') { out += ' '; continue; }
-          out += progress * FULL.length > i
-            ? FULL[i]
-            : CHARS[Math.floor(Math.random() * CHARS.length)];
-        }
-        plainSpan.textContent = out.slice(0, PLAIN.length);
-        emSpan.textContent    = out.slice(PLAIN.length);
-        scStep++;
-        if (scStep > STEPS) {
-          clearInterval(scInterval);
-          plainSpan.textContent = PLAIN;
-          emSpan.textContent    = EM_TEXT;
-        }
-      }, SPEED);
-    }
-  }
-
-  /* 2. Fill kinetic columns */
-  var colData = [
-    { dir: 'up',   words: ['Brand', '*Identity', 'Logo', 'Systems', 'Naming', 'Guidelines', 'Strategy'] },
-    { dir: 'down', words: ['Web', 'UX / UI', '*E-shop', 'No-code', 'Landing', 'CMS'] },
-    { dir: 'up',   words: ['Print', 'Editorial', 'Typografia', '*Plagát', 'Packaging', 'Katalóg'] },
-    { dir: 'down', words: ['Art Direction', 'Motion', '*Video', 'Foto', 'Social', '3D'] }
-  ];
-  var colsWrap = hero.querySelector('.v6-cols');
-  if (colsWrap) {
-    colData.forEach(function (c) {
-      var col = document.createElement('div');
-      col.className = 'v6-col v6-col--' + c.dir;
-      var track = document.createElement('div');
-      track.className = 'v6-col-track';
-      var seq = c.words.concat(c.words);
-      seq.forEach(function (w) {
-        var span = document.createElement('span');
-        if (w.charAt(0) === '*') {
-          var b = document.createElement('b');
-          b.textContent = w.slice(1);
-          span.appendChild(b);
-        } else {
-          span.textContent = w;
-        }
-        track.appendChild(span);
-      });
-      col.appendChild(track);
-      colsWrap.appendChild(col);
-    });
-  }
-
-  /* 3. Cursor-reactive glow */
-  var glow = hero.querySelector('.v6-cursor-glow');
-  var raf = 0, tx = 0, ty = 0, x = 0, y = 0, gx = 50, gy = 50, tgx = 50, tgy = 50;
-  function tick() {
-    x += (tx - x) * 0.35; y += (ty - y) * 0.35;
-    gx += (tgx - gx) * 0.08; gy += (tgy - gy) * 0.08;
-    if (glow) glow.style.background =
-      'radial-gradient(26% 34% at ' + gx + '% ' + gy + '%, rgba(62,245,168,0.18), transparent 70%)';
-    if (Math.abs(tgx - gx) > 0.1 || Math.abs(tgy - gy) > 0.1) {
-      raf = requestAnimationFrame(tick);
-    } else { raf = 0; }
-  }
-  hero.addEventListener('mousemove', function (e) {
-    var r = hero.getBoundingClientRect();
-    tx = e.clientX - r.left; ty = e.clientY - r.top;
-    tgx = (tx / r.width) * 100; tgy = (ty / r.height) * 100;
-    if (!raf) raf = requestAnimationFrame(tick);
-  });
-})();
-</script>
-
-
-<script>
-/* ----- Image Accordion ----- */
-(function () {
-  function init() {
-    var items = Array.from(document.querySelectorAll('.acc-item'));
-    if (!items.length) return;
-    var hasHover = window.matchMedia('(hover: hover)').matches;
-
-    items.forEach(function (item) {
-      if (hasHover) {
-        item.addEventListener('mouseenter', function () {
-          items.forEach(function (it) { it.classList.remove('is-active'); });
-          item.classList.add('is-active');
-        });
-      }
-      item.addEventListener('focus', function () {
-        items.forEach(function (it) { it.classList.remove('is-active'); });
-        item.classList.add('is-active');
-      });
-      item.addEventListener('click', function () {
-        if (!hasHover) {
-          /* Touch: prvý tap = expand, druhý tap = galéria */
-          if (item.classList.contains('is-active') && item.hasAttribute('data-activated')) {
-            var key = item.dataset.gallery;
-            if (key && window._arteoOpenGallery) window._arteoOpenGallery(key);
-          } else {
-            items.forEach(function (it) { it.classList.remove('is-active'); it.removeAttribute('data-activated'); });
-            item.classList.add('is-active');
-            item.setAttribute('data-activated', '');
-          }
-        }
-        /* Desktop: galéria handler v gallery IIFE rieši otvorenie */
-      });
-      item.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          var key = item.dataset.gallery;
-          if (key && window._arteoOpenGallery) window._arteoOpenGallery(key);
-        }
-      });
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-})();
-
-</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>

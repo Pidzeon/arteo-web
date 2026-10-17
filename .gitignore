@@ -1,12 +1,5 @@
-.superpowers/
-.claude/
-extracted/
-docs/
-*.zip
-
-# Next.js (react/ subdirectory)
-react/node_modules/
-react/.next/
-react/out/
-react/tsconfig.tsbuildinfo
-react/next-env.d.ts
+# Unused AI-generated placeholders from the first draft
+assets/img/kora.jpg
+assets/img/ozvena.jpg
+assets/img/luc.jpg
+assets/img/hrdza.jpg
