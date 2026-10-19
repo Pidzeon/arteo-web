@@ -8,7 +8,11 @@
   const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
   const desktopMQ = matchMedia('(min-width: 901px)');
   const hasGsap = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
-  if (hasGsap) gsap.registerPlugin(ScrollTrigger);
+  if (hasGsap) {
+    gsap.registerPlugin(ScrollTrigger);
+    // Phones resize the viewport when the URL bar slides; re-measuring then makes the page jump.
+    ScrollTrigger.config({ ignoreMobileResize: true });
+  }
 
   // Always start at the top so the load sequence is seen and pinned sections measure cleanly.
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -81,16 +85,18 @@
 
   function setMenu(open) {
     menuOpen = open;
-    menu.hidden = !open;
+    menu.classList.toggle('is-open', open);
     menuBtn.setAttribute('aria-expanded', String(open));
     menuBtn.setAttribute('aria-label', open ? 'Zavrieť menu' : 'Otvoriť menu');
     menuBtn.querySelector('i').className = open ? 'ph ph-x' : 'ph ph-list';
-    document.body.style.overflow = open ? 'hidden' : '';
+    // iOS ignores overflow on body alone; locking the root stops the page scrolling under the menu.
+    root.style.overflow = document.body.style.overflow = open ? 'hidden' : '';
     if (lenis) (open ? lenis.stop() : lenis.start());
+    if (open) nav.classList.remove('is-hidden');
     if (open && hasGsap && !reduce) {
       gsap.fromTo(menu.querySelectorAll('a'),
-        { yPercent: 60, opacity: 0 },
-        { yPercent: 0, opacity: 1, stagger: 0.06, duration: 0.8, ease: 'expo.out' });
+        { yPercent: 70, opacity: 0 },
+        { yPercent: 0, opacity: 1, stagger: 0.05, duration: 0.7, delay: 0.12, ease: 'expo.out', overwrite: true });
     }
   }
   menuBtn.addEventListener('click', () => setMenu(!menuOpen));
@@ -123,16 +129,24 @@
         nav.classList.toggle('is-hidden', self.direction === 1 && y > 520 && !menuOpen);
       }
     });
+    // A refresh measures from the top for a moment; re-read the real position afterwards.
+    ScrollTrigger.addEventListener('refresh', () => nav.classList.toggle('is-scrolled', window.scrollY > 24));
   }
 
+  // Written onto the misregistered headings only: a variable on <html> would
+  // restyle the whole document every frame, which is what stutters on phones.
   let reg = 0;
+  let regStr = '0.00';
+  const regEls = [...document.querySelectorAll('.reg')];
   if (lenis) {
     onTick(() => {
       const target = clamp(lenis.velocity * 0.9, -16, 16);
       const next = lerp(reg, target, 0.12);
-      if (Math.abs(next - reg) > 0.01 || (Math.abs(next) > 0.01 && Math.abs(next) < 0.05)) {
-        reg = Math.abs(next) < 0.02 ? 0 : next;
-        root.style.setProperty('--reg', reg.toFixed(2));
+      reg = Math.abs(next) < 0.02 ? 0 : next;
+      const s = reg.toFixed(2);
+      if (s !== regStr) {
+        regStr = s;
+        regEls.forEach(el => el.style.setProperty('--reg', s));
       }
     });
   }
@@ -167,6 +181,7 @@
     const wmLeft = wm.getBoundingClientRect().left;
     centers = blueEls.map(s => { const r = s.getBoundingClientRect(); return r.left - wmLeft + r.width / 2; });
     sigma = (avail / letters.length) * 0.85;
+    written.b = []; written.p = []; // widths were reset for measuring, rewrite them next frame
   }
 
   hero.addEventListener('pointermove', e => {
@@ -178,8 +193,15 @@
   });
   hero.addEventListener('pointerleave', () => { pointer.active = false; pointer.lastX = null; });
 
+  // The breathing word re-shapes glyphs every frame; stop it once the hero is scrolled away.
+  let heroVisible = true;
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => { heroVisible = entry.isIntersecting; }).observe(wm);
+  }
+  const written = { b: [], p: [], mx: '', my: '' };
+
   function wordmarkFrame(time) {
-    if (!centers.length) return;
+    if (!centers.length || (!heroVisible && !intro.on)) return;
     const width = wm.clientWidth;
     // No pointer: a slow virtual cursor sweeps the word so it keeps breathing.
     const x = pointer.active ? pointer.x : width / 2 + Math.sin(time * 0.45) * width * 0.42;
@@ -193,8 +215,9 @@
       if (intro.on) t = intro.w[i];
       s.b = lerp(s.b, t, 0.14);
       s.p = lerp(s.p, t, 0.075); // pink plate lags: shapes ghost while stretching
-      blueEls[i].style.setProperty('--w', s.b.toFixed(1));
-      pinkEls[i].style.setProperty('--w', s.p.toFixed(1));
+      const b = s.b.toFixed(1), p = s.p.toFixed(1);
+      if (written.b[i] !== b) { written.b[i] = b; blueEls[i].style.setProperty('--w', b); }
+      if (written.p[i] !== p) { written.p[i] = p; pinkEls[i].style.setProperty('--w', p); }
     });
 
     pointer.vx *= 0.9;
@@ -203,8 +226,9 @@
     const ty = -rest * 0.6 + reg * 1.2 + intro.plate * fontPx * 0.05;
     off.x = lerp(off.x, tx, 0.1);
     off.y = lerp(off.y, ty, 0.1);
-    pinkLayer.style.setProperty('--mx', off.x.toFixed(2) + 'px');
-    pinkLayer.style.setProperty('--my', off.y.toFixed(2) + 'px');
+    const mx = off.x.toFixed(1) + 'px', my = off.y.toFixed(1) + 'px';
+    if (written.mx !== mx) { written.mx = mx; pinkLayer.style.setProperty('--mx', mx); }
+    if (written.my !== my) { written.my = my; pinkLayer.style.setProperty('--my', my); }
   }
   if (!reduce) onTick(wordmarkFrame);
 
@@ -263,6 +287,22 @@
       });
 
       return () => root.classList.remove('has-pan');
+    });
+
+    // Phones: the strip becomes a column, but each print still arrives a little
+    // out of register and settles as it scrolls into place.
+    mm.add('(max-width: 900px) and (prefers-reduced-motion: no-preference)', () => {
+      gsap.utils.toArray('.project').forEach((p, i) => {
+        const media = p.querySelector('.project-media');
+        gsap.fromTo(media, { rotate: i % 2 ? -2.5 : 2.5, y: 56 }, {
+          rotate: 0, y: 0, ease: 'none',
+          scrollTrigger: { trigger: p, start: 'top 100%', end: 'top 58%', scrub: 0.5 }
+        });
+        gsap.fromTo(media.querySelector('img'), { yPercent: -5, scale: 1.12 }, {
+          yPercent: 5, scale: 1.12, ease: 'none',
+          scrollTrigger: { trigger: media, start: 'top bottom', end: 'bottom top', scrub: true }
+        });
+      });
     });
   }
 
@@ -323,8 +363,13 @@
       i.classList.toggle('is-open', open);
       i.querySelector('.acc-head').setAttribute('aria-expanded', String(open));
     });
-    if (!desktopMQ.matches && hasGsap) setTimeout(() => ScrollTrigger.refresh(), 50);
+    // Stacked accordion animates its height; measure triggers below it once it has settled.
+    if (!desktopMQ.matches && hasGsap) {
+      clearTimeout(accTimer);
+      accTimer = setTimeout(() => ScrollTrigger.refresh(), 700);
+    }
   }
+  let accTimer;
   accItems.forEach(item => {
     const head = item.querySelector('.acc-head');
     head.addEventListener('click', () => openAcc(item, !desktopMQ.matches));
@@ -455,7 +500,11 @@
   });
 
   let resizeTimer;
+  let lastWidth = window.innerWidth;
   window.addEventListener('resize', () => {
+    // Height-only changes are the phone URL bar sliding; ScrollTrigger handles real ones itself.
+    if (window.innerWidth === lastWidth) return;
+    lastWidth = window.innerWidth;
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
       fitWordmark();
