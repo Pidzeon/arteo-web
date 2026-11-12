@@ -1,0 +1,3 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+<defs><clipPath id="trim"><path d="M42 24H214A18 18 0 0 1 232 42V214A18 18 0 0 1 214 232H42A18 18 0 0 1 24 214V42A18 18 0 0 1 42 24Z"/></clipPath></defs><path fill="#18181C" fill-rule="evenodd" clip-path="url(#trim)" d="M42 24H214A18 18 0 0 1 232 42V214A18 18 0 0 1 214 232H42A18 18 0 0 1 24 214V42A18 18 0 0 1 42 24ZM180 40V216H142V200.42A88 88 0 1 1 142 55.58V40ZM42 128a50 50 0 1 0 100 0a50 50 0 1 0 -100 0Z"/>
+</svg>

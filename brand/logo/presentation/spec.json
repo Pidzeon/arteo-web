@@ -1,0 +1,40 @@
+{
+  "brand": "Arteo",
+  "tagline": "Creative studio, Nitra",
+  "deck_title": "final identity",
+  "brief": "Arteo is a small creative studio in Nitra: websites, visual identities and print. The new site is built on a risograph idea: two print inks, blue and fluorescent pink, overlap and slip out of register. The logo has to belong to that world, replace the old green three-circle mark and work from a 16 px browser tab to a studio sign.",
+  "adjectives": ["crafted", "precise", "playful", "contemporary"],
+  "criteria": "Success: unmistakably Arteo, legible as 'arteo' at a glance, recognisable at 16 px as 'ar', works in one colour, and the two inks feel native to the riso website.",
+  "industry": "agency",
+  "mockups": ["business-card", "website", "signage", "social", "app-icon", "favicon-tab"],
+  "nav": ["Work", "Services", "Contact"],
+  "brand_color": "#2A4BD7",
+  "tile_color": "#18181C",
+  "greyscale": false,
+  "final": true,
+  "designer": "Arteo",
+  "concepts": [
+    {
+      "name": "Ligature",
+      "symbol": "../final/arteo-symbol-color.svg",
+      "lockup": "../final/arteo-wordmark-color.svg",
+      "avatar": "../final/symbol/arteo-symbol-favicon.svg",
+      "symbol_on_tile": "../final/arteo-symbol-color-dark.svg",
+      "symbol_on_dark": "../final/arteo-symbol-color-dark.svg",
+      "lockup_on_dark": "../final/arteo-wordmark-color-dark.svg",
+      "idea": "The 'a' and the 'r' share one stroke, and where they meet the two inks overprint into a third colour.",
+      "rationale": [
+        "Craft you can see: a ligature is a typographer's detail, built from circles and straight stems, not a stock font",
+        "The overprint at the shared stem is the website's riso idea in one spot of colour",
+        "The 'ar' symbol stands on its own for favicons, avatars and app icons",
+        "Works in one colour; a heavier cut keeps it clear at 16 px"
+      ]
+    }
+  ],
+  "recommendation": "Use the wordmark as the primary logo and the 'ar' symbol wherever space is square or tiny.",
+  "next_steps": [
+    "Swap the logo and favicon on arteo.sk",
+    "Update the Arteo design system and Figma file",
+    "Trademark and domain-handle check before print"
+  ]
+}
