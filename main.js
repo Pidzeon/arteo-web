@@ -195,6 +195,14 @@
       cx = W * 0.98;
       cy = tBottom + r * 0.42;
     }
+    // The arch's lowest point is its left end at cy: keep it above the intro text and buttons.
+    const bTop = hero.querySelector('.hero-bottom').getBoundingClientRect().top - h.top;
+    const cap = bTop - 20;
+    if (cy > cap) {
+      r = Math.max(60, r - (cy - cap) * 0.5);
+      cy = cap;
+    }
+    r = Math.min(r, cy - 60);
     Object.assign(geo, { cx, cy, r });
     arc.setAttribute('viewBox', `0 0 ${nf(W)} ${nf(H)}`);
     const d = band(cx, cy, r, r * (1 - STROKE), 180, 310);
