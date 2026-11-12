@@ -181,7 +181,10 @@
   // Kept under the old name: boot and resize call it.
   function fitWordmark() {
     const h = hero.getBoundingClientRect();
-    const t = title.getBoundingClientRect();
+    // Measure the glyphs, not the block: the h1 box spans the full width on big screens.
+    const range = document.createRange();
+    range.selectNodeContents(title);
+    const t = range.getBoundingClientRect();
     const W = h.width, H = h.height;
     const tRight = t.right - h.left, tBottom = t.bottom - h.top;
     let r, cx, cy;

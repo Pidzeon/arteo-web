@@ -265,7 +265,7 @@ ul { padding: 0; list-style: none; }
 .hero-title {
   position: relative; z-index: 1;
   font-family: var(--display);
-  font-size: clamp(3rem, 12.2vw, 14rem);
+  font-size: clamp(3rem, min(12.2vw, 26vh), 22rem); /* grows on big screens, never taller than the view */
   line-height: .87;
   letter-spacing: -.045em;
   font-variation-settings: "wdth" 88, "wght" 760;
