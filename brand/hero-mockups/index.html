@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<title>Arteo hero directions</title>
+<link href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@75..125,200..900&display=swap" rel="stylesheet">
+<style>
+  :root { --paper:#EEEEE9; --ink:#18181C; --soft:#55555E; --blue:#2A4BD7; --pink:#FF4AA5; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #bbb; font-family: "Mona Sans", sans-serif; color: var(--ink); }
+  .frame { position: relative; width: 1440px; height: 900px; overflow: hidden; background: var(--paper); margin-bottom: 40px; }
+  .label { position:absolute; right:16px; bottom:12px; font:600 13px "Mona Sans"; color:var(--soft); z-index:9 }
+  nav { position:absolute; top:0; left:0; right:0; height:68px; display:flex; align-items:center; justify-content:space-between; padding:0 44px; z-index:5 }
+  nav .links { display:flex; gap:32px; font-size:15px; font-weight:500 }
+  nav .cta { background:var(--ink); color:var(--paper); border-radius:999px; padding:12px 20px; font-size:15px; font-weight:600 }
+  .logo { height:30px }
+  .btns { display:flex; gap:12px; margin-top:22px }
+  .btn { border-radius:999px; padding:15px 24px; font-size:16px; font-weight:600; border:1.5px solid var(--ink) }
+  .btn.ink { background:var(--ink); color:var(--paper) }
+  .sub { font-size:18px; line-height:1.5; color:var(--soft); max-width:360px }
+  .h { font-variation-settings:"wdth" 88, "wght" 760; letter-spacing:-.04em; line-height:.95 }
+  svg.abs { position:absolute; left:0; top:0; overflow:visible }
+  .mul { mix-blend-mode: multiply }
+</style>
+</head>
+<body>
+
+<!-- 1: headline inside the a -->
+<section class="frame" id="f1">
+  <nav><svg class="logo" data-logo></svg><div class="links"><span>Práce</span><span>Štúdio</span><span>Služby</span><span>Kontakt</span></div><span class="cta">Napíšte nám</span></nav>
+  <svg class="abs" width="1440" height="900" data-giant='{"s":7,"x":450,"y":520}'></svg>
+  <h1 class="h" style="position:absolute;left:880px;top:520px;transform:translate(-50%,-50%);font-size:58px;text-align:center;width:470px;z-index:3">Pretože dobré<br>nie&nbsp;je dosť<br>dobré.</h1>
+  <div style="position:absolute;left:44px;bottom:72px;z-index:3">
+    <p class="sub">Sme kreatívne štúdio z Nitry. Navrhujeme weby, vizuálne identity a&nbsp;propagačné materiály pre firmy, ktoré chcú vyniknúť.</p>
+    <div class="btns"><span class="btn ink">Napíšte nám</span><span class="btn">Pozrieť práce</span></div>
+  </div>
+  <span class="label">1 · Inside the a</span>
+</section>
+
+<!-- 2: overprint poster -->
+<section class="frame" id="f2">
+  <nav><svg class="logo" data-logo></svg><div class="links"><span>Práce</span><span>Štúdio</span><span>Služby</span><span>Kontakt</span></div><span class="cta">Napíšte nám</span></nav>
+  <h1 class="h" style="position:absolute;left:40px;top:118px;font-size:178px;color:var(--blue);line-height:.88;z-index:1">Pretože dobré<br>nie je dosť<br>dobré.</h1>
+  <svg class="abs" width="1440" height="900" style="z-index:2;mix-blend-mode:multiply" data-arch='{"s":9.4,"cx":1010,"cy":690}'></svg>
+  <div style="position:absolute;left:44px;bottom:56px;z-index:3;display:flex;gap:48px;align-items:flex-end">
+    <p class="sub">Sme kreatívne štúdio z Nitry. Navrhujeme weby, vizuálne identity a&nbsp;propagačné materiály pre firmy, ktoré chcú vyniknúť.</p>
+    <div class="btns"><span class="btn ink">Napíšte nám</span><span class="btn">Pozrieť práce</span></div>
+  </div>
+  <span class="label">2 · Overprint poster</span>
+</section>
+
+<!-- 3: press sheet -->
+<section class="frame" id="f3">
+  <nav><svg class="logo" data-logo></svg><div class="links"><span>Práce</span><span>Štúdio</span><span>Služby</span><span>Kontakt</span></div><span class="cta">Napíšte nám</span></nav>
+  <svg class="abs" width="1440" height="900" data-sheet></svg>
+  <h1 class="h" style="position:absolute;left:120px;top:150px;font-size:96px;z-index:3">Pretože dobré<br>nie je dosť dobré.</h1>
+  <div style="position:absolute;right:120px;top:172px;z-index:3">
+    <p class="sub">Sme kreatívne štúdio z Nitry. Navrhujeme weby, vizuálne identity a&nbsp;propagačné materiály pre firmy, ktoré chcú vyniknúť.</p>
+    <div class="btns"><span class="btn ink">Napíšte nám</span><span class="btn">Pozrieť práce</span></div>
+  </div>
+  <span class="label">3 · Press sheet</span>
+</section>
+
+<script>
+const R=61.5,S=26,RI=35.5,CY=60, NS='http://www.w3.org/2000/svg';
+const f=v=>Math.round(v*100)/100;
+const ring=(cx,cy,ro,ri)=>`M${f(cx-ro)} ${cy}a${ro} ${ro} 0 1 0 ${f(2*ro)} 0a${ro} ${ro} 0 1 0 ${f(-2*ro)} 0ZM${f(cx-ri)} ${cy}a${ri} ${ri} 0 1 0 ${f(2*ri)} 0a${ri} ${ri} 0 1 0 ${f(-2*ri)} 0Z`;
+const band=(cx,cy,ro,ri,a0,a1)=>{const r=d=>d*Math.PI/180,P=(q,a)=>[f(cx+q*Math.cos(r(a))),f(cy+q*Math.sin(r(a)))];const p0=P(ro,a0),p1=P(ro,a1),q1=P(ri,a1),q0=P(ri,a0);const L=((a1-a0)%360+360)%360>180?1:0;return `M${p0}A${ro} ${ro} 0 ${L} 1 ${p1}L${q1}A${ri} ${ri} 0 ${L} 0 ${q0}Z`;};
+const rect=(x0,y0,x1,y1)=>`M${x0} ${y0}H${x1}V${y1}H${x0}Z`;
+const P=(d,fill,extra='')=>`<path fill="${fill}" fill-rule="evenodd" d="${d}" ${extra}/>`;
+
+// "ar" at scale s, bowl left edge at x, x-height centre at y
+function ar(s,x,y){const ro=R*s,ri=RI*s,ca=x+ro,cy=y,sl=ca+ri,sr=ca+ro,top=cy-ro,bot=top+120*s,cr=sl+ro;
+ return P(ring(ca,cy,ro,ri),'var(--blue)')+P(rect(sl,top,sr,bot),'var(--blue)')+P(band(cr,cy,ro,ri,180,310),'var(--pink)','class="mul"');}
+// wordmark for nav (units), height 30
+function wordmark(){const ca=R,sl=ca+RI,sr=ca+R,cr=sl+R,end=cr+R*Math.cos(50*Math.PI/180);let x=end+10;let d=P(ring(ca,CY,R,RI),'var(--blue)')+P(rect(sl,0,sr,120),'var(--blue)');
+ d+=P(rect(x+18,-34,x+44,120),'var(--blue)')+P(rect(x,0,x+66,22),'var(--blue)');x+=80;const ce=x+R;d+=P(band(ce,CY,R,RI,40,370),'var(--blue)')+P(rect(ce-RI-4,48,ce+R-2,70),'var(--blue)');x+=2*R+16;d+=P(ring(x+R,CY,R,RI),'var(--blue)');
+ d+=P(band(cr,CY,R,RI,180,310),'var(--pink)','class="mul"');return {d,w:x+2*R};}
+const wm=wordmark();
+document.querySelectorAll('[data-logo]').forEach(s=>{s.setAttribute('viewBox',`0 -36 ${f(wm.w)} 158`);s.innerHTML=wm.d;s.style.width=f(30*wm.w/158)+'px';});
+document.querySelectorAll('[data-giant]').forEach(s=>{const o=JSON.parse(s.dataset.giant);s.innerHTML=ar(o.s,o.x,o.y);});
+document.querySelectorAll('[data-arch]').forEach(s=>{const o=JSON.parse(s.dataset.arch);s.innerHTML=P(band(o.cx,o.cy,R*o.s,RI*o.s,180,310),'var(--pink)','class="mul"');});
+// press sheet: crop marks, registration targets, colour bar, slug, big wordmark with halftone ghost
+document.querySelectorAll('[data-sheet]').forEach(s=>{
+ const ink='var(--ink)',L=(x1,y1,x2,y2)=>`<path d="M${x1} ${y1}L${x2} ${y2}" stroke="${ink}" stroke-width="1.5"/>`;
+ const m=88,W=1440,H=900; let o='<defs><pattern id="dots" patternUnits="userSpaceOnUse" width="7" height="7"><circle cx="3.5" cy="3.5" r="2.6" fill="var(--pink)"/></pattern></defs>';
+ [[m,m,-1,-1],[W-m,m,1,-1],[m,H-m,-1,1],[W-m,H-m,1,1]].forEach(([x,y,dx,dy])=>{o+=L(x+dx*10,y,x+dx*40,y)+L(x,y+dy*10,x,y+dy*40);});
+ const reg=(x,y)=>`<circle cx="${x}" cy="${y}" r="9" fill="none" stroke="${ink}" stroke-width="1.5"/>`+L(x-16,y,x+16,y)+L(x,y-16,x,y+16);
+ o+=reg(W/2,H-m+40)+reg(m-40,H/2)+reg(W-m+40,H/2);
+ const sw=['var(--blue)','var(--pink)','#2A168B','var(--ink)'];sw.forEach((c,i)=>o+=`<rect x="${W-m-4*34+i*34}" y="${H-m+26}" width="30" height="16" fill="${c}"/>`);
+ o+=`<text x="${m}" y="${H-m+40}" font-family="Mona Sans" font-size="12" fill="#55555E">arteo.sk · hárok 01/26 · modrá + fluo ružová · Nitra</text>`;
+ // giant wordmark across the sheet
+ const k=(W-2*m-40)/wm.w, ty=H-m-20-121.5*k; const g=`translate(${m+20} ${f(ty)}) scale(${f(k)})`;
+ o+=`<g transform="translate(${m+20+14} ${f(ty-9)}) scale(${f(k)})">${wm.d.replaceAll('var(--blue)','url(#dots)').replaceAll('var(--pink)','url(#dots)')}</g>`;
+ o+=`<g transform="${g}">${wm.d}</g>`;
+ s.innerHTML=o;});
+</script>
+</body>
+</html>

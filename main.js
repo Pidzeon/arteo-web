@@ -151,99 +151,143 @@
     });
   }
 
-  /* ---------- Hero wordmark ---------- */
-  const wm = document.querySelector('.wordmark');
-  const layers = [...wm.querySelectorAll('.wm-layer')];
-  const letters = 'ARTEO'.split('');
-  layers.forEach(l => { l.innerHTML = letters.map(c => `<span>${c}</span>`).join(''); });
-  const blueEls = [...layers[0].children];
-  const pinkEls = [...layers[1].children];
-  const pinkLayer = layers[1];
+  /* ---------- Hero poster: the logo's pink r arch overprints the headline ----------
+     The arch is the r arch from the Arteo logo (stroke = 26/61.5 of its radius,
+     180..310 deg), scaled to the hero and anchored to the headline so it always
+     crosses its right side. Where it overlaps the blue headline the inks blend
+     into the overprint colour. It leans and turns toward the pointer, turns as
+     the hero scrolls away, and (mouse only) can be dragged and springs back. */
   const hero = document.querySelector('.hero');
+  const title = hero.querySelector('.hero-title');
+  const arc = hero.querySelector('.hero-arch');
+  const STROKE = 26 / 61.5;
+  const nf = v => (Math.round(v * 100) / 100).toString();
+  arc.innerHTML =
+    `<defs><pattern id="arch-dots" patternUnits="userSpaceOnUse" width="7" height="7">` +
+    `<circle class="arch-dot" cx="3.5" cy="3.5" r="2.6"/></pattern></defs>` +
+    `<path class="arch-home" fill="url(#arch-dots)"/>` +
+    `<g class="arch-in"><g class="arch-move"><path class="arch-ink"/></g></g>`;
+  const home = arc.querySelector('.arch-home');
+  const ink = arc.querySelector('.arch-ink');
+  const move = arc.querySelector('.arch-move');
 
-  const BASE_W = 86; // condensed-ish base: taller letters for the same width
-  const st = letters.map(() => ({ b: BASE_W, p: BASE_W }));
-  let centers = [];
-  let fontPx = 200;
-  let sigma = 120;
-  const pointer = { x: 0, active: false, vx: 0, lastX: null };
-  const off = { x: 0, y: 0 };
-  const intro = { on: !reduce && hasGsap, w: Object.fromEntries(letters.map((_, i) => [i, 125])), plate: reduce ? 0 : 1 };
+  const geo = { cx: 0, cy: 0, r: 0 };
+  const band = (cx, cy, ro, ri, a0, a1) => {
+    const rad = d => d * Math.PI / 180;
+    const P = (q, a) => `${nf(cx + q * Math.cos(rad(a)))} ${nf(cy + q * Math.sin(rad(a)))}`;
+    return `M${P(ro, a0)}A${nf(ro)} ${nf(ro)} 0 0 1 ${P(ro, a1)}L${P(ri, a1)}A${nf(ri)} ${nf(ri)} 0 0 0 ${P(ri, a0)}Z`;
+  };
 
+  // Kept under the old name: boot and resize call it.
   function fitWordmark() {
-    wm.style.fontSize = '100px';
-    blueEls.forEach(s => s.style.setProperty('--w', BASE_W));
-    pinkEls.forEach(s => s.style.setProperty('--w', BASE_W));
-    const natural = blueEls.reduce((sum, s) => sum + s.getBoundingClientRect().width, 0);
-    const avail = wm.clientWidth;
-    fontPx = (100 * avail / natural) * 0.985;
-    wm.style.fontSize = fontPx.toFixed(2) + 'px';
-    const wmLeft = wm.getBoundingClientRect().left;
-    centers = blueEls.map(s => { const r = s.getBoundingClientRect(); return r.left - wmLeft + r.width / 2; });
-    sigma = (avail / letters.length) * 0.85;
-    written.b = []; written.p = []; // widths were reset for measuring, rewrite them next frame
+    const h = hero.getBoundingClientRect();
+    const t = title.getBoundingClientRect();
+    const W = h.width, H = h.height;
+    const tRight = t.right - h.left, tBottom = t.bottom - h.top;
+    let r, cx, cy;
+    if (W > 900) {
+      r = Math.min(W * 0.4, H * 0.68);
+      cx = Math.min(tRight, W * 0.74);
+      cy = tBottom + r * 0.18;
+      r = Math.min(r, cy - 70); // keep the top of the arch below the nav
+    } else {
+      r = W * 0.9;
+      cx = W * 0.98;
+      cy = tBottom + r * 0.42;
+    }
+    Object.assign(geo, { cx, cy, r });
+    arc.setAttribute('viewBox', `0 0 ${nf(W)} ${nf(H)}`);
+    const d = band(cx, cy, r, r * (1 - STROKE), 180, 310);
+    ink.setAttribute('d', d);
+    home.setAttribute('d', d);
+    written.t = '';
+    render();
   }
+
+  const pos = { x: 0, y: 0 };            // drag offset (px)
+  const lean = { x: 0, y: 0, a: 0 };     // pointer lean + turn
+  const drag = { on: false, id: null, sx: 0, sy: 0, ox: 0, oy: 0 };
+  const hover = { x: 0, y: 0, active: false };
+  const intro = { on: !reduce && hasGsap, a: reduce ? 0 : -38 };
+  let spin = 0;                          // scroll turn (deg)
+  let springBack = null;
+  const written = { t: '', o: '' };
+  const rubber = (d, lim) => Math.sign(d) * lim * (1 - Math.exp(-Math.abs(d) / lim));
+
+  function render() {
+    const x = pos.x + lean.x, y = pos.y + lean.y + reg * 0.8;
+    const a = lean.a + spin + intro.a;
+    const t = `translate(${nf(x)} ${nf(y)}) rotate(${nf(a)} ${nf(geo.cx)} ${nf(geo.cy)})`;
+    if (written.t !== t) {
+      written.t = t;
+      move.setAttribute('transform', t);
+      home.setAttribute('transform', `translate(0 ${nf(reg * 0.8)}) rotate(${nf(spin + intro.a)} ${nf(geo.cx)} ${nf(geo.cy)})`);
+    }
+    // While dragged out, a halftone outline marks where the plate belongs.
+    const o = clamp(Math.hypot(pos.x, pos.y) / 40, 0, 1).toFixed(2);
+    if (written.o !== o) { written.o = o; home.style.opacity = o; }
+  }
+
+  ink.addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'mouse' || drag.on) return; // touch scrolls the page instead
+    e.preventDefault();
+    if (springBack) { springBack.kill(); springBack = null; }
+    Object.assign(drag, { on: true, id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: pos.x, oy: pos.y });
+    ink.setPointerCapture(e.pointerId);
+    arc.classList.add('is-dragging');
+  });
+  ink.addEventListener('pointermove', e => {
+    if (!drag.on || e.pointerId !== drag.id) return;
+    pos.x = rubber(drag.ox + e.clientX - drag.sx, geo.r * 0.5);
+    pos.y = rubber(drag.oy + e.clientY - drag.sy, geo.r * 0.4);
+    if (reduce) render();
+  });
+  const release = e => {
+    if (!drag.on || e.pointerId !== drag.id) return;
+    drag.on = false;
+    arc.classList.remove('is-dragging');
+    if (hasGsap && !reduce) {
+      springBack = gsap.to(pos, { x: 0, y: 0, duration: 1.6, ease: 'elastic.out(1, 0.32)', onUpdate: render });
+    } else { pos.x = 0; pos.y = 0; render(); }
+  };
+  ink.addEventListener('pointerup', release);
+  ink.addEventListener('pointercancel', release);
 
   hero.addEventListener('pointermove', e => {
-    const rect = wm.getBoundingClientRect();
-    pointer.x = e.clientX - rect.left;
-    if (pointer.lastX !== null) pointer.vx = lerp(pointer.vx, e.clientX - pointer.lastX, 0.5);
-    pointer.lastX = e.clientX;
-    pointer.active = e.pointerType === 'mouse' || e.pointerType === 'pen';
+    if (e.pointerType !== 'mouse') return;
+    const h = hero.getBoundingClientRect();
+    hover.x = (e.clientX - h.left) / h.width - 0.5;   // -0.5..0.5
+    hover.y = (e.clientY - h.top) / h.height - 0.5;
+    hover.active = true;
   });
-  hero.addEventListener('pointerleave', () => { pointer.active = false; pointer.lastX = null; });
+  hero.addEventListener('pointerleave', () => { hover.active = false; });
 
-  // The breathing word re-shapes glyphs every frame; stop it once the hero is scrolled away.
   let heroVisible = true;
   if ('IntersectionObserver' in window) {
-    new IntersectionObserver(([entry]) => { heroVisible = entry.isIntersecting; }).observe(wm);
+    new IntersectionObserver(([entry]) => { heroVisible = entry.isIntersecting; }).observe(hero);
   }
-  const written = { b: [], p: [], mx: '', my: '' };
 
-  function wordmarkFrame(time) {
-    if (!centers.length || (!heroVisible && !intro.on)) return;
-    const width = wm.clientWidth;
-    // No pointer: a slow virtual cursor sweeps the word so it keeps breathing.
-    const x = pointer.active ? pointer.x : width / 2 + Math.sin(time * 0.45) * width * 0.42;
-    const gain = pointer.active ? 46 : 30;
-
-    const prox = centers.map(c => Math.exp(-Math.pow((x - c) / sigma, 2)));
-    const mean = prox.reduce((a, b) => a + b, 0) / prox.length;
-
-    st.forEach((s, i) => {
-      let t = reduce ? BASE_W : clamp(BASE_W + gain * (prox[i] - mean) * 1.6, 75, 125);
-      if (intro.on) t = intro.w[i];
-      s.b = lerp(s.b, t, 0.14);
-      s.p = lerp(s.p, t, 0.075); // pink plate lags: shapes ghost while stretching
-      const b = s.b.toFixed(1), p = s.p.toFixed(1);
-      if (written.b[i] !== b) { written.b[i] = b; blueEls[i].style.setProperty('--w', b); }
-      if (written.p[i] !== p) { written.p[i] = p; pinkEls[i].style.setProperty('--w', p); }
-    });
-
-    pointer.vx *= 0.9;
-    const rest = fontPx * 0.012;
-    const tx = rest + clamp(pointer.vx * 0.6, -28, 28) + intro.plate * -fontPx * 0.14;
-    const ty = -rest * 0.6 + reg * 1.2 + intro.plate * fontPx * 0.05;
-    off.x = lerp(off.x, tx, 0.1);
-    off.y = lerp(off.y, ty, 0.1);
-    const mx = off.x.toFixed(1) + 'px', my = off.y.toFixed(1) + 'px';
-    if (written.mx !== mx) { written.mx = mx; pinkLayer.style.setProperty('--mx', mx); }
-    if (written.my !== my) { written.my = my; pinkLayer.style.setProperty('--my', my); }
+  function wordmarkFrame() {
+    if (!heroVisible && !intro.on && !drag.on) return;
+    const k = hover.active && !drag.on ? 1 : 0;
+    lean.x = lerp(lean.x, k * hover.x * geo.r * 0.07, 0.06);
+    lean.y = lerp(lean.y, k * hover.y * geo.r * 0.05, 0.06);
+    lean.a = lerp(lean.a, k * hover.x * -9, 0.05);   // the plate turns, so the overprint slides over the words
+    const p = clamp(window.scrollY / Math.max(1, hero.offsetHeight), 0, 1);
+    spin = lerp(spin, p * 32, 0.12);
+    render();
   }
   if (!reduce) onTick(wordmarkFrame);
 
-  /* ---------- Load sequence: plates come in out of register, then lock ---------- */
+  /* ---------- Load sequence: the plate swings in and locks over the headline ---------- */
   function playIntro() {
-    if (!intro.on) { intro.plate = 0; wordmarkFrame(0); return; }
+    if (!intro.on) { intro.a = 0; render(); return; }
     const tl = gsap.timeline({ defaults: { ease: 'expo.out' }, onComplete: () => { intro.on = false; } });
-    tl.from(blueEls, { yPercent: 70, opacity: 0, duration: 1.3, stagger: 0.07 }, 0)
-      .from(pinkEls, { yPercent: 90, opacity: 0, duration: 1.5, stagger: 0.07 }, 0.12)
-      .to(intro.w, { 0: BASE_W, 1: BASE_W, 2: BASE_W, 3: BASE_W, 4: BASE_W, duration: 1.6, ease: 'expo.inOut' }, 0.1)
-      .to(intro, { plate: 0, duration: 1.8, ease: 'expo.inOut' }, 0.35)
+    tl.from('.hero-title', { y: 40, opacity: 0, duration: 1.3 }, 0.1)
       .from('.hero-title', { '--reg-local': 30, duration: 1.8 }, 0.3)
-      .from('.hero-title, .hero-side', { y: 26, opacity: 0, duration: 1.2, stagger: 0.1 }, 0.25);
-    // Hand off from the intro width values to the live interaction smoothly.
-    tl.add(() => { intro.on = false; }, 1.7);
+      .to(intro, { a: 0, duration: 1.9, ease: 'expo.out', onUpdate: render }, 0.35)
+      .from('.arch-in', { opacity: 0, duration: 0.6, ease: 'power1.out' }, 0.35)
+      .from('.hero-bottom > *', { y: 26, opacity: 0, duration: 1.2, stagger: 0.1 }, 0.6);
   }
 
   /* ---------- Work: horizontal pan ---------- */

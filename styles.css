@@ -259,58 +259,43 @@ ul { padding: 0; list-style: none; }
   overflow: hidden;
 }
 
-.hero-top {
-  display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-  gap: clamp(24px, 4vw, 72px);
-  align-items: end;
-}
+.hero { position: relative; }
 
+/* Poster: a huge blue headline, overprinted by the logo's pink r arch. */
 .hero-title {
+  position: relative; z-index: 1;
   font-family: var(--display);
-  font-size: clamp(2.3rem, 5vw, 5.4rem);
-  line-height: .98;
-  letter-spacing: -.04em;
+  font-size: clamp(3rem, 12.2vw, 14rem);
+  line-height: .87;
+  letter-spacing: -.045em;
   font-variation-settings: "wdth" 88, "wght" 760;
-  max-width: 13.5em;
-  text-wrap: balance;
+  color: var(--blue);
 }
 
-.hero-side { display: grid; gap: 24px; justify-self: end; max-width: 440px; }
-.hero-sub { color: var(--ink-soft); font-size: 18px; line-height: 1.5; }
-.hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
-
-.wordmark {
-  position: relative;
-  margin-top: auto;
-  padding-top: clamp(24px, 4vh, 56px);
-  user-select: none;
-  contain: layout; /* per-frame glyph width changes stay inside the wordmark */
-  line-height: .76;
-  font-family: var(--display);
-  font-size: 24vw; /* refined in JS to fit exactly */
-  letter-spacing: -.02em;
-}
-.wm-layer { display: flex; justify-content: center; white-space: nowrap; }
-.wm-layer span {
-  display: inline-block;
-  font-variation-settings: "wdth" var(--w, 100), "wght" 900;
-  padding: 0 .004em;
-}
-.wm-blue { color: var(--blue); }
-.wm-pink {
-  position: absolute; left: 0; right: 0; bottom: 0;
+.hero-arch {
+  position: absolute; inset: 0; z-index: 2;
+  width: 100%; height: 100%;
+  overflow: visible;
   mix-blend-mode: var(--blend);
-  transform: translate3d(var(--mx, 0px), var(--my, 0px), 0);
+  pointer-events: none;
 }
-/* Pink plate printed as halftone dots, like a riso screen. */
-.wm-pink span {
-  color: transparent;
-  background-image: radial-gradient(circle, var(--pink) 2.7px, transparent 3.1px);
-  background-size: 7px 7px;
-  -webkit-background-clip: text;
-  background-clip: text;
+.arch-ink { fill: var(--pink); }
+.arch-home { opacity: 0; }
+.arch-dot { fill: var(--pink); }
+@media (hover: hover) and (pointer: fine) {
+  .arch-ink { pointer-events: visiblePainted; cursor: grab; }
+  .hero-arch.is-dragging .arch-ink { cursor: grabbing; }
 }
+
+.hero-bottom {
+  position: relative; z-index: 3;
+  margin-top: auto;
+  padding-top: clamp(32px, 6vh, 72px);
+  display: flex; flex-wrap: wrap; align-items: flex-end;
+  gap: 24px clamp(24px, 4vw, 64px);
+}
+.hero-sub { color: var(--ink-soft); font-size: 18px; line-height: 1.5; max-width: 30em; }
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
 
 /* ---------- Section titles ---------- */
 
@@ -656,8 +641,6 @@ fieldset.field { border: 0; padding: 0; margin: 0; }
 /* ---------- Responsive ---------- */
 
 @media (max-width: 1100px) {
-  .hero-top { grid-template-columns: 1fr; align-items: start; }
-  .hero-side { justify-self: start; }
 }
 
 @media (max-width: 900px) {
@@ -666,9 +649,9 @@ fieldset.field { border: 0; padding: 0; margin: 0; }
   .nav-links { display: none; }
   .menu-toggle { display: inline-grid; }
 
-  .hero { min-height: 0; }
-  .hero-title { font-size: clamp(2.3rem, 9.5vw, 3.6rem); }
-  .wordmark { margin-top: clamp(32px, 7vh, 80px); }
+  .hero { min-height: 92svh; }
+  .hero-title { font-size: clamp(3.2rem, 15vw, 7rem); }
+  .hero-bottom { flex-direction: column; align-items: flex-start; }
 
   /* Work: vertical stack, no pin */
   .work-pin { height: auto; display: block; overflow: visible; }
